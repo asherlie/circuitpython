@@ -3,8 +3,7 @@
  *
  * The MIT License (MIT)
  *
- * Copyright (c) 2013, 2014 Damien P. George
- * Copyright (c) 2014 Paul Sokolovsky
+ * Copyright (c) 2017 Scott Shawcroft for Adafruit Industries
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,8 +24,13 @@
  * THE SOFTWARE.
  */
 
+<<<<<<< HEAD
 #ifndef MICROPY_INCLUDED_ATMEL_SAMD_RGB_LED_STATUS_H
 #define MICROPY_INCLUDED_ATMEL_SAMD_RGB_LED_STATUS_H
+=======
+#ifndef __MICROPY_INCLUDED_ATMEL_SAMD_RGB_LED_STATUS_H
+#define __MICROPY_INCLUDED_ATMEL_SAMD_RGB_LED_STATUS_H
+>>>>>>> WIP
 
 #include <stdint.h>
 #include <stdbool.h>
