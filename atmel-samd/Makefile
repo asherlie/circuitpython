@@ -36,6 +36,10 @@ INC += -I. \
        -Iasf4/$(CHIP_FAMILY)/hpl/port \
        -Iasf4/$(CHIP_FAMILY)/include \
        -Iasf4/$(CHIP_FAMILY)/CMSIS/Include \
+       -Iasf4/$(CHIP_FAMILY)/usb \
+       -Iasf4/$(CHIP_FAMILY)/usb/class/cdc \
+       -Iasf4/$(CHIP_FAMILY)/usb/class/hid \
+       -Iasf4/$(CHIP_FAMILY)/usb/device \
        -Iboards/$(BOARD) \
        -Ifreetouch \
        -I$(BUILD)
@@ -134,6 +138,7 @@ SRC_ASF = $(addprefix asf4/$(CHIP_FAMILY)/,\
 
 # Skip this source for now.
 #	access_vfs.c \
+	$(FLASH_IMPL) \
 
 SRC_C = \
 	access_vfs.c \
@@ -148,7 +153,7 @@ SRC_C = \
 	shared_dma.c \
 	rgb_led_status.c \
 	tick.c \
-	$(FLASH_IMPL) \
+	usb.c \
 	bindings/samd/__init__.c \
 	asf4/$(CHIP_FAMILY)/gcc/gcc/startup_samd21.c \
 	asf4/$(CHIP_FAMILY)/gcc/system_samd21.c \
