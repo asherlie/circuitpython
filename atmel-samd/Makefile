@@ -73,7 +73,7 @@ BASE_CFLAGS = \
 	--param max-inline-insns-single=500
 
 
-CFLAGS = $(INC) -Wall -Werror -std=gnu11 -nostdlib $(BASE_CFLAGS) $(COPT)
+CFLAGS = $(INC) -Wall -Werror -std=gnu11 -nostdlib $(BASE_CFLAGS) $(CFLAGS_MOD) $(COPT)
 
 ifeq ($(CHIP_VARIANT), samd21)
 CFLAGS += \
@@ -141,7 +141,6 @@ SRC_ASF = $(addprefix asf4/$(CHIP_FAMILY)/,\
 	$(FLASH_IMPL) \
 
 SRC_C = \
-	access_vfs.c \
 	autoreload.c \
 	background.c \
 	fatfs_port.c \
@@ -159,7 +158,6 @@ SRC_C = \
 	asf4/$(CHIP_FAMILY)/gcc/system_$(CHIP_FAMILY).c \
 	boards/$(BOARD)/board.c \
 	boards/$(BOARD)/pins.c \
-	freetouch/adafruit_ptc.c \
 	lib/oofatfs/ff.c \
 	lib/oofatfs/option/ccsbcs.c \
 	lib/timeutils/timeutils.c \
@@ -170,7 +168,8 @@ SRC_C = \
 	lib/utils/stdout_helpers.c \
 	lib/utils/sys_stdio_mphal.c \
 	lib/libc/string0.c \
-	lib/mp-readline/readline.c
+	lib/mp-readline/readline.c \
+	# freetouch/adafruit_ptc.c \
 
 SRC_COMMON_HAL = \
 	board/__init__.c \
