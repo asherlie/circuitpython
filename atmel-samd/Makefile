@@ -41,6 +41,7 @@ INC += -I. \
        -Iasf4/$(CHIP_FAMILY)/usb/class/hid \
        -Iasf4/$(CHIP_FAMILY)/usb/device \
        -Iboards/$(BOARD) \
+       -Iboards/ \
        -Ifreetouch \
        -I$(BUILD)
 

@@ -21,7 +21,34 @@ for chip in ["samd21", "samd51"]:
     print(z)
 
     # delete the zip on success
-    os.remove(filename)
+    #os.remove(filename)
 
+# Remove LITTLE_ENDIAN define from ASF because it conflicts with GCC.
+for fn in os.listdir("asf4/samd51/include"):
+    contents = []
+    path = "asf4/samd51/include/" + fn
+    if not os.path.isfile(path):
+        continue
+    with open(path, "r") as f:
+        for line in f:
+            if line.startswith("#define LITTLE_ENDIAN"):
+                contents.append("//" + line)
+            else:
+                contents.append(line)
+    with open(path, "w") as f:
+        for line in contents:
+            f.write(line)
+
+# Replace ASF's assert with asf_assert so it doesn't conflict with the C macro.
+
+for chip in ["samd21", "samd51"]:
+    contents = []
+    path = "asf4/" + chip + "/hal/utils/include/utils_assert.h"
+    with open(path, "r") as f:
+        for line in f:
+            contents.append(line.replace(" assert(", " asf_assert("))
+    with open(path, "w") as f:
+        for line in contents:
+            f.write(line)
 
 # samd21/samd21a/include is copied to samd21/include to match samd51
