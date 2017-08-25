@@ -1,9 +1,9 @@
 /**
  * \file
  *
- * \brief Reset related functionality declaration.
+ * \brief Event system related functionality declaration.
  *
- * Copyright (C) 2014 Atmel Corporation. All rights reserved.
+ * Copyright (C) 2016 Atmel Corporation. All rights reserved.
  *
  * \asf_license_start
  *
@@ -41,63 +41,64 @@
  *
  */
 
-#ifndef _HPL_RESET_H_INCLUDED
-#define _HPL_RESET_H_INCLUDED
+#ifndef _HPL_EVSYS_H_INCLUDED
+#define _HPL_EVSYS_H_INCLUDED
 
 /**
- * \addtogroup HPL Reset
+ * \addtogroup HPL EVSYS
  *
- * \section hpl_reset_rev Revision History
+ * \section hpl_eveys_rev Revision History
  * - v1.0.0 Initial Release
  *
  *@{
  */
 
-#ifndef _UNIT_TEST_
 #include <compiler.h>
-#endif
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /**
- * \brief Reset reason enumeration
+ * \brief Initialize event system.
  *
- * The list of possible reset reasons.
+ * \return Status of operation.
  */
-enum reset_reason {
-
-	RESET_REASON_POR     = 1,
-	RESET_REASON_BODCORE = 2,
-	RESET_REASON_BODVDD  = 4,
-	RESET_REASON_EXT     = 8,
-	RESET_REASON_WDT     = 16,
-	RESET_REASON_SYST    = 32,
-	RESET_REASON_BACKUP  = 64
-};
+int32_t _event_system_init(void);
 
 /**
- * \name HPL functions
- */
-//@{
-/**
- * \brief Retrieve the reset reason
+ * \brief Deinitialize event system.
  *
- * Retrieves the reset reason of the last MCU reset.
- *
- *\return An enum value indicating the reason of the last reset.
+ * \return Status of operation.
  */
-enum reset_reason _get_reset_reason(void);
+int32_t _event_system_deinit(void);
 
 /**
- * \brief Reset MCU
+ * \brief Enable/disable event reception by the given user from the given
+ *        channel
+ *
+ * \param[in] user A user to enable
+ * \param[in] channel A channel the user is assigned to
+ * \param[in] on true to enable, false to disable
+ *
+ * \return Status of operation.
  */
-void _reset_mcu(void);
-//@}
+int32_t _event_system_enable_user(const uint16_t user, const uint16_t channel, const bool on);
+
+/**
+ * \brief Enable/disable event generation by the given generator for the given
+ *        channel
+ *
+ * \param[in] generator A generator to enable
+ * \param[in] channel A channel the user is assigned to
+ * \param[in] on true to enable, false to disable
+ *
+ * \return Status of operation.
+ */
+int32_t _event_system_enable_generator(const uint16_t generator, const uint16_t channel, const bool on);
 
 #ifdef __cplusplus
 }
 #endif
 /**@}*/
-#endif /* _HPL_RESET_H_INCLUDED */
+#endif /* _HPL_EVSYS_H_INCLUDED */

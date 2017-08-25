@@ -104,8 +104,8 @@ struct timer_descriptor {
  * is permitted to be initialized.
  *
  * \param[out] descr A timer descriptor to initialize
- * \param[in] hw The pointer to hardware instance
- * \param[in] func The pointer to as set of functions pointers
+ * \param[in] hw The pointer to the hardware instance
+ * \param[in] func The pointer to a set of function pointers
  *
  * \return Initialization status.
  */
@@ -149,13 +149,13 @@ int32_t timer_start(struct timer_descriptor *const descr);
 int32_t timer_stop(struct timer_descriptor *const descr);
 
 /**
- * \brief Set amount of clock cycler per timer tick
+ * \brief Set amount of clock cycles per timer tick
  *
- * This function sets amount of clock cycler per timer tick for the given timer.
+ * This function sets the amount of clock cycles per timer tick for the given timer.
  * It checks if the given hardware is initialized.
  *
  * \param[in] descr The timer descriptor of a timer to stop
- * \param[in] clock_cycles The amount of clock cycler per tick to set
+ * \param[in] clock_cycles The amount of clock cycles per tick to set
  *
  * \return Setting clock cycles amount status.
  */
@@ -164,7 +164,7 @@ int32_t timer_set_clock_cycles_per_tick(struct timer_descriptor *const descr, co
 /**
  * \brief Retrieve the amount of clock cycles in a tick
  *
- * This function retrieves how many clock cycles are in a single timer tick.
+ * This function retrieves how many clock cycles there are in a single timer tick.
  * It checks if the given hardware is initialized.
  *
  * \param[in]  descr The timer descriptor of a timer to convert ticks to
@@ -204,7 +204,7 @@ int32_t timer_remove_task(struct timer_descriptor *const descr, const struct tim
 /**
  * \brief Retrieve the current driver version
  *
- * \return Current driver version
+ * \return Current driver version.
  */
 uint32_t timer_get_version(void);
 /**@}*/

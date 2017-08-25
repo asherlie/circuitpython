@@ -74,7 +74,7 @@ int sleep(const uint8_t mode);
 /**
  * \brief Retrieve the current driver version
  *
- * \return Current driver version
+ * \return Current driver version.
  */
 uint32_t sleep_get_version(void);
 /**@}*/

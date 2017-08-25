@@ -124,7 +124,7 @@ int32_t flash_write(struct flash_descriptor *flash, uint32_t dst_addr, uint8_t *
 
 /** \brief Appends a number of bytes to a page in the internal Flash
  *
- *  This functions never erases the flash before writing
+ *  This functions never erases the flash before writing.
  *
  *  \param[in, out] flash Pointer to the HAL FLASH instance.
  *  \param[in]  dst_addr  Destination bytes address to write to flash
@@ -198,7 +198,7 @@ int32_t flash_erase(struct flash_descriptor *flash, const uint32_t dst_addr, con
 uint32_t flash_get_page_size(struct flash_descriptor *flash);
 
 /**
- * \brief Get the numbers of flash page
+ * \brief Get the number of flash page
  *
  * \param[in, out] flash Pointer to the HAL FLASH instance.
  *
@@ -208,7 +208,7 @@ uint32_t flash_get_total_pages(struct flash_descriptor *flash);
 
 /** \brief Retrieve the current driver version
  *
- *  \return Current driver version
+ *  \return Current driver version.
  */
 uint32_t flash_get_version(void);
 

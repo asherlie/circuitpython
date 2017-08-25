@@ -61,7 +61,7 @@ extern "C" {
  * based on debug level.
  *
  * \param[in] condition A condition to be checked;
- *                      assert is thrown if the given condifition is false
+ *                      assert is thrown if the given condition is false
  */
 #define ASSERT(condition) ASSERT_IMPL((condition), __FILE__, __LINE__)
 
@@ -84,8 +84,6 @@ extern "C" {
 #endif
 
 #endif /* DEBUG */
-
-#undef assert
 
 /**
  * \brief Assert function

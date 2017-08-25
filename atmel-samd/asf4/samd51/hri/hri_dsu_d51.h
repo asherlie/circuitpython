@@ -3,7 +3,7 @@
  *
  * \brief SAM DSU
  *
- * Copyright (C) 2016 Atmel Corporation. All rights reserved.
+ * Copyright (C) 2017 Atmel Corporation. All rights reserved.
  *
  * \asf_license_start
  *
@@ -70,7 +70,8 @@ typedef uint32_t hri_dsu_dcc_reg_t;
 typedef uint32_t hri_dsu_dcfg_reg_t;
 typedef uint32_t hri_dsu_did_reg_t;
 typedef uint32_t hri_dsu_end_reg_t;
-typedef uint32_t hri_dsu_entry_reg_t;
+typedef uint32_t hri_dsu_entry0_reg_t;
+typedef uint32_t hri_dsu_entry1_reg_t;
 typedef uint32_t hri_dsu_length_reg_t;
 typedef uint32_t hri_dsu_mbafail_reg_t;
 typedef uint32_t hri_dsu_mbbusy0_reg_t;
@@ -96,11 +97,784 @@ typedef uint8_t  hri_dsu_ctrl_reg_t;
 typedef uint8_t  hri_dsu_statusa_reg_t;
 typedef uint8_t  hri_dsu_statusb_reg_t;
 
-static inline void hri_dsu_write_CTRL_reg(const void *const hw, hri_dsu_ctrl_reg_t data)
+static inline bool hri_dsu_get_STATUSB_PROT_bit(const void *const hw)
 {
-	DSU_CRITICAL_SECTION_ENTER();
-	((Dsu *)hw)->CTRL.reg = data;
-	DSU_CRITICAL_SECTION_LEAVE();
+	return (((Dsu *)hw)->STATUSB.reg & DSU_STATUSB_PROT) >> DSU_STATUSB_PROT_Pos;
+}
+
+static inline bool hri_dsu_get_STATUSB_DBGPRES_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->STATUSB.reg & DSU_STATUSB_DBGPRES) >> DSU_STATUSB_DBGPRES_Pos;
+}
+
+static inline bool hri_dsu_get_STATUSB_DCCD0_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->STATUSB.reg & DSU_STATUSB_DCCD0) >> DSU_STATUSB_DCCD0_Pos;
+}
+
+static inline bool hri_dsu_get_STATUSB_DCCD1_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->STATUSB.reg & DSU_STATUSB_DCCD1) >> DSU_STATUSB_DCCD1_Pos;
+}
+
+static inline bool hri_dsu_get_STATUSB_HPE_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->STATUSB.reg & DSU_STATUSB_HPE) >> DSU_STATUSB_HPE_Pos;
+}
+
+static inline bool hri_dsu_get_STATUSB_CELCK_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->STATUSB.reg & DSU_STATUSB_CELCK) >> DSU_STATUSB_CELCK_Pos;
+}
+
+static inline bool hri_dsu_get_STATUSB_TDCCD0_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->STATUSB.reg & DSU_STATUSB_TDCCD0) >> DSU_STATUSB_TDCCD0_Pos;
+}
+
+static inline bool hri_dsu_get_STATUSB_TDCCD1_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->STATUSB.reg & DSU_STATUSB_TDCCD1) >> DSU_STATUSB_TDCCD1_Pos;
+}
+
+static inline hri_dsu_statusb_reg_t hri_dsu_get_STATUSB_reg(const void *const hw, hri_dsu_statusb_reg_t mask)
+{
+	uint8_t tmp;
+	tmp = ((Dsu *)hw)->STATUSB.reg;
+	tmp &= mask;
+	return tmp;
+}
+
+static inline hri_dsu_statusb_reg_t hri_dsu_read_STATUSB_reg(const void *const hw)
+{
+	return ((Dsu *)hw)->STATUSB.reg;
+}
+
+static inline hri_dsu_did_reg_t hri_dsu_get_DID_DEVSEL_bf(const void *const hw, hri_dsu_did_reg_t mask)
+{
+	return (((Dsu *)hw)->DID.reg & DSU_DID_DEVSEL(mask)) >> DSU_DID_DEVSEL_Pos;
+}
+
+static inline hri_dsu_did_reg_t hri_dsu_read_DID_DEVSEL_bf(const void *const hw)
+{
+	return (((Dsu *)hw)->DID.reg & DSU_DID_DEVSEL_Msk) >> DSU_DID_DEVSEL_Pos;
+}
+
+static inline hri_dsu_did_reg_t hri_dsu_get_DID_REVISION_bf(const void *const hw, hri_dsu_did_reg_t mask)
+{
+	return (((Dsu *)hw)->DID.reg & DSU_DID_REVISION(mask)) >> DSU_DID_REVISION_Pos;
+}
+
+static inline hri_dsu_did_reg_t hri_dsu_read_DID_REVISION_bf(const void *const hw)
+{
+	return (((Dsu *)hw)->DID.reg & DSU_DID_REVISION_Msk) >> DSU_DID_REVISION_Pos;
+}
+
+static inline hri_dsu_did_reg_t hri_dsu_get_DID_DIE_bf(const void *const hw, hri_dsu_did_reg_t mask)
+{
+	return (((Dsu *)hw)->DID.reg & DSU_DID_DIE(mask)) >> DSU_DID_DIE_Pos;
+}
+
+static inline hri_dsu_did_reg_t hri_dsu_read_DID_DIE_bf(const void *const hw)
+{
+	return (((Dsu *)hw)->DID.reg & DSU_DID_DIE_Msk) >> DSU_DID_DIE_Pos;
+}
+
+static inline hri_dsu_did_reg_t hri_dsu_get_DID_SERIES_bf(const void *const hw, hri_dsu_did_reg_t mask)
+{
+	return (((Dsu *)hw)->DID.reg & DSU_DID_SERIES(mask)) >> DSU_DID_SERIES_Pos;
+}
+
+static inline hri_dsu_did_reg_t hri_dsu_read_DID_SERIES_bf(const void *const hw)
+{
+	return (((Dsu *)hw)->DID.reg & DSU_DID_SERIES_Msk) >> DSU_DID_SERIES_Pos;
+}
+
+static inline hri_dsu_did_reg_t hri_dsu_get_DID_FAMILY_bf(const void *const hw, hri_dsu_did_reg_t mask)
+{
+	return (((Dsu *)hw)->DID.reg & DSU_DID_FAMILY(mask)) >> DSU_DID_FAMILY_Pos;
+}
+
+static inline hri_dsu_did_reg_t hri_dsu_read_DID_FAMILY_bf(const void *const hw)
+{
+	return (((Dsu *)hw)->DID.reg & DSU_DID_FAMILY_Msk) >> DSU_DID_FAMILY_Pos;
+}
+
+static inline hri_dsu_did_reg_t hri_dsu_get_DID_PROCESSOR_bf(const void *const hw, hri_dsu_did_reg_t mask)
+{
+	return (((Dsu *)hw)->DID.reg & DSU_DID_PROCESSOR(mask)) >> DSU_DID_PROCESSOR_Pos;
+}
+
+static inline hri_dsu_did_reg_t hri_dsu_read_DID_PROCESSOR_bf(const void *const hw)
+{
+	return (((Dsu *)hw)->DID.reg & DSU_DID_PROCESSOR_Msk) >> DSU_DID_PROCESSOR_Pos;
+}
+
+static inline hri_dsu_did_reg_t hri_dsu_get_DID_reg(const void *const hw, hri_dsu_did_reg_t mask)
+{
+	uint32_t tmp;
+	tmp = ((Dsu *)hw)->DID.reg;
+	tmp &= mask;
+	return tmp;
+}
+
+static inline hri_dsu_did_reg_t hri_dsu_read_DID_reg(const void *const hw)
+{
+	return ((Dsu *)hw)->DID.reg;
+}
+
+static inline hri_dsu_mbdfail_reg_t hri_dsu_get_MBDFAIL_DATA_bf(const void *const hw, hri_dsu_mbdfail_reg_t mask)
+{
+	return (((Dsu *)hw)->MBDFAIL.reg & DSU_MBDFAIL_DATA(mask)) >> DSU_MBDFAIL_DATA_Pos;
+}
+
+static inline hri_dsu_mbdfail_reg_t hri_dsu_read_MBDFAIL_DATA_bf(const void *const hw)
+{
+	return (((Dsu *)hw)->MBDFAIL.reg & DSU_MBDFAIL_DATA_Msk) >> DSU_MBDFAIL_DATA_Pos;
+}
+
+static inline hri_dsu_mbdfail_reg_t hri_dsu_get_MBDFAIL_reg(const void *const hw, hri_dsu_mbdfail_reg_t mask)
+{
+	uint32_t tmp;
+	tmp = ((Dsu *)hw)->MBDFAIL.reg;
+	tmp &= mask;
+	return tmp;
+}
+
+static inline hri_dsu_mbdfail_reg_t hri_dsu_read_MBDFAIL_reg(const void *const hw)
+{
+	return ((Dsu *)hw)->MBDFAIL.reg;
+}
+
+static inline hri_dsu_mbdexp_reg_t hri_dsu_get_MBDEXP_DATA_bf(const void *const hw, hri_dsu_mbdexp_reg_t mask)
+{
+	return (((Dsu *)hw)->MBDEXP.reg & DSU_MBDEXP_DATA(mask)) >> DSU_MBDEXP_DATA_Pos;
+}
+
+static inline hri_dsu_mbdexp_reg_t hri_dsu_read_MBDEXP_DATA_bf(const void *const hw)
+{
+	return (((Dsu *)hw)->MBDEXP.reg & DSU_MBDEXP_DATA_Msk) >> DSU_MBDEXP_DATA_Pos;
+}
+
+static inline hri_dsu_mbdexp_reg_t hri_dsu_get_MBDEXP_reg(const void *const hw, hri_dsu_mbdexp_reg_t mask)
+{
+	uint32_t tmp;
+	tmp = ((Dsu *)hw)->MBDEXP.reg;
+	tmp &= mask;
+	return tmp;
+}
+
+static inline hri_dsu_mbdexp_reg_t hri_dsu_read_MBDEXP_reg(const void *const hw)
+{
+	return ((Dsu *)hw)->MBDEXP.reg;
+}
+
+static inline hri_dsu_mbafail_reg_t hri_dsu_get_MBAFAIL_ADDR_bf(const void *const hw, hri_dsu_mbafail_reg_t mask)
+{
+	return (((Dsu *)hw)->MBAFAIL.reg & DSU_MBAFAIL_ADDR(mask)) >> DSU_MBAFAIL_ADDR_Pos;
+}
+
+static inline hri_dsu_mbafail_reg_t hri_dsu_read_MBAFAIL_ADDR_bf(const void *const hw)
+{
+	return (((Dsu *)hw)->MBAFAIL.reg & DSU_MBAFAIL_ADDR_Msk) >> DSU_MBAFAIL_ADDR_Pos;
+}
+
+static inline hri_dsu_mbafail_reg_t hri_dsu_get_MBAFAIL_reg(const void *const hw, hri_dsu_mbafail_reg_t mask)
+{
+	uint32_t tmp;
+	tmp = ((Dsu *)hw)->MBAFAIL.reg;
+	tmp &= mask;
+	return tmp;
+}
+
+static inline hri_dsu_mbafail_reg_t hri_dsu_read_MBAFAIL_reg(const void *const hw)
+{
+	return ((Dsu *)hw)->MBAFAIL.reg;
+}
+
+static inline bool hri_dsu_get_MBCONTEXT_PORT_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->MBCONTEXT.reg & DSU_MBCONTEXT_PORT) >> DSU_MBCONTEXT_PORT_Pos;
+}
+
+static inline hri_dsu_mbcontext_reg_t hri_dsu_get_MBCONTEXT_SUBSTEP_bf(const void *const       hw,
+                                                                       hri_dsu_mbcontext_reg_t mask)
+{
+	return (((Dsu *)hw)->MBCONTEXT.reg & DSU_MBCONTEXT_SUBSTEP(mask)) >> DSU_MBCONTEXT_SUBSTEP_Pos;
+}
+
+static inline hri_dsu_mbcontext_reg_t hri_dsu_read_MBCONTEXT_SUBSTEP_bf(const void *const hw)
+{
+	return (((Dsu *)hw)->MBCONTEXT.reg & DSU_MBCONTEXT_SUBSTEP_Msk) >> DSU_MBCONTEXT_SUBSTEP_Pos;
+}
+
+static inline hri_dsu_mbcontext_reg_t hri_dsu_get_MBCONTEXT_STEP_bf(const void *const hw, hri_dsu_mbcontext_reg_t mask)
+{
+	return (((Dsu *)hw)->MBCONTEXT.reg & DSU_MBCONTEXT_STEP(mask)) >> DSU_MBCONTEXT_STEP_Pos;
+}
+
+static inline hri_dsu_mbcontext_reg_t hri_dsu_read_MBCONTEXT_STEP_bf(const void *const hw)
+{
+	return (((Dsu *)hw)->MBCONTEXT.reg & DSU_MBCONTEXT_STEP_Msk) >> DSU_MBCONTEXT_STEP_Pos;
+}
+
+static inline hri_dsu_mbcontext_reg_t hri_dsu_get_MBCONTEXT_reg(const void *const hw, hri_dsu_mbcontext_reg_t mask)
+{
+	uint32_t tmp;
+	tmp = ((Dsu *)hw)->MBCONTEXT.reg;
+	tmp &= mask;
+	return tmp;
+}
+
+static inline hri_dsu_mbcontext_reg_t hri_dsu_read_MBCONTEXT_reg(const void *const hw)
+{
+	return ((Dsu *)hw)->MBCONTEXT.reg;
+}
+
+static inline bool hri_dsu_get_MBBUSY0_BUSY0_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY0) >> DSU_MBBUSY0_BUSY0_Pos;
+}
+
+static inline bool hri_dsu_get_MBBUSY0_BUSY1_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY1) >> DSU_MBBUSY0_BUSY1_Pos;
+}
+
+static inline bool hri_dsu_get_MBBUSY0_BUSY2_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY2) >> DSU_MBBUSY0_BUSY2_Pos;
+}
+
+static inline bool hri_dsu_get_MBBUSY0_BUSY3_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY3) >> DSU_MBBUSY0_BUSY3_Pos;
+}
+
+static inline bool hri_dsu_get_MBBUSY0_BUSY4_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY4) >> DSU_MBBUSY0_BUSY4_Pos;
+}
+
+static inline bool hri_dsu_get_MBBUSY0_BUSY5_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY5) >> DSU_MBBUSY0_BUSY5_Pos;
+}
+
+static inline bool hri_dsu_get_MBBUSY0_BUSY6_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY6) >> DSU_MBBUSY0_BUSY6_Pos;
+}
+
+static inline bool hri_dsu_get_MBBUSY0_BUSY7_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY7) >> DSU_MBBUSY0_BUSY7_Pos;
+}
+
+static inline bool hri_dsu_get_MBBUSY0_BUSY8_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY8) >> DSU_MBBUSY0_BUSY8_Pos;
+}
+
+static inline bool hri_dsu_get_MBBUSY0_BUSY9_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY9) >> DSU_MBBUSY0_BUSY9_Pos;
+}
+
+static inline bool hri_dsu_get_MBBUSY0_BUSY10_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY10) >> DSU_MBBUSY0_BUSY10_Pos;
+}
+
+static inline bool hri_dsu_get_MBBUSY0_BUSY11_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY11) >> DSU_MBBUSY0_BUSY11_Pos;
+}
+
+static inline bool hri_dsu_get_MBBUSY0_BUSY12_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY12) >> DSU_MBBUSY0_BUSY12_Pos;
+}
+
+static inline bool hri_dsu_get_MBBUSY0_BUSY13_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY13) >> DSU_MBBUSY0_BUSY13_Pos;
+}
+
+static inline bool hri_dsu_get_MBBUSY0_BUSY14_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY14) >> DSU_MBBUSY0_BUSY14_Pos;
+}
+
+static inline bool hri_dsu_get_MBBUSY0_BUSY15_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY15) >> DSU_MBBUSY0_BUSY15_Pos;
+}
+
+static inline bool hri_dsu_get_MBBUSY0_BUSY16_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY16) >> DSU_MBBUSY0_BUSY16_Pos;
+}
+
+static inline bool hri_dsu_get_MBBUSY0_BUSY17_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY17) >> DSU_MBBUSY0_BUSY17_Pos;
+}
+
+static inline bool hri_dsu_get_MBBUSY0_BUSY18_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY18) >> DSU_MBBUSY0_BUSY18_Pos;
+}
+
+static inline bool hri_dsu_get_MBBUSY0_BUSY19_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY19) >> DSU_MBBUSY0_BUSY19_Pos;
+}
+
+static inline bool hri_dsu_get_MBBUSY0_BUSY20_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY20) >> DSU_MBBUSY0_BUSY20_Pos;
+}
+
+static inline bool hri_dsu_get_MBBUSY0_BUSY21_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY21) >> DSU_MBBUSY0_BUSY21_Pos;
+}
+
+static inline bool hri_dsu_get_MBBUSY0_BUSY22_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY22) >> DSU_MBBUSY0_BUSY22_Pos;
+}
+
+static inline bool hri_dsu_get_MBBUSY0_BUSY23_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY23) >> DSU_MBBUSY0_BUSY23_Pos;
+}
+
+static inline bool hri_dsu_get_MBBUSY0_BUSY24_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY24) >> DSU_MBBUSY0_BUSY24_Pos;
+}
+
+static inline bool hri_dsu_get_MBBUSY0_BUSY25_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY25) >> DSU_MBBUSY0_BUSY25_Pos;
+}
+
+static inline bool hri_dsu_get_MBBUSY0_BUSY26_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY26) >> DSU_MBBUSY0_BUSY26_Pos;
+}
+
+static inline bool hri_dsu_get_MBBUSY0_BUSY27_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY27) >> DSU_MBBUSY0_BUSY27_Pos;
+}
+
+static inline bool hri_dsu_get_MBBUSY0_BUSY28_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY28) >> DSU_MBBUSY0_BUSY28_Pos;
+}
+
+static inline hri_dsu_mbbusy0_reg_t hri_dsu_get_MBBUSY0_reg(const void *const hw, hri_dsu_mbbusy0_reg_t mask)
+{
+	uint32_t tmp;
+	tmp = ((Dsu *)hw)->MBBUSY0.reg;
+	tmp &= mask;
+	return tmp;
+}
+
+static inline hri_dsu_mbbusy0_reg_t hri_dsu_read_MBBUSY0_reg(const void *const hw)
+{
+	return ((Dsu *)hw)->MBBUSY0.reg;
+}
+
+static inline bool hri_dsu_get_ENTRY0_EPRES_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->ENTRY0.reg & DSU_ENTRY0_EPRES) >> DSU_ENTRY0_EPRES_Pos;
+}
+
+static inline bool hri_dsu_get_ENTRY0_FMT_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->ENTRY0.reg & DSU_ENTRY0_FMT) >> DSU_ENTRY0_FMT_Pos;
+}
+
+static inline hri_dsu_entry0_reg_t hri_dsu_get_ENTRY0_ADDOFF_bf(const void *const hw, hri_dsu_entry0_reg_t mask)
+{
+	return (((Dsu *)hw)->ENTRY0.reg & DSU_ENTRY0_ADDOFF(mask)) >> DSU_ENTRY0_ADDOFF_Pos;
+}
+
+static inline hri_dsu_entry0_reg_t hri_dsu_read_ENTRY0_ADDOFF_bf(const void *const hw)
+{
+	return (((Dsu *)hw)->ENTRY0.reg & DSU_ENTRY0_ADDOFF_Msk) >> DSU_ENTRY0_ADDOFF_Pos;
+}
+
+static inline hri_dsu_entry0_reg_t hri_dsu_get_ENTRY0_reg(const void *const hw, hri_dsu_entry0_reg_t mask)
+{
+	uint32_t tmp;
+	tmp = ((Dsu *)hw)->ENTRY0.reg;
+	tmp &= mask;
+	return tmp;
+}
+
+static inline hri_dsu_entry0_reg_t hri_dsu_read_ENTRY0_reg(const void *const hw)
+{
+	return ((Dsu *)hw)->ENTRY0.reg;
+}
+
+static inline hri_dsu_entry1_reg_t hri_dsu_get_ENTRY1_reg(const void *const hw, hri_dsu_entry1_reg_t mask)
+{
+	uint32_t tmp;
+	tmp = ((Dsu *)hw)->ENTRY1.reg;
+	tmp &= mask;
+	return tmp;
+}
+
+static inline hri_dsu_entry1_reg_t hri_dsu_read_ENTRY1_reg(const void *const hw)
+{
+	return ((Dsu *)hw)->ENTRY1.reg;
+}
+
+static inline hri_dsu_end_reg_t hri_dsu_get_END_END_bf(const void *const hw, hri_dsu_end_reg_t mask)
+{
+	return (((Dsu *)hw)->END.reg & DSU_END_END(mask)) >> DSU_END_END_Pos;
+}
+
+static inline hri_dsu_end_reg_t hri_dsu_read_END_END_bf(const void *const hw)
+{
+	return (((Dsu *)hw)->END.reg & DSU_END_END_Msk) >> DSU_END_END_Pos;
+}
+
+static inline hri_dsu_end_reg_t hri_dsu_get_END_reg(const void *const hw, hri_dsu_end_reg_t mask)
+{
+	uint32_t tmp;
+	tmp = ((Dsu *)hw)->END.reg;
+	tmp &= mask;
+	return tmp;
+}
+
+static inline hri_dsu_end_reg_t hri_dsu_read_END_reg(const void *const hw)
+{
+	return ((Dsu *)hw)->END.reg;
+}
+
+static inline bool hri_dsu_get_MEMTYPE_SMEMP_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->MEMTYPE.reg & DSU_MEMTYPE_SMEMP) >> DSU_MEMTYPE_SMEMP_Pos;
+}
+
+static inline hri_dsu_memtype_reg_t hri_dsu_get_MEMTYPE_reg(const void *const hw, hri_dsu_memtype_reg_t mask)
+{
+	uint32_t tmp;
+	tmp = ((Dsu *)hw)->MEMTYPE.reg;
+	tmp &= mask;
+	return tmp;
+}
+
+static inline hri_dsu_memtype_reg_t hri_dsu_read_MEMTYPE_reg(const void *const hw)
+{
+	return ((Dsu *)hw)->MEMTYPE.reg;
+}
+
+static inline hri_dsu_pid4_reg_t hri_dsu_get_PID4_JEPCC_bf(const void *const hw, hri_dsu_pid4_reg_t mask)
+{
+	return (((Dsu *)hw)->PID4.reg & DSU_PID4_JEPCC(mask)) >> DSU_PID4_JEPCC_Pos;
+}
+
+static inline hri_dsu_pid4_reg_t hri_dsu_read_PID4_JEPCC_bf(const void *const hw)
+{
+	return (((Dsu *)hw)->PID4.reg & DSU_PID4_JEPCC_Msk) >> DSU_PID4_JEPCC_Pos;
+}
+
+static inline hri_dsu_pid4_reg_t hri_dsu_get_PID4_FKBC_bf(const void *const hw, hri_dsu_pid4_reg_t mask)
+{
+	return (((Dsu *)hw)->PID4.reg & DSU_PID4_FKBC(mask)) >> DSU_PID4_FKBC_Pos;
+}
+
+static inline hri_dsu_pid4_reg_t hri_dsu_read_PID4_FKBC_bf(const void *const hw)
+{
+	return (((Dsu *)hw)->PID4.reg & DSU_PID4_FKBC_Msk) >> DSU_PID4_FKBC_Pos;
+}
+
+static inline hri_dsu_pid4_reg_t hri_dsu_get_PID4_reg(const void *const hw, hri_dsu_pid4_reg_t mask)
+{
+	uint32_t tmp;
+	tmp = ((Dsu *)hw)->PID4.reg;
+	tmp &= mask;
+	return tmp;
+}
+
+static inline hri_dsu_pid4_reg_t hri_dsu_read_PID4_reg(const void *const hw)
+{
+	return ((Dsu *)hw)->PID4.reg;
+}
+
+static inline hri_dsu_pid5_reg_t hri_dsu_get_PID5_reg(const void *const hw, hri_dsu_pid5_reg_t mask)
+{
+	uint32_t tmp;
+	tmp = ((Dsu *)hw)->PID5.reg;
+	tmp &= mask;
+	return tmp;
+}
+
+static inline hri_dsu_pid5_reg_t hri_dsu_read_PID5_reg(const void *const hw)
+{
+	return ((Dsu *)hw)->PID5.reg;
+}
+
+static inline hri_dsu_pid6_reg_t hri_dsu_get_PID6_reg(const void *const hw, hri_dsu_pid6_reg_t mask)
+{
+	uint32_t tmp;
+	tmp = ((Dsu *)hw)->PID6.reg;
+	tmp &= mask;
+	return tmp;
+}
+
+static inline hri_dsu_pid6_reg_t hri_dsu_read_PID6_reg(const void *const hw)
+{
+	return ((Dsu *)hw)->PID6.reg;
+}
+
+static inline hri_dsu_pid7_reg_t hri_dsu_get_PID7_reg(const void *const hw, hri_dsu_pid7_reg_t mask)
+{
+	uint32_t tmp;
+	tmp = ((Dsu *)hw)->PID7.reg;
+	tmp &= mask;
+	return tmp;
+}
+
+static inline hri_dsu_pid7_reg_t hri_dsu_read_PID7_reg(const void *const hw)
+{
+	return ((Dsu *)hw)->PID7.reg;
+}
+
+static inline hri_dsu_pid0_reg_t hri_dsu_get_PID0_PARTNBL_bf(const void *const hw, hri_dsu_pid0_reg_t mask)
+{
+	return (((Dsu *)hw)->PID0.reg & DSU_PID0_PARTNBL(mask)) >> DSU_PID0_PARTNBL_Pos;
+}
+
+static inline hri_dsu_pid0_reg_t hri_dsu_read_PID0_PARTNBL_bf(const void *const hw)
+{
+	return (((Dsu *)hw)->PID0.reg & DSU_PID0_PARTNBL_Msk) >> DSU_PID0_PARTNBL_Pos;
+}
+
+static inline hri_dsu_pid0_reg_t hri_dsu_get_PID0_reg(const void *const hw, hri_dsu_pid0_reg_t mask)
+{
+	uint32_t tmp;
+	tmp = ((Dsu *)hw)->PID0.reg;
+	tmp &= mask;
+	return tmp;
+}
+
+static inline hri_dsu_pid0_reg_t hri_dsu_read_PID0_reg(const void *const hw)
+{
+	return ((Dsu *)hw)->PID0.reg;
+}
+
+static inline hri_dsu_pid1_reg_t hri_dsu_get_PID1_PARTNBH_bf(const void *const hw, hri_dsu_pid1_reg_t mask)
+{
+	return (((Dsu *)hw)->PID1.reg & DSU_PID1_PARTNBH(mask)) >> DSU_PID1_PARTNBH_Pos;
+}
+
+static inline hri_dsu_pid1_reg_t hri_dsu_read_PID1_PARTNBH_bf(const void *const hw)
+{
+	return (((Dsu *)hw)->PID1.reg & DSU_PID1_PARTNBH_Msk) >> DSU_PID1_PARTNBH_Pos;
+}
+
+static inline hri_dsu_pid1_reg_t hri_dsu_get_PID1_JEPIDCL_bf(const void *const hw, hri_dsu_pid1_reg_t mask)
+{
+	return (((Dsu *)hw)->PID1.reg & DSU_PID1_JEPIDCL(mask)) >> DSU_PID1_JEPIDCL_Pos;
+}
+
+static inline hri_dsu_pid1_reg_t hri_dsu_read_PID1_JEPIDCL_bf(const void *const hw)
+{
+	return (((Dsu *)hw)->PID1.reg & DSU_PID1_JEPIDCL_Msk) >> DSU_PID1_JEPIDCL_Pos;
+}
+
+static inline hri_dsu_pid1_reg_t hri_dsu_get_PID1_reg(const void *const hw, hri_dsu_pid1_reg_t mask)
+{
+	uint32_t tmp;
+	tmp = ((Dsu *)hw)->PID1.reg;
+	tmp &= mask;
+	return tmp;
+}
+
+static inline hri_dsu_pid1_reg_t hri_dsu_read_PID1_reg(const void *const hw)
+{
+	return ((Dsu *)hw)->PID1.reg;
+}
+
+static inline bool hri_dsu_get_PID2_JEPU_bit(const void *const hw)
+{
+	return (((Dsu *)hw)->PID2.reg & DSU_PID2_JEPU) >> DSU_PID2_JEPU_Pos;
+}
+
+static inline hri_dsu_pid2_reg_t hri_dsu_get_PID2_JEPIDCH_bf(const void *const hw, hri_dsu_pid2_reg_t mask)
+{
+	return (((Dsu *)hw)->PID2.reg & DSU_PID2_JEPIDCH(mask)) >> DSU_PID2_JEPIDCH_Pos;
+}
+
+static inline hri_dsu_pid2_reg_t hri_dsu_read_PID2_JEPIDCH_bf(const void *const hw)
+{
+	return (((Dsu *)hw)->PID2.reg & DSU_PID2_JEPIDCH_Msk) >> DSU_PID2_JEPIDCH_Pos;
+}
+
+static inline hri_dsu_pid2_reg_t hri_dsu_get_PID2_REVISION_bf(const void *const hw, hri_dsu_pid2_reg_t mask)
+{
+	return (((Dsu *)hw)->PID2.reg & DSU_PID2_REVISION(mask)) >> DSU_PID2_REVISION_Pos;
+}
+
+static inline hri_dsu_pid2_reg_t hri_dsu_read_PID2_REVISION_bf(const void *const hw)
+{
+	return (((Dsu *)hw)->PID2.reg & DSU_PID2_REVISION_Msk) >> DSU_PID2_REVISION_Pos;
+}
+
+static inline hri_dsu_pid2_reg_t hri_dsu_get_PID2_reg(const void *const hw, hri_dsu_pid2_reg_t mask)
+{
+	uint32_t tmp;
+	tmp = ((Dsu *)hw)->PID2.reg;
+	tmp &= mask;
+	return tmp;
+}
+
+static inline hri_dsu_pid2_reg_t hri_dsu_read_PID2_reg(const void *const hw)
+{
+	return ((Dsu *)hw)->PID2.reg;
+}
+
+static inline hri_dsu_pid3_reg_t hri_dsu_get_PID3_CUSMOD_bf(const void *const hw, hri_dsu_pid3_reg_t mask)
+{
+	return (((Dsu *)hw)->PID3.reg & DSU_PID3_CUSMOD(mask)) >> DSU_PID3_CUSMOD_Pos;
+}
+
+static inline hri_dsu_pid3_reg_t hri_dsu_read_PID3_CUSMOD_bf(const void *const hw)
+{
+	return (((Dsu *)hw)->PID3.reg & DSU_PID3_CUSMOD_Msk) >> DSU_PID3_CUSMOD_Pos;
+}
+
+static inline hri_dsu_pid3_reg_t hri_dsu_get_PID3_REVAND_bf(const void *const hw, hri_dsu_pid3_reg_t mask)
+{
+	return (((Dsu *)hw)->PID3.reg & DSU_PID3_REVAND(mask)) >> DSU_PID3_REVAND_Pos;
+}
+
+static inline hri_dsu_pid3_reg_t hri_dsu_read_PID3_REVAND_bf(const void *const hw)
+{
+	return (((Dsu *)hw)->PID3.reg & DSU_PID3_REVAND_Msk) >> DSU_PID3_REVAND_Pos;
+}
+
+static inline hri_dsu_pid3_reg_t hri_dsu_get_PID3_reg(const void *const hw, hri_dsu_pid3_reg_t mask)
+{
+	uint32_t tmp;
+	tmp = ((Dsu *)hw)->PID3.reg;
+	tmp &= mask;
+	return tmp;
+}
+
+static inline hri_dsu_pid3_reg_t hri_dsu_read_PID3_reg(const void *const hw)
+{
+	return ((Dsu *)hw)->PID3.reg;
+}
+
+static inline hri_dsu_cid0_reg_t hri_dsu_get_CID0_PREAMBLEB0_bf(const void *const hw, hri_dsu_cid0_reg_t mask)
+{
+	return (((Dsu *)hw)->CID0.reg & DSU_CID0_PREAMBLEB0(mask)) >> DSU_CID0_PREAMBLEB0_Pos;
+}
+
+static inline hri_dsu_cid0_reg_t hri_dsu_read_CID0_PREAMBLEB0_bf(const void *const hw)
+{
+	return (((Dsu *)hw)->CID0.reg & DSU_CID0_PREAMBLEB0_Msk) >> DSU_CID0_PREAMBLEB0_Pos;
+}
+
+static inline hri_dsu_cid0_reg_t hri_dsu_get_CID0_reg(const void *const hw, hri_dsu_cid0_reg_t mask)
+{
+	uint32_t tmp;
+	tmp = ((Dsu *)hw)->CID0.reg;
+	tmp &= mask;
+	return tmp;
+}
+
+static inline hri_dsu_cid0_reg_t hri_dsu_read_CID0_reg(const void *const hw)
+{
+	return ((Dsu *)hw)->CID0.reg;
+}
+
+static inline hri_dsu_cid1_reg_t hri_dsu_get_CID1_PREAMBLE_bf(const void *const hw, hri_dsu_cid1_reg_t mask)
+{
+	return (((Dsu *)hw)->CID1.reg & DSU_CID1_PREAMBLE(mask)) >> DSU_CID1_PREAMBLE_Pos;
+}
+
+static inline hri_dsu_cid1_reg_t hri_dsu_read_CID1_PREAMBLE_bf(const void *const hw)
+{
+	return (((Dsu *)hw)->CID1.reg & DSU_CID1_PREAMBLE_Msk) >> DSU_CID1_PREAMBLE_Pos;
+}
+
+static inline hri_dsu_cid1_reg_t hri_dsu_get_CID1_CCLASS_bf(const void *const hw, hri_dsu_cid1_reg_t mask)
+{
+	return (((Dsu *)hw)->CID1.reg & DSU_CID1_CCLASS(mask)) >> DSU_CID1_CCLASS_Pos;
+}
+
+static inline hri_dsu_cid1_reg_t hri_dsu_read_CID1_CCLASS_bf(const void *const hw)
+{
+	return (((Dsu *)hw)->CID1.reg & DSU_CID1_CCLASS_Msk) >> DSU_CID1_CCLASS_Pos;
+}
+
+static inline hri_dsu_cid1_reg_t hri_dsu_get_CID1_reg(const void *const hw, hri_dsu_cid1_reg_t mask)
+{
+	uint32_t tmp;
+	tmp = ((Dsu *)hw)->CID1.reg;
+	tmp &= mask;
+	return tmp;
+}
+
+static inline hri_dsu_cid1_reg_t hri_dsu_read_CID1_reg(const void *const hw)
+{
+	return ((Dsu *)hw)->CID1.reg;
+}
+
+static inline hri_dsu_cid2_reg_t hri_dsu_get_CID2_PREAMBLEB2_bf(const void *const hw, hri_dsu_cid2_reg_t mask)
+{
+	return (((Dsu *)hw)->CID2.reg & DSU_CID2_PREAMBLEB2(mask)) >> DSU_CID2_PREAMBLEB2_Pos;
+}
+
+static inline hri_dsu_cid2_reg_t hri_dsu_read_CID2_PREAMBLEB2_bf(const void *const hw)
+{
+	return (((Dsu *)hw)->CID2.reg & DSU_CID2_PREAMBLEB2_Msk) >> DSU_CID2_PREAMBLEB2_Pos;
+}
+
+static inline hri_dsu_cid2_reg_t hri_dsu_get_CID2_reg(const void *const hw, hri_dsu_cid2_reg_t mask)
+{
+	uint32_t tmp;
+	tmp = ((Dsu *)hw)->CID2.reg;
+	tmp &= mask;
+	return tmp;
+}
+
+static inline hri_dsu_cid2_reg_t hri_dsu_read_CID2_reg(const void *const hw)
+{
+	return ((Dsu *)hw)->CID2.reg;
+}
+
+static inline hri_dsu_cid3_reg_t hri_dsu_get_CID3_PREAMBLEB3_bf(const void *const hw, hri_dsu_cid3_reg_t mask)
+{
+	return (((Dsu *)hw)->CID3.reg & DSU_CID3_PREAMBLEB3(mask)) >> DSU_CID3_PREAMBLEB3_Pos;
+}
+
+static inline hri_dsu_cid3_reg_t hri_dsu_read_CID3_PREAMBLEB3_bf(const void *const hw)
+{
+	return (((Dsu *)hw)->CID3.reg & DSU_CID3_PREAMBLEB3_Msk) >> DSU_CID3_PREAMBLEB3_Pos;
+}
+
+static inline hri_dsu_cid3_reg_t hri_dsu_get_CID3_reg(const void *const hw, hri_dsu_cid3_reg_t mask)
+{
+	uint32_t tmp;
+	tmp = ((Dsu *)hw)->CID3.reg;
+	tmp &= mask;
+	return tmp;
+}
+
+static inline hri_dsu_cid3_reg_t hri_dsu_read_CID3_reg(const void *const hw)
+{
+	return ((Dsu *)hw)->CID3.reg;
 }
 
 static inline void hri_dsu_set_ADDR_AMOD_bf(const void *const hw, hri_dsu_addr_reg_t mask)
@@ -2529,774 +3303,6 @@ static inline hri_dsu_dcfg_reg_t hri_dsu_read_DCFG_reg(const void *const hw, uin
 	return ((Dsu *)hw)->DCFG[index].reg;
 }
 
-static inline bool hri_dsu_get_STATUSB_PROT_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->STATUSB.reg & DSU_STATUSB_PROT) >> DSU_STATUSB_PROT_Pos;
-}
-
-static inline bool hri_dsu_get_STATUSB_DBGPRES_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->STATUSB.reg & DSU_STATUSB_DBGPRES) >> DSU_STATUSB_DBGPRES_Pos;
-}
-
-static inline bool hri_dsu_get_STATUSB_DCCD0_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->STATUSB.reg & DSU_STATUSB_DCCD0) >> DSU_STATUSB_DCCD0_Pos;
-}
-
-static inline bool hri_dsu_get_STATUSB_DCCD1_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->STATUSB.reg & DSU_STATUSB_DCCD1) >> DSU_STATUSB_DCCD1_Pos;
-}
-
-static inline bool hri_dsu_get_STATUSB_HPE_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->STATUSB.reg & DSU_STATUSB_HPE) >> DSU_STATUSB_HPE_Pos;
-}
-
-static inline bool hri_dsu_get_STATUSB_CELCK_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->STATUSB.reg & DSU_STATUSB_CELCK) >> DSU_STATUSB_CELCK_Pos;
-}
-
-static inline bool hri_dsu_get_STATUSB_TDCCD0_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->STATUSB.reg & DSU_STATUSB_TDCCD0) >> DSU_STATUSB_TDCCD0_Pos;
-}
-
-static inline bool hri_dsu_get_STATUSB_TDCCD1_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->STATUSB.reg & DSU_STATUSB_TDCCD1) >> DSU_STATUSB_TDCCD1_Pos;
-}
-
-static inline hri_dsu_statusb_reg_t hri_dsu_get_STATUSB_reg(const void *const hw, hri_dsu_statusb_reg_t mask)
-{
-	uint8_t tmp;
-	tmp = ((Dsu *)hw)->STATUSB.reg;
-	tmp &= mask;
-	return tmp;
-}
-
-static inline hri_dsu_statusb_reg_t hri_dsu_read_STATUSB_reg(const void *const hw)
-{
-	return ((Dsu *)hw)->STATUSB.reg;
-}
-
-static inline hri_dsu_did_reg_t hri_dsu_get_DID_DEVSEL_bf(const void *const hw, hri_dsu_did_reg_t mask)
-{
-	return (((Dsu *)hw)->DID.reg & DSU_DID_DEVSEL(mask)) >> DSU_DID_DEVSEL_Pos;
-}
-
-static inline hri_dsu_did_reg_t hri_dsu_read_DID_DEVSEL_bf(const void *const hw)
-{
-	return (((Dsu *)hw)->DID.reg & DSU_DID_DEVSEL_Msk) >> DSU_DID_DEVSEL_Pos;
-}
-
-static inline hri_dsu_did_reg_t hri_dsu_get_DID_REVISION_bf(const void *const hw, hri_dsu_did_reg_t mask)
-{
-	return (((Dsu *)hw)->DID.reg & DSU_DID_REVISION(mask)) >> DSU_DID_REVISION_Pos;
-}
-
-static inline hri_dsu_did_reg_t hri_dsu_read_DID_REVISION_bf(const void *const hw)
-{
-	return (((Dsu *)hw)->DID.reg & DSU_DID_REVISION_Msk) >> DSU_DID_REVISION_Pos;
-}
-
-static inline hri_dsu_did_reg_t hri_dsu_get_DID_DIE_bf(const void *const hw, hri_dsu_did_reg_t mask)
-{
-	return (((Dsu *)hw)->DID.reg & DSU_DID_DIE(mask)) >> DSU_DID_DIE_Pos;
-}
-
-static inline hri_dsu_did_reg_t hri_dsu_read_DID_DIE_bf(const void *const hw)
-{
-	return (((Dsu *)hw)->DID.reg & DSU_DID_DIE_Msk) >> DSU_DID_DIE_Pos;
-}
-
-static inline hri_dsu_did_reg_t hri_dsu_get_DID_SERIES_bf(const void *const hw, hri_dsu_did_reg_t mask)
-{
-	return (((Dsu *)hw)->DID.reg & DSU_DID_SERIES(mask)) >> DSU_DID_SERIES_Pos;
-}
-
-static inline hri_dsu_did_reg_t hri_dsu_read_DID_SERIES_bf(const void *const hw)
-{
-	return (((Dsu *)hw)->DID.reg & DSU_DID_SERIES_Msk) >> DSU_DID_SERIES_Pos;
-}
-
-static inline hri_dsu_did_reg_t hri_dsu_get_DID_FAMILY_bf(const void *const hw, hri_dsu_did_reg_t mask)
-{
-	return (((Dsu *)hw)->DID.reg & DSU_DID_FAMILY(mask)) >> DSU_DID_FAMILY_Pos;
-}
-
-static inline hri_dsu_did_reg_t hri_dsu_read_DID_FAMILY_bf(const void *const hw)
-{
-	return (((Dsu *)hw)->DID.reg & DSU_DID_FAMILY_Msk) >> DSU_DID_FAMILY_Pos;
-}
-
-static inline hri_dsu_did_reg_t hri_dsu_get_DID_PROCESSOR_bf(const void *const hw, hri_dsu_did_reg_t mask)
-{
-	return (((Dsu *)hw)->DID.reg & DSU_DID_PROCESSOR(mask)) >> DSU_DID_PROCESSOR_Pos;
-}
-
-static inline hri_dsu_did_reg_t hri_dsu_read_DID_PROCESSOR_bf(const void *const hw)
-{
-	return (((Dsu *)hw)->DID.reg & DSU_DID_PROCESSOR_Msk) >> DSU_DID_PROCESSOR_Pos;
-}
-
-static inline hri_dsu_did_reg_t hri_dsu_get_DID_reg(const void *const hw, hri_dsu_did_reg_t mask)
-{
-	uint32_t tmp;
-	tmp = ((Dsu *)hw)->DID.reg;
-	tmp &= mask;
-	return tmp;
-}
-
-static inline hri_dsu_did_reg_t hri_dsu_read_DID_reg(const void *const hw)
-{
-	return ((Dsu *)hw)->DID.reg;
-}
-
-static inline hri_dsu_mbdfail_reg_t hri_dsu_get_MBDFAIL_DATA_bf(const void *const hw, hri_dsu_mbdfail_reg_t mask)
-{
-	return (((Dsu *)hw)->MBDFAIL.reg & DSU_MBDFAIL_DATA(mask)) >> DSU_MBDFAIL_DATA_Pos;
-}
-
-static inline hri_dsu_mbdfail_reg_t hri_dsu_read_MBDFAIL_DATA_bf(const void *const hw)
-{
-	return (((Dsu *)hw)->MBDFAIL.reg & DSU_MBDFAIL_DATA_Msk) >> DSU_MBDFAIL_DATA_Pos;
-}
-
-static inline hri_dsu_mbdfail_reg_t hri_dsu_get_MBDFAIL_reg(const void *const hw, hri_dsu_mbdfail_reg_t mask)
-{
-	uint32_t tmp;
-	tmp = ((Dsu *)hw)->MBDFAIL.reg;
-	tmp &= mask;
-	return tmp;
-}
-
-static inline hri_dsu_mbdfail_reg_t hri_dsu_read_MBDFAIL_reg(const void *const hw)
-{
-	return ((Dsu *)hw)->MBDFAIL.reg;
-}
-
-static inline hri_dsu_mbdexp_reg_t hri_dsu_get_MBDEXP_DATA_bf(const void *const hw, hri_dsu_mbdexp_reg_t mask)
-{
-	return (((Dsu *)hw)->MBDEXP.reg & DSU_MBDEXP_DATA(mask)) >> DSU_MBDEXP_DATA_Pos;
-}
-
-static inline hri_dsu_mbdexp_reg_t hri_dsu_read_MBDEXP_DATA_bf(const void *const hw)
-{
-	return (((Dsu *)hw)->MBDEXP.reg & DSU_MBDEXP_DATA_Msk) >> DSU_MBDEXP_DATA_Pos;
-}
-
-static inline hri_dsu_mbdexp_reg_t hri_dsu_get_MBDEXP_reg(const void *const hw, hri_dsu_mbdexp_reg_t mask)
-{
-	uint32_t tmp;
-	tmp = ((Dsu *)hw)->MBDEXP.reg;
-	tmp &= mask;
-	return tmp;
-}
-
-static inline hri_dsu_mbdexp_reg_t hri_dsu_read_MBDEXP_reg(const void *const hw)
-{
-	return ((Dsu *)hw)->MBDEXP.reg;
-}
-
-static inline hri_dsu_mbafail_reg_t hri_dsu_get_MBAFAIL_ADDR_bf(const void *const hw, hri_dsu_mbafail_reg_t mask)
-{
-	return (((Dsu *)hw)->MBAFAIL.reg & DSU_MBAFAIL_ADDR(mask)) >> DSU_MBAFAIL_ADDR_Pos;
-}
-
-static inline hri_dsu_mbafail_reg_t hri_dsu_read_MBAFAIL_ADDR_bf(const void *const hw)
-{
-	return (((Dsu *)hw)->MBAFAIL.reg & DSU_MBAFAIL_ADDR_Msk) >> DSU_MBAFAIL_ADDR_Pos;
-}
-
-static inline hri_dsu_mbafail_reg_t hri_dsu_get_MBAFAIL_reg(const void *const hw, hri_dsu_mbafail_reg_t mask)
-{
-	uint32_t tmp;
-	tmp = ((Dsu *)hw)->MBAFAIL.reg;
-	tmp &= mask;
-	return tmp;
-}
-
-static inline hri_dsu_mbafail_reg_t hri_dsu_read_MBAFAIL_reg(const void *const hw)
-{
-	return ((Dsu *)hw)->MBAFAIL.reg;
-}
-
-static inline bool hri_dsu_get_MBCONTEXT_PORT_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->MBCONTEXT.reg & DSU_MBCONTEXT_PORT) >> DSU_MBCONTEXT_PORT_Pos;
-}
-
-static inline hri_dsu_mbcontext_reg_t hri_dsu_get_MBCONTEXT_SUBSTEP_bf(const void *const       hw,
-                                                                       hri_dsu_mbcontext_reg_t mask)
-{
-	return (((Dsu *)hw)->MBCONTEXT.reg & DSU_MBCONTEXT_SUBSTEP(mask)) >> DSU_MBCONTEXT_SUBSTEP_Pos;
-}
-
-static inline hri_dsu_mbcontext_reg_t hri_dsu_read_MBCONTEXT_SUBSTEP_bf(const void *const hw)
-{
-	return (((Dsu *)hw)->MBCONTEXT.reg & DSU_MBCONTEXT_SUBSTEP_Msk) >> DSU_MBCONTEXT_SUBSTEP_Pos;
-}
-
-static inline hri_dsu_mbcontext_reg_t hri_dsu_get_MBCONTEXT_STEP_bf(const void *const hw, hri_dsu_mbcontext_reg_t mask)
-{
-	return (((Dsu *)hw)->MBCONTEXT.reg & DSU_MBCONTEXT_STEP(mask)) >> DSU_MBCONTEXT_STEP_Pos;
-}
-
-static inline hri_dsu_mbcontext_reg_t hri_dsu_read_MBCONTEXT_STEP_bf(const void *const hw)
-{
-	return (((Dsu *)hw)->MBCONTEXT.reg & DSU_MBCONTEXT_STEP_Msk) >> DSU_MBCONTEXT_STEP_Pos;
-}
-
-static inline hri_dsu_mbcontext_reg_t hri_dsu_get_MBCONTEXT_reg(const void *const hw, hri_dsu_mbcontext_reg_t mask)
-{
-	uint32_t tmp;
-	tmp = ((Dsu *)hw)->MBCONTEXT.reg;
-	tmp &= mask;
-	return tmp;
-}
-
-static inline hri_dsu_mbcontext_reg_t hri_dsu_read_MBCONTEXT_reg(const void *const hw)
-{
-	return ((Dsu *)hw)->MBCONTEXT.reg;
-}
-
-static inline bool hri_dsu_get_MBBUSY0_BUSY0_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY0) >> DSU_MBBUSY0_BUSY0_Pos;
-}
-
-static inline bool hri_dsu_get_MBBUSY0_BUSY1_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY1) >> DSU_MBBUSY0_BUSY1_Pos;
-}
-
-static inline bool hri_dsu_get_MBBUSY0_BUSY2_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY2) >> DSU_MBBUSY0_BUSY2_Pos;
-}
-
-static inline bool hri_dsu_get_MBBUSY0_BUSY3_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY3) >> DSU_MBBUSY0_BUSY3_Pos;
-}
-
-static inline bool hri_dsu_get_MBBUSY0_BUSY4_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY4) >> DSU_MBBUSY0_BUSY4_Pos;
-}
-
-static inline bool hri_dsu_get_MBBUSY0_BUSY5_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY5) >> DSU_MBBUSY0_BUSY5_Pos;
-}
-
-static inline bool hri_dsu_get_MBBUSY0_BUSY6_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY6) >> DSU_MBBUSY0_BUSY6_Pos;
-}
-
-static inline bool hri_dsu_get_MBBUSY0_BUSY7_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY7) >> DSU_MBBUSY0_BUSY7_Pos;
-}
-
-static inline bool hri_dsu_get_MBBUSY0_BUSY8_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY8) >> DSU_MBBUSY0_BUSY8_Pos;
-}
-
-static inline bool hri_dsu_get_MBBUSY0_BUSY9_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY9) >> DSU_MBBUSY0_BUSY9_Pos;
-}
-
-static inline bool hri_dsu_get_MBBUSY0_BUSY10_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY10) >> DSU_MBBUSY0_BUSY10_Pos;
-}
-
-static inline bool hri_dsu_get_MBBUSY0_BUSY11_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY11) >> DSU_MBBUSY0_BUSY11_Pos;
-}
-
-static inline bool hri_dsu_get_MBBUSY0_BUSY12_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY12) >> DSU_MBBUSY0_BUSY12_Pos;
-}
-
-static inline bool hri_dsu_get_MBBUSY0_BUSY13_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY13) >> DSU_MBBUSY0_BUSY13_Pos;
-}
-
-static inline bool hri_dsu_get_MBBUSY0_BUSY14_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY14) >> DSU_MBBUSY0_BUSY14_Pos;
-}
-
-static inline bool hri_dsu_get_MBBUSY0_BUSY15_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY15) >> DSU_MBBUSY0_BUSY15_Pos;
-}
-
-static inline bool hri_dsu_get_MBBUSY0_BUSY16_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY16) >> DSU_MBBUSY0_BUSY16_Pos;
-}
-
-static inline bool hri_dsu_get_MBBUSY0_BUSY17_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY17) >> DSU_MBBUSY0_BUSY17_Pos;
-}
-
-static inline bool hri_dsu_get_MBBUSY0_BUSY18_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY18) >> DSU_MBBUSY0_BUSY18_Pos;
-}
-
-static inline bool hri_dsu_get_MBBUSY0_BUSY19_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY19) >> DSU_MBBUSY0_BUSY19_Pos;
-}
-
-static inline bool hri_dsu_get_MBBUSY0_BUSY20_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY20) >> DSU_MBBUSY0_BUSY20_Pos;
-}
-
-static inline bool hri_dsu_get_MBBUSY0_BUSY21_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY21) >> DSU_MBBUSY0_BUSY21_Pos;
-}
-
-static inline bool hri_dsu_get_MBBUSY0_BUSY22_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY22) >> DSU_MBBUSY0_BUSY22_Pos;
-}
-
-static inline bool hri_dsu_get_MBBUSY0_BUSY23_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY23) >> DSU_MBBUSY0_BUSY23_Pos;
-}
-
-static inline bool hri_dsu_get_MBBUSY0_BUSY24_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY24) >> DSU_MBBUSY0_BUSY24_Pos;
-}
-
-static inline bool hri_dsu_get_MBBUSY0_BUSY25_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY25) >> DSU_MBBUSY0_BUSY25_Pos;
-}
-
-static inline bool hri_dsu_get_MBBUSY0_BUSY26_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY26) >> DSU_MBBUSY0_BUSY26_Pos;
-}
-
-static inline bool hri_dsu_get_MBBUSY0_BUSY27_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY27) >> DSU_MBBUSY0_BUSY27_Pos;
-}
-
-static inline bool hri_dsu_get_MBBUSY0_BUSY28_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->MBBUSY0.reg & DSU_MBBUSY0_BUSY28) >> DSU_MBBUSY0_BUSY28_Pos;
-}
-
-static inline hri_dsu_mbbusy0_reg_t hri_dsu_get_MBBUSY0_reg(const void *const hw, hri_dsu_mbbusy0_reg_t mask)
-{
-	uint32_t tmp;
-	tmp = ((Dsu *)hw)->MBBUSY0.reg;
-	tmp &= mask;
-	return tmp;
-}
-
-static inline hri_dsu_mbbusy0_reg_t hri_dsu_read_MBBUSY0_reg(const void *const hw)
-{
-	return ((Dsu *)hw)->MBBUSY0.reg;
-}
-
-static inline bool hri_dsu_get_ENTRY_EPRES_bit(const void *const hw, uint8_t index)
-{
-	return (((Dsu *)hw)->ENTRY[index].reg & DSU_ENTRY_EPRES) >> DSU_ENTRY_EPRES_Pos;
-}
-
-static inline bool hri_dsu_get_ENTRY_FMT_bit(const void *const hw, uint8_t index)
-{
-	return (((Dsu *)hw)->ENTRY[index].reg & DSU_ENTRY_FMT) >> DSU_ENTRY_FMT_Pos;
-}
-
-static inline hri_dsu_entry_reg_t hri_dsu_get_ENTRY_ADDOFF_bf(const void *const hw, uint8_t index,
-                                                              hri_dsu_entry_reg_t mask)
-{
-	return (((Dsu *)hw)->ENTRY[index].reg & DSU_ENTRY_ADDOFF(mask)) >> DSU_ENTRY_ADDOFF_Pos;
-}
-
-static inline hri_dsu_entry_reg_t hri_dsu_read_ENTRY_ADDOFF_bf(const void *const hw, uint8_t index)
-{
-	return (((Dsu *)hw)->ENTRY[index].reg & DSU_ENTRY_ADDOFF_Msk) >> DSU_ENTRY_ADDOFF_Pos;
-}
-
-static inline hri_dsu_entry_reg_t hri_dsu_get_ENTRY_reg(const void *const hw, uint8_t index, hri_dsu_entry_reg_t mask)
-{
-	uint32_t tmp;
-	tmp = ((Dsu *)hw)->ENTRY[index].reg;
-	tmp &= mask;
-	return tmp;
-}
-
-static inline hri_dsu_entry_reg_t hri_dsu_read_ENTRY_reg(const void *const hw, uint8_t index)
-{
-	return ((Dsu *)hw)->ENTRY[index].reg;
-}
-
-static inline hri_dsu_end_reg_t hri_dsu_get_END_END_bf(const void *const hw, hri_dsu_end_reg_t mask)
-{
-	return (((Dsu *)hw)->END.reg & DSU_END_END(mask)) >> DSU_END_END_Pos;
-}
-
-static inline hri_dsu_end_reg_t hri_dsu_read_END_END_bf(const void *const hw)
-{
-	return (((Dsu *)hw)->END.reg & DSU_END_END_Msk) >> DSU_END_END_Pos;
-}
-
-static inline hri_dsu_end_reg_t hri_dsu_get_END_reg(const void *const hw, hri_dsu_end_reg_t mask)
-{
-	uint32_t tmp;
-	tmp = ((Dsu *)hw)->END.reg;
-	tmp &= mask;
-	return tmp;
-}
-
-static inline hri_dsu_end_reg_t hri_dsu_read_END_reg(const void *const hw)
-{
-	return ((Dsu *)hw)->END.reg;
-}
-
-static inline bool hri_dsu_get_MEMTYPE_SMEMP_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->MEMTYPE.reg & DSU_MEMTYPE_SMEMP) >> DSU_MEMTYPE_SMEMP_Pos;
-}
-
-static inline hri_dsu_memtype_reg_t hri_dsu_get_MEMTYPE_reg(const void *const hw, hri_dsu_memtype_reg_t mask)
-{
-	uint32_t tmp;
-	tmp = ((Dsu *)hw)->MEMTYPE.reg;
-	tmp &= mask;
-	return tmp;
-}
-
-static inline hri_dsu_memtype_reg_t hri_dsu_read_MEMTYPE_reg(const void *const hw)
-{
-	return ((Dsu *)hw)->MEMTYPE.reg;
-}
-
-static inline hri_dsu_pid4_reg_t hri_dsu_get_PID4_JEPCC_bf(const void *const hw, hri_dsu_pid4_reg_t mask)
-{
-	return (((Dsu *)hw)->PID4.reg & DSU_PID4_JEPCC(mask)) >> DSU_PID4_JEPCC_Pos;
-}
-
-static inline hri_dsu_pid4_reg_t hri_dsu_read_PID4_JEPCC_bf(const void *const hw)
-{
-	return (((Dsu *)hw)->PID4.reg & DSU_PID4_JEPCC_Msk) >> DSU_PID4_JEPCC_Pos;
-}
-
-static inline hri_dsu_pid4_reg_t hri_dsu_get_PID4_FKBC_bf(const void *const hw, hri_dsu_pid4_reg_t mask)
-{
-	return (((Dsu *)hw)->PID4.reg & DSU_PID4_FKBC(mask)) >> DSU_PID4_FKBC_Pos;
-}
-
-static inline hri_dsu_pid4_reg_t hri_dsu_read_PID4_FKBC_bf(const void *const hw)
-{
-	return (((Dsu *)hw)->PID4.reg & DSU_PID4_FKBC_Msk) >> DSU_PID4_FKBC_Pos;
-}
-
-static inline hri_dsu_pid4_reg_t hri_dsu_get_PID4_reg(const void *const hw, hri_dsu_pid4_reg_t mask)
-{
-	uint32_t tmp;
-	tmp = ((Dsu *)hw)->PID4.reg;
-	tmp &= mask;
-	return tmp;
-}
-
-static inline hri_dsu_pid4_reg_t hri_dsu_read_PID4_reg(const void *const hw)
-{
-	return ((Dsu *)hw)->PID4.reg;
-}
-
-static inline hri_dsu_pid5_reg_t hri_dsu_get_PID5_reg(const void *const hw, hri_dsu_pid5_reg_t mask)
-{
-	uint32_t tmp;
-	tmp = ((Dsu *)hw)->PID5.reg;
-	tmp &= mask;
-	return tmp;
-}
-
-static inline hri_dsu_pid5_reg_t hri_dsu_read_PID5_reg(const void *const hw)
-{
-	return ((Dsu *)hw)->PID5.reg;
-}
-
-static inline hri_dsu_pid6_reg_t hri_dsu_get_PID6_reg(const void *const hw, hri_dsu_pid6_reg_t mask)
-{
-	uint32_t tmp;
-	tmp = ((Dsu *)hw)->PID6.reg;
-	tmp &= mask;
-	return tmp;
-}
-
-static inline hri_dsu_pid6_reg_t hri_dsu_read_PID6_reg(const void *const hw)
-{
-	return ((Dsu *)hw)->PID6.reg;
-}
-
-static inline hri_dsu_pid7_reg_t hri_dsu_get_PID7_reg(const void *const hw, hri_dsu_pid7_reg_t mask)
-{
-	uint32_t tmp;
-	tmp = ((Dsu *)hw)->PID7.reg;
-	tmp &= mask;
-	return tmp;
-}
-
-static inline hri_dsu_pid7_reg_t hri_dsu_read_PID7_reg(const void *const hw)
-{
-	return ((Dsu *)hw)->PID7.reg;
-}
-
-static inline hri_dsu_pid0_reg_t hri_dsu_get_PID0_PARTNBL_bf(const void *const hw, hri_dsu_pid0_reg_t mask)
-{
-	return (((Dsu *)hw)->PID0.reg & DSU_PID0_PARTNBL(mask)) >> DSU_PID0_PARTNBL_Pos;
-}
-
-static inline hri_dsu_pid0_reg_t hri_dsu_read_PID0_PARTNBL_bf(const void *const hw)
-{
-	return (((Dsu *)hw)->PID0.reg & DSU_PID0_PARTNBL_Msk) >> DSU_PID0_PARTNBL_Pos;
-}
-
-static inline hri_dsu_pid0_reg_t hri_dsu_get_PID0_reg(const void *const hw, hri_dsu_pid0_reg_t mask)
-{
-	uint32_t tmp;
-	tmp = ((Dsu *)hw)->PID0.reg;
-	tmp &= mask;
-	return tmp;
-}
-
-static inline hri_dsu_pid0_reg_t hri_dsu_read_PID0_reg(const void *const hw)
-{
-	return ((Dsu *)hw)->PID0.reg;
-}
-
-static inline hri_dsu_pid1_reg_t hri_dsu_get_PID1_PARTNBH_bf(const void *const hw, hri_dsu_pid1_reg_t mask)
-{
-	return (((Dsu *)hw)->PID1.reg & DSU_PID1_PARTNBH(mask)) >> DSU_PID1_PARTNBH_Pos;
-}
-
-static inline hri_dsu_pid1_reg_t hri_dsu_read_PID1_PARTNBH_bf(const void *const hw)
-{
-	return (((Dsu *)hw)->PID1.reg & DSU_PID1_PARTNBH_Msk) >> DSU_PID1_PARTNBH_Pos;
-}
-
-static inline hri_dsu_pid1_reg_t hri_dsu_get_PID1_JEPIDCL_bf(const void *const hw, hri_dsu_pid1_reg_t mask)
-{
-	return (((Dsu *)hw)->PID1.reg & DSU_PID1_JEPIDCL(mask)) >> DSU_PID1_JEPIDCL_Pos;
-}
-
-static inline hri_dsu_pid1_reg_t hri_dsu_read_PID1_JEPIDCL_bf(const void *const hw)
-{
-	return (((Dsu *)hw)->PID1.reg & DSU_PID1_JEPIDCL_Msk) >> DSU_PID1_JEPIDCL_Pos;
-}
-
-static inline hri_dsu_pid1_reg_t hri_dsu_get_PID1_reg(const void *const hw, hri_dsu_pid1_reg_t mask)
-{
-	uint32_t tmp;
-	tmp = ((Dsu *)hw)->PID1.reg;
-	tmp &= mask;
-	return tmp;
-}
-
-static inline hri_dsu_pid1_reg_t hri_dsu_read_PID1_reg(const void *const hw)
-{
-	return ((Dsu *)hw)->PID1.reg;
-}
-
-static inline bool hri_dsu_get_PID2_JEPU_bit(const void *const hw)
-{
-	return (((Dsu *)hw)->PID2.reg & DSU_PID2_JEPU) >> DSU_PID2_JEPU_Pos;
-}
-
-static inline hri_dsu_pid2_reg_t hri_dsu_get_PID2_JEPIDCH_bf(const void *const hw, hri_dsu_pid2_reg_t mask)
-{
-	return (((Dsu *)hw)->PID2.reg & DSU_PID2_JEPIDCH(mask)) >> DSU_PID2_JEPIDCH_Pos;
-}
-
-static inline hri_dsu_pid2_reg_t hri_dsu_read_PID2_JEPIDCH_bf(const void *const hw)
-{
-	return (((Dsu *)hw)->PID2.reg & DSU_PID2_JEPIDCH_Msk) >> DSU_PID2_JEPIDCH_Pos;
-}
-
-static inline hri_dsu_pid2_reg_t hri_dsu_get_PID2_REVISION_bf(const void *const hw, hri_dsu_pid2_reg_t mask)
-{
-	return (((Dsu *)hw)->PID2.reg & DSU_PID2_REVISION(mask)) >> DSU_PID2_REVISION_Pos;
-}
-
-static inline hri_dsu_pid2_reg_t hri_dsu_read_PID2_REVISION_bf(const void *const hw)
-{
-	return (((Dsu *)hw)->PID2.reg & DSU_PID2_REVISION_Msk) >> DSU_PID2_REVISION_Pos;
-}
-
-static inline hri_dsu_pid2_reg_t hri_dsu_get_PID2_reg(const void *const hw, hri_dsu_pid2_reg_t mask)
-{
-	uint32_t tmp;
-	tmp = ((Dsu *)hw)->PID2.reg;
-	tmp &= mask;
-	return tmp;
-}
-
-static inline hri_dsu_pid2_reg_t hri_dsu_read_PID2_reg(const void *const hw)
-{
-	return ((Dsu *)hw)->PID2.reg;
-}
-
-static inline hri_dsu_pid3_reg_t hri_dsu_get_PID3_CUSMOD_bf(const void *const hw, hri_dsu_pid3_reg_t mask)
-{
-	return (((Dsu *)hw)->PID3.reg & DSU_PID3_CUSMOD(mask)) >> DSU_PID3_CUSMOD_Pos;
-}
-
-static inline hri_dsu_pid3_reg_t hri_dsu_read_PID3_CUSMOD_bf(const void *const hw)
-{
-	return (((Dsu *)hw)->PID3.reg & DSU_PID3_CUSMOD_Msk) >> DSU_PID3_CUSMOD_Pos;
-}
-
-static inline hri_dsu_pid3_reg_t hri_dsu_get_PID3_REVAND_bf(const void *const hw, hri_dsu_pid3_reg_t mask)
-{
-	return (((Dsu *)hw)->PID3.reg & DSU_PID3_REVAND(mask)) >> DSU_PID3_REVAND_Pos;
-}
-
-static inline hri_dsu_pid3_reg_t hri_dsu_read_PID3_REVAND_bf(const void *const hw)
-{
-	return (((Dsu *)hw)->PID3.reg & DSU_PID3_REVAND_Msk) >> DSU_PID3_REVAND_Pos;
-}
-
-static inline hri_dsu_pid3_reg_t hri_dsu_get_PID3_reg(const void *const hw, hri_dsu_pid3_reg_t mask)
-{
-	uint32_t tmp;
-	tmp = ((Dsu *)hw)->PID3.reg;
-	tmp &= mask;
-	return tmp;
-}
-
-static inline hri_dsu_pid3_reg_t hri_dsu_read_PID3_reg(const void *const hw)
-{
-	return ((Dsu *)hw)->PID3.reg;
-}
-
-static inline hri_dsu_cid0_reg_t hri_dsu_get_CID0_PREAMBLEB0_bf(const void *const hw, hri_dsu_cid0_reg_t mask)
-{
-	return (((Dsu *)hw)->CID0.reg & DSU_CID0_PREAMBLEB0(mask)) >> DSU_CID0_PREAMBLEB0_Pos;
-}
-
-static inline hri_dsu_cid0_reg_t hri_dsu_read_CID0_PREAMBLEB0_bf(const void *const hw)
-{
-	return (((Dsu *)hw)->CID0.reg & DSU_CID0_PREAMBLEB0_Msk) >> DSU_CID0_PREAMBLEB0_Pos;
-}
-
-static inline hri_dsu_cid0_reg_t hri_dsu_get_CID0_reg(const void *const hw, hri_dsu_cid0_reg_t mask)
-{
-	uint32_t tmp;
-	tmp = ((Dsu *)hw)->CID0.reg;
-	tmp &= mask;
-	return tmp;
-}
-
-static inline hri_dsu_cid0_reg_t hri_dsu_read_CID0_reg(const void *const hw)
-{
-	return ((Dsu *)hw)->CID0.reg;
-}
-
-static inline hri_dsu_cid1_reg_t hri_dsu_get_CID1_PREAMBLE_bf(const void *const hw, hri_dsu_cid1_reg_t mask)
-{
-	return (((Dsu *)hw)->CID1.reg & DSU_CID1_PREAMBLE(mask)) >> DSU_CID1_PREAMBLE_Pos;
-}
-
-static inline hri_dsu_cid1_reg_t hri_dsu_read_CID1_PREAMBLE_bf(const void *const hw)
-{
-	return (((Dsu *)hw)->CID1.reg & DSU_CID1_PREAMBLE_Msk) >> DSU_CID1_PREAMBLE_Pos;
-}
-
-static inline hri_dsu_cid1_reg_t hri_dsu_get_CID1_CCLASS_bf(const void *const hw, hri_dsu_cid1_reg_t mask)
-{
-	return (((Dsu *)hw)->CID1.reg & DSU_CID1_CCLASS(mask)) >> DSU_CID1_CCLASS_Pos;
-}
-
-static inline hri_dsu_cid1_reg_t hri_dsu_read_CID1_CCLASS_bf(const void *const hw)
-{
-	return (((Dsu *)hw)->CID1.reg & DSU_CID1_CCLASS_Msk) >> DSU_CID1_CCLASS_Pos;
-}
-
-static inline hri_dsu_cid1_reg_t hri_dsu_get_CID1_reg(const void *const hw, hri_dsu_cid1_reg_t mask)
-{
-	uint32_t tmp;
-	tmp = ((Dsu *)hw)->CID1.reg;
-	tmp &= mask;
-	return tmp;
-}
-
-static inline hri_dsu_cid1_reg_t hri_dsu_read_CID1_reg(const void *const hw)
-{
-	return ((Dsu *)hw)->CID1.reg;
-}
-
-static inline hri_dsu_cid2_reg_t hri_dsu_get_CID2_PREAMBLEB2_bf(const void *const hw, hri_dsu_cid2_reg_t mask)
-{
-	return (((Dsu *)hw)->CID2.reg & DSU_CID2_PREAMBLEB2(mask)) >> DSU_CID2_PREAMBLEB2_Pos;
-}
-
-static inline hri_dsu_cid2_reg_t hri_dsu_read_CID2_PREAMBLEB2_bf(const void *const hw)
-{
-	return (((Dsu *)hw)->CID2.reg & DSU_CID2_PREAMBLEB2_Msk) >> DSU_CID2_PREAMBLEB2_Pos;
-}
-
-static inline hri_dsu_cid2_reg_t hri_dsu_get_CID2_reg(const void *const hw, hri_dsu_cid2_reg_t mask)
-{
-	uint32_t tmp;
-	tmp = ((Dsu *)hw)->CID2.reg;
-	tmp &= mask;
-	return tmp;
-}
-
-static inline hri_dsu_cid2_reg_t hri_dsu_read_CID2_reg(const void *const hw)
-{
-	return ((Dsu *)hw)->CID2.reg;
-}
-
-static inline hri_dsu_cid3_reg_t hri_dsu_get_CID3_PREAMBLEB3_bf(const void *const hw, hri_dsu_cid3_reg_t mask)
-{
-	return (((Dsu *)hw)->CID3.reg & DSU_CID3_PREAMBLEB3(mask)) >> DSU_CID3_PREAMBLEB3_Pos;
-}
-
-static inline hri_dsu_cid3_reg_t hri_dsu_read_CID3_PREAMBLEB3_bf(const void *const hw)
-{
-	return (((Dsu *)hw)->CID3.reg & DSU_CID3_PREAMBLEB3_Msk) >> DSU_CID3_PREAMBLEB3_Pos;
-}
-
-static inline hri_dsu_cid3_reg_t hri_dsu_get_CID3_reg(const void *const hw, hri_dsu_cid3_reg_t mask)
-{
-	uint32_t tmp;
-	tmp = ((Dsu *)hw)->CID3.reg;
-	tmp &= mask;
-	return tmp;
-}
-
-static inline hri_dsu_cid3_reg_t hri_dsu_read_CID3_reg(const void *const hw)
-{
-	return ((Dsu *)hw)->CID3.reg;
-}
-
 static inline bool hri_dsu_get_STATUSA_DONE_bit(const void *const hw)
 {
 	return (((Dsu *)hw)->STATUSA.reg & DSU_STATUSA_DONE) >> DSU_STATUSA_DONE_Pos;
@@ -3743,6 +3749,13 @@ static inline void hri_dsu_clear_MBSTATUS0_reg(const void *const hw, hri_dsu_mbs
 static inline hri_dsu_mbstatus0_reg_t hri_dsu_read_MBSTATUS0_reg(const void *const hw)
 {
 	return ((Dsu *)hw)->MBSTATUS0.reg;
+}
+
+static inline void hri_dsu_write_CTRL_reg(const void *const hw, hri_dsu_ctrl_reg_t data)
+{
+	DSU_CRITICAL_SECTION_ENTER();
+	((Dsu *)hw)->CTRL.reg = data;
+	DSU_CRITICAL_SECTION_LEAVE();
 }
 
 #ifdef __cplusplus

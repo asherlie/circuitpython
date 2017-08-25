@@ -3,7 +3,7 @@
  *
  * \brief SAM USB host HPL
  *
- * Copyright (C) 2016 Atmel Corporation. All rights reserved.
+ * Copyright (C) 2016 - 2017 Atmel Corporation. All rights reserved.
  *
  * \asf_license_start
  *
@@ -154,7 +154,7 @@ typedef void (*usb_h_cb_sof_t)(struct usb_h_desc *drv);
  * \brief Prototyping USB HCD callback of root hub changing.
  * According to the bitmap size, max port number is 31.
  */
-typedef void (*usb_h_cb_roothub_change_t)(struct usb_h_desc *drv, uint32_t bm);
+typedef void (*usb_h_cb_roothub_t)(struct usb_h_desc *drv, uint8_t port, uint8_t ftr);
 
 /**
  * Prototyping USB HCD callback of pipe transfer done.
@@ -191,7 +191,7 @@ struct usb_h_desc {
 	/** Callback of SOF */
 	usb_h_cb_sof_t sof_cb;
 	/** Callback of root hub change */
-	usb_h_cb_roothub_change_t rh_cb;
+	usb_h_cb_roothub_t rh_cb;
 #if CONF_USB_H_INST_OWNER_SP
 	/** Extension for the driver owner (upper layer user) */
 	void *owner;
@@ -250,8 +250,8 @@ struct usb_h_ctrl_xfer {
 	/** Timeout between packets
 	 *  (500ms for data and 50ms for status), -1 if disabled */
 	int16_t pkt_timeout;
-	/** Reserved */
-	uint16_t reserved;
+	/** Packet size during transfer (<= allocate max packet size) */
+	uint16_t pkt_size;
 
 	/** Transfer state */
 	uint8_t state;
@@ -446,38 +446,42 @@ void _usb_h_resume(struct usb_h_desc *drv);
 /* Root hub related APIs */
 
 /**
- * @brief      Return root hub changes
+ * \brief Reset the root hub port
  *
- * Refer to "Hub and Port Status Change Bitmap" in USB Spec.
- *
- * @param      drv      The driver
- * @param[out] changes  Pointer to buffer to fill changes bitmap, can be NULL
- *                      to just check if there are changes
- * @param[in]  size     Changes bitmap buffer size
- *
- * @return     0 if there are no changes, else size in bytes for changes bitmap
+ * \param[in,out] drv  Pointer to the USB HCD driver
+ * \param[in]     port Root hub port, ignored if there is only one port
  */
-uint8_t _usb_h_get_roothub_changes(struct usb_h_desc *drv, uint8_t *changes, uint8_t size);
+void _usb_h_rh_reset(struct usb_h_desc *drv, uint8_t port);
 
 /**
- * @brief      Root hub implement for Hub requests handling
+ * \brief Suspend the root hub port
  *
- * Refer to "Hub Specification" - "Requests" in USB Spec.
- *
- * Requests to handle:
- * - CLEAR_FEATURE (ClearHubFeature, ClearPortFeature)
- * - GET_STATUS    (GetHubStatus,    GetPortStatus)
- * - SET_FEATURE   (SetHubFeature,   SetPortFeature)
- *
- * @param         drv   Pointer to the USB Host Controller Driver
- * @param[in]     setup Pointer to the setup packet
- * @param[in,out] data  Pointer to the data to read / write
- *
- * @return     Operation result status
- * @retval     ERR_INVALID_ARG Argument error (invalid request)
- * @retval     ERR_NONE Operation done successfully
+ * \param[in,out] drv  Pointer to the USB HCD driver
+ * \param[in]     port Root hub port, ignored if there is only one port
  */
-int32_t _usb_h_roothub_request(struct usb_h_desc *drv, uint8_t *setup, uint8_t *data);
+void _usb_h_rh_suspend(struct usb_h_desc *drv, uint8_t port);
+
+/**
+ * \brief Resume the root hub port
+ *
+ * \param[in,out] drv  Pointer to the USB HCD driver
+ * \param[in]     port Root hub port, ignored if there is only one port
+ */
+void _usb_h_rh_resume(struct usb_h_desc *drv, uint8_t port);
+
+/**
+ * \brief Root hub or port feature status check
+ *
+ * Check USB Spec. for hub status and feature selectors.
+ *
+ * \param[in] drv  Pointer to the USB HCD driver
+ * \param[in] port Set to 0 to get hub status, otherwise to get port status
+ * \param[in] ftr  Hub feature/status selector
+ *                 (0: connection, 2: suspend, 4: reset, 9: LS, 10: HS)
+ *
+ * \return     \c true if the status bit is 1
+ */
+bool _usb_h_rh_check_status(struct usb_h_desc *drv, uint8_t port, uint8_t ftr);
 
 /* Pipe transfer functions */
 

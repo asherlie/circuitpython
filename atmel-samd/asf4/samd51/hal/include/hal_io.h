@@ -99,7 +99,7 @@ int32_t io_write(struct io_descriptor *const io_descr, const uint8_t *const buf,
  * \brief I/O read interface
  *
  * This function reads up to \p length bytes from a given I/O descriptor, and
- * store it in the buffer pointed to by \p buf. It returns the number of bytes
+ * stores it in the buffer pointed to by \p buf. It returns the number of bytes
  * actually read.
  *
  * \param[in] descr  An I/O descriptor to read

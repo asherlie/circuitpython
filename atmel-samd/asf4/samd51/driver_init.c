@@ -63,6 +63,13 @@ void DAC_0_init(void)
 	DAC_0_PORT_init();
 }
 
+void EVENT_SYSTEM_0_init(void)
+{
+
+	hri_mclk_set_APBBMASK_EVSYS_bit(MCLK);
+	event_system_init();
+}
+
 /**
  * \brief Timer initialization function
  *
@@ -74,26 +81,66 @@ static void TIMER_0_init(void)
 	timer_init(&TIMER_0, RTC, _rtc_get_timer());
 }
 
+void SPI_0_PORT_init(void)
+{
+
+	// Set pin direction to output
+	gpio_set_pin_direction(PA04, GPIO_DIRECTION_OUT);
+
+	gpio_set_pin_level(PA04,
+	                   // <y> Initial level
+	                   // <id> pad_initial_level
+	                   // <false"> Low
+	                   // <true"> High
+	                   false);
+
+	gpio_set_pin_function(PA04, PINMUX_PA04D_SERCOM0_PAD0);
+
+	// Set pin direction to output
+	gpio_set_pin_direction(PA05, GPIO_DIRECTION_OUT);
+
+	gpio_set_pin_level(PA05,
+	                   // <y> Initial level
+	                   // <id> pad_initial_level
+	                   // <false"> Low
+	                   // <true"> High
+	                   false);
+
+	gpio_set_pin_function(PA05, PINMUX_PA05D_SERCOM0_PAD1);
+
+	// Set pin direction to input
+	gpio_set_pin_direction(PA06, GPIO_DIRECTION_IN);
+
+	gpio_set_pin_pull_mode(PA06,
+	                       // <y> Pull configuration
+	                       // <id> pad_pull_config
+	                       // <GPIO_PULL_OFF"> Off
+	                       // <GPIO_PULL_UP"> Pull-up
+	                       // <GPIO_PULL_DOWN"> Pull-down
+	                       GPIO_PULL_OFF);
+
+	gpio_set_pin_function(PA06, PINMUX_PA06D_SERCOM0_PAD2);
+}
+
+void SPI_0_CLOCK_init(void)
+{
+	hri_gclk_write_PCHCTRL_reg(GCLK, SERCOM0_GCLK_ID_CORE, CONF_GCLK_SERCOM0_CORE_SRC | (1 << GCLK_PCHCTRL_CHEN_Pos));
+	hri_gclk_write_PCHCTRL_reg(GCLK, SERCOM0_GCLK_ID_SLOW, CONF_GCLK_SERCOM0_SLOW_SRC | (1 << GCLK_PCHCTRL_CHEN_Pos));
+
+	hri_mclk_set_APBAMASK_SERCOM0_bit(MCLK);
+}
+
+void SPI_0_init(void)
+{
+	SPI_0_CLOCK_init();
+	spi_m_sync_init(&SPI_0, SERCOM0);
+	SPI_0_PORT_init();
+}
+
 void I2C_0_PORT_init(void)
 {
 
-	gpio_set_pin_pull_mode(PA08,
-	                       // <y> Pull configuration
-	                       // <id> pad_pull_config
-	                       // <GPIO_PULL_OFF"> Off
-	                       // <GPIO_PULL_UP"> Pull-up
-	                       // <GPIO_PULL_DOWN"> Pull-down
-	                       GPIO_PULL_OFF);
-
 	gpio_set_pin_function(PA08, PINMUX_PA08C_SERCOM0_PAD0);
-
-	gpio_set_pin_pull_mode(PA09,
-	                       // <y> Pull configuration
-	                       // <id> pad_pull_config
-	                       // <GPIO_PULL_OFF"> Off
-	                       // <GPIO_PULL_UP"> Pull-up
-	                       // <GPIO_PULL_DOWN"> Pull-down
-	                       GPIO_PULL_OFF);
 
 	gpio_set_pin_function(PA09, PINMUX_PA09C_SERCOM0_PAD1);
 }
@@ -113,48 +160,15 @@ void I2C_0_init(void)
 	I2C_0_PORT_init();
 }
 
-void SPI_0_PORT_init(void)
+void USART_0_PORT_init(void)
 {
-
-	// Set pin direction to output
-	gpio_set_pin_direction(PA00, GPIO_DIRECTION_OUT);
-
-	gpio_set_pin_level(PA00,
-	                   // <y> Initial level
-	                   // <id> pad_initial_level
-	                   // <false"> Low
-	                   // <true"> High
-	                   false);
 
 	gpio_set_pin_function(PA00, PINMUX_PA00D_SERCOM1_PAD0);
 
-	// Set pin direction to output
-	gpio_set_pin_direction(PA01, GPIO_DIRECTION_OUT);
-
-	gpio_set_pin_level(PA01,
-	                   // <y> Initial level
-	                   // <id> pad_initial_level
-	                   // <false"> Low
-	                   // <true"> High
-	                   false);
-
 	gpio_set_pin_function(PA01, PINMUX_PA01D_SERCOM1_PAD1);
-
-	// Set pin direction to input
-	gpio_set_pin_direction(PA18, GPIO_DIRECTION_IN);
-
-	gpio_set_pin_pull_mode(PA18,
-	                       // <y> Pull configuration
-	                       // <id> pad_pull_config
-	                       // <GPIO_PULL_OFF"> Off
-	                       // <GPIO_PULL_UP"> Pull-up
-	                       // <GPIO_PULL_DOWN"> Pull-down
-	                       GPIO_PULL_OFF);
-
-	gpio_set_pin_function(PA18, PINMUX_PA18C_SERCOM1_PAD2);
 }
 
-void SPI_0_CLOCK_init(void)
+void USART_0_CLOCK_init(void)
 {
 	hri_gclk_write_PCHCTRL_reg(GCLK, SERCOM1_GCLK_ID_CORE, CONF_GCLK_SERCOM1_CORE_SRC | (1 << GCLK_PCHCTRL_CHEN_Pos));
 	hri_gclk_write_PCHCTRL_reg(GCLK, SERCOM1_GCLK_ID_SLOW, CONF_GCLK_SERCOM1_SLOW_SRC | (1 << GCLK_PCHCTRL_CHEN_Pos));
@@ -162,33 +176,10 @@ void SPI_0_CLOCK_init(void)
 	hri_mclk_set_APBAMASK_SERCOM1_bit(MCLK);
 }
 
-void SPI_0_init(void)
-{
-	SPI_0_CLOCK_init();
-	spi_m_sync_init(&SPI_0, SERCOM1);
-	SPI_0_PORT_init();
-}
-
-void USART_0_PORT_init(void)
-{
-
-	gpio_set_pin_function(PA12, PINMUX_PA12C_SERCOM2_PAD0);
-
-	gpio_set_pin_function(PA13, PINMUX_PA13C_SERCOM2_PAD1);
-}
-
-void USART_0_CLOCK_init(void)
-{
-	hri_gclk_write_PCHCTRL_reg(GCLK, SERCOM2_GCLK_ID_CORE, CONF_GCLK_SERCOM2_CORE_SRC | (1 << GCLK_PCHCTRL_CHEN_Pos));
-	hri_gclk_write_PCHCTRL_reg(GCLK, SERCOM2_GCLK_ID_SLOW, CONF_GCLK_SERCOM2_SLOW_SRC | (1 << GCLK_PCHCTRL_CHEN_Pos));
-
-	hri_mclk_set_APBBMASK_SERCOM2_bit(MCLK);
-}
-
 void USART_0_init(void)
 {
 	USART_0_CLOCK_init();
-	usart_sync_init(&USART_0, SERCOM2, (void *)NULL);
+	usart_sync_init(&USART_0, SERCOM1, (void *)NULL);
 	USART_0_PORT_init();
 }
 
@@ -225,7 +216,7 @@ void RAND_0_init(void)
 	rand_sync_init(&RAND_0, TRNG);
 }
 
-void USB_0_PORT_init(void)
+void USB_DEVICE_INSTANCE_PORT_init(void)
 {
 
 	gpio_set_pin_direction(PA24,
@@ -251,7 +242,27 @@ void USB_0_PORT_init(void)
 	                       // <GPIO_PULL_DOWN"> Pull-down
 	                       GPIO_PULL_OFF);
 
-	gpio_set_pin_function(PA24, PINMUX_PA24H_USB_DM);
+	gpio_set_pin_function(PA24,
+	                      // <y> Pin function
+	                      // <id> pad_function
+	                      // <i> Auto : use driver pinmux if signal is imported by driver, else turn off function
+	                      // <PINMUX_PA24H_USB_DM"> Auto
+	                      // <GPIO_PIN_FUNCTION_OFF"> Off
+	                      // <GPIO_PIN_FUNCTION_A"> A
+	                      // <GPIO_PIN_FUNCTION_B"> B
+	                      // <GPIO_PIN_FUNCTION_C"> C
+	                      // <GPIO_PIN_FUNCTION_D"> D
+	                      // <GPIO_PIN_FUNCTION_E"> E
+	                      // <GPIO_PIN_FUNCTION_F"> F
+	                      // <GPIO_PIN_FUNCTION_G"> G
+	                      // <GPIO_PIN_FUNCTION_H"> H
+	                      // <GPIO_PIN_FUNCTION_I"> I
+	                      // <GPIO_PIN_FUNCTION_J"> J
+	                      // <GPIO_PIN_FUNCTION_K"> K
+	                      // <GPIO_PIN_FUNCTION_L"> L
+	                      // <GPIO_PIN_FUNCTION_M"> M
+	                      // <GPIO_PIN_FUNCTION_N"> N
+	                      PINMUX_PA24H_USB_DM);
 
 	gpio_set_pin_direction(PA25,
 	                       // <y> Pin direction
@@ -276,7 +287,27 @@ void USB_0_PORT_init(void)
 	                       // <GPIO_PULL_DOWN"> Pull-down
 	                       GPIO_PULL_OFF);
 
-	gpio_set_pin_function(PA25, PINMUX_PA25H_USB_DP);
+	gpio_set_pin_function(PA25,
+	                      // <y> Pin function
+	                      // <id> pad_function
+	                      // <i> Auto : use driver pinmux if signal is imported by driver, else turn off function
+	                      // <PINMUX_PA25H_USB_DP"> Auto
+	                      // <GPIO_PIN_FUNCTION_OFF"> Off
+	                      // <GPIO_PIN_FUNCTION_A"> A
+	                      // <GPIO_PIN_FUNCTION_B"> B
+	                      // <GPIO_PIN_FUNCTION_C"> C
+	                      // <GPIO_PIN_FUNCTION_D"> D
+	                      // <GPIO_PIN_FUNCTION_E"> E
+	                      // <GPIO_PIN_FUNCTION_F"> F
+	                      // <GPIO_PIN_FUNCTION_G"> G
+	                      // <GPIO_PIN_FUNCTION_H"> H
+	                      // <GPIO_PIN_FUNCTION_I"> I
+	                      // <GPIO_PIN_FUNCTION_J"> J
+	                      // <GPIO_PIN_FUNCTION_K"> K
+	                      // <GPIO_PIN_FUNCTION_L"> L
+	                      // <GPIO_PIN_FUNCTION_M"> M
+	                      // <GPIO_PIN_FUNCTION_N"> N
+	                      PINMUX_PA25H_USB_DP);
 }
 
 /* The USB module requires a GCLK_USB of 48 MHz ~ 0.25% clock
@@ -285,7 +316,7 @@ void USB_0_PORT_init(void)
 #warning USB clock should be 48MHz ~ 0.25% clock, check your configuration!
 #endif
 
-void USB_0_CLOCK_init(void)
+void USB_DEVICE_INSTANCE_CLOCK_init(void)
 {
 
 	hri_gclk_write_PCHCTRL_reg(GCLK, USB_GCLK_ID, CONF_GCLK_USB_SRC | GCLK_PCHCTRL_CHEN);
@@ -293,446 +324,28 @@ void USB_0_CLOCK_init(void)
 	hri_mclk_set_APBBMASK_USB_bit(MCLK);
 }
 
-void USB_0_init(void)
+void USB_DEVICE_INSTANCE_init(void)
 {
-	USB_0_CLOCK_init();
+	USB_DEVICE_INSTANCE_CLOCK_init();
 	usb_d_init();
-	USB_0_PORT_init();
+	USB_DEVICE_INSTANCE_PORT_init();
 }
 
 void system_init(void)
 {
 	init_mcu();
 
-	// GPIO on PA02
-
-	// Set pin direction to input
-	gpio_set_pin_direction(PA02, GPIO_DIRECTION_IN);
-
-	gpio_set_pin_pull_mode(PA02,
-	                       // <y> Pull configuration
-	                       // <id> pad_pull_config
-	                       // <GPIO_PULL_OFF"> Off
-	                       // <GPIO_PULL_UP"> Pull-up
-	                       // <GPIO_PULL_DOWN"> Pull-down
-	                       GPIO_PULL_OFF);
-
-	gpio_set_pin_function(PA02, GPIO_PIN_FUNCTION_OFF);
-
-	// GPIO on PA03
-
-	// Set pin direction to input
-	gpio_set_pin_direction(PA03, GPIO_DIRECTION_IN);
-
-	gpio_set_pin_pull_mode(PA03,
-	                       // <y> Pull configuration
-	                       // <id> pad_pull_config
-	                       // <GPIO_PULL_OFF"> Off
-	                       // <GPIO_PULL_UP"> Pull-up
-	                       // <GPIO_PULL_DOWN"> Pull-down
-	                       GPIO_PULL_OFF);
-
-	gpio_set_pin_function(PA03, GPIO_PIN_FUNCTION_OFF);
-
-	// GPIO on PA04
-
-	// Set pin direction to input
-	gpio_set_pin_direction(PA04, GPIO_DIRECTION_IN);
-
-	gpio_set_pin_pull_mode(PA04,
-	                       // <y> Pull configuration
-	                       // <id> pad_pull_config
-	                       // <GPIO_PULL_OFF"> Off
-	                       // <GPIO_PULL_UP"> Pull-up
-	                       // <GPIO_PULL_DOWN"> Pull-down
-	                       GPIO_PULL_OFF);
-
-	gpio_set_pin_function(PA04, GPIO_PIN_FUNCTION_OFF);
-
-	// GPIO on PA05
-
-	// Set pin direction to input
-	gpio_set_pin_direction(PA05, GPIO_DIRECTION_IN);
-
-	gpio_set_pin_pull_mode(PA05,
-	                       // <y> Pull configuration
-	                       // <id> pad_pull_config
-	                       // <GPIO_PULL_OFF"> Off
-	                       // <GPIO_PULL_UP"> Pull-up
-	                       // <GPIO_PULL_DOWN"> Pull-down
-	                       GPIO_PULL_OFF);
-
-	gpio_set_pin_function(PA05, GPIO_PIN_FUNCTION_OFF);
-
-	// GPIO on PA06
-
-	// Set pin direction to input
-	gpio_set_pin_direction(PA06, GPIO_DIRECTION_IN);
-
-	gpio_set_pin_pull_mode(PA06,
-	                       // <y> Pull configuration
-	                       // <id> pad_pull_config
-	                       // <GPIO_PULL_OFF"> Off
-	                       // <GPIO_PULL_UP"> Pull-up
-	                       // <GPIO_PULL_DOWN"> Pull-down
-	                       GPIO_PULL_OFF);
-
-	gpio_set_pin_function(PA06, GPIO_PIN_FUNCTION_OFF);
-
-	// GPIO on PA07
-
-	// Set pin direction to input
-	gpio_set_pin_direction(PA07, GPIO_DIRECTION_IN);
-
-	gpio_set_pin_pull_mode(PA07,
-	                       // <y> Pull configuration
-	                       // <id> pad_pull_config
-	                       // <GPIO_PULL_OFF"> Off
-	                       // <GPIO_PULL_UP"> Pull-up
-	                       // <GPIO_PULL_DOWN"> Pull-down
-	                       GPIO_PULL_OFF);
-
-	gpio_set_pin_function(PA07, GPIO_PIN_FUNCTION_OFF);
-
-	// GPIO on PA10
-
-	// Set pin direction to input
-	gpio_set_pin_direction(PA10, GPIO_DIRECTION_IN);
-
-	gpio_set_pin_pull_mode(PA10,
-	                       // <y> Pull configuration
-	                       // <id> pad_pull_config
-	                       // <GPIO_PULL_OFF"> Off
-	                       // <GPIO_PULL_UP"> Pull-up
-	                       // <GPIO_PULL_DOWN"> Pull-down
-	                       GPIO_PULL_OFF);
-
-	gpio_set_pin_function(PA10, GPIO_PIN_FUNCTION_OFF);
-
-	// GPIO on PA11
-
-	// Set pin direction to input
-	gpio_set_pin_direction(PA11, GPIO_DIRECTION_IN);
-
-	gpio_set_pin_pull_mode(PA11,
-	                       // <y> Pull configuration
-	                       // <id> pad_pull_config
-	                       // <GPIO_PULL_OFF"> Off
-	                       // <GPIO_PULL_UP"> Pull-up
-	                       // <GPIO_PULL_DOWN"> Pull-down
-	                       GPIO_PULL_OFF);
-
-	gpio_set_pin_function(PA11, GPIO_PIN_FUNCTION_OFF);
-
-	// GPIO on PA14
-
-	// Set pin direction to input
-	gpio_set_pin_direction(PA14, GPIO_DIRECTION_IN);
-
-	gpio_set_pin_pull_mode(PA14,
-	                       // <y> Pull configuration
-	                       // <id> pad_pull_config
-	                       // <GPIO_PULL_OFF"> Off
-	                       // <GPIO_PULL_UP"> Pull-up
-	                       // <GPIO_PULL_DOWN"> Pull-down
-	                       GPIO_PULL_OFF);
-
-	gpio_set_pin_function(PA14, GPIO_PIN_FUNCTION_OFF);
-
-	// GPIO on PA15
-
-	// Set pin direction to input
-	gpio_set_pin_direction(PA15, GPIO_DIRECTION_IN);
-
-	gpio_set_pin_pull_mode(PA15,
-	                       // <y> Pull configuration
-	                       // <id> pad_pull_config
-	                       // <GPIO_PULL_OFF"> Off
-	                       // <GPIO_PULL_UP"> Pull-up
-	                       // <GPIO_PULL_DOWN"> Pull-down
-	                       GPIO_PULL_OFF);
-
-	gpio_set_pin_function(PA15, GPIO_PIN_FUNCTION_OFF);
-
-	// GPIO on PA16
-
-	// Set pin direction to input
-	gpio_set_pin_direction(PA16, GPIO_DIRECTION_IN);
-
-	gpio_set_pin_pull_mode(PA16,
-	                       // <y> Pull configuration
-	                       // <id> pad_pull_config
-	                       // <GPIO_PULL_OFF"> Off
-	                       // <GPIO_PULL_UP"> Pull-up
-	                       // <GPIO_PULL_DOWN"> Pull-down
-	                       GPIO_PULL_OFF);
-
-	gpio_set_pin_function(PA16, GPIO_PIN_FUNCTION_OFF);
-
-	// GPIO on PA17
-
-	// Set pin direction to input
-	gpio_set_pin_direction(PA17, GPIO_DIRECTION_IN);
-
-	gpio_set_pin_pull_mode(PA17,
-	                       // <y> Pull configuration
-	                       // <id> pad_pull_config
-	                       // <GPIO_PULL_OFF"> Off
-	                       // <GPIO_PULL_UP"> Pull-up
-	                       // <GPIO_PULL_DOWN"> Pull-down
-	                       GPIO_PULL_OFF);
-
-	gpio_set_pin_function(PA17, GPIO_PIN_FUNCTION_OFF);
-
-	// GPIO on PA19
-
-	// Set pin direction to input
-	gpio_set_pin_direction(PA19, GPIO_DIRECTION_IN);
-
-	gpio_set_pin_pull_mode(PA19,
-	                       // <y> Pull configuration
-	                       // <id> pad_pull_config
-	                       // <GPIO_PULL_OFF"> Off
-	                       // <GPIO_PULL_UP"> Pull-up
-	                       // <GPIO_PULL_DOWN"> Pull-down
-	                       GPIO_PULL_OFF);
-
-	gpio_set_pin_function(PA19, GPIO_PIN_FUNCTION_OFF);
-
-	// GPIO on PA20
-
-	// Set pin direction to input
-	gpio_set_pin_direction(PA20, GPIO_DIRECTION_IN);
-
-	gpio_set_pin_pull_mode(PA20,
-	                       // <y> Pull configuration
-	                       // <id> pad_pull_config
-	                       // <GPIO_PULL_OFF"> Off
-	                       // <GPIO_PULL_UP"> Pull-up
-	                       // <GPIO_PULL_DOWN"> Pull-down
-	                       GPIO_PULL_OFF);
-
-	gpio_set_pin_function(PA20, GPIO_PIN_FUNCTION_OFF);
-
-	// GPIO on PA21
-
-	// Set pin direction to input
-	gpio_set_pin_direction(PA21, GPIO_DIRECTION_IN);
-
-	gpio_set_pin_pull_mode(PA21,
-	                       // <y> Pull configuration
-	                       // <id> pad_pull_config
-	                       // <GPIO_PULL_OFF"> Off
-	                       // <GPIO_PULL_UP"> Pull-up
-	                       // <GPIO_PULL_DOWN"> Pull-down
-	                       GPIO_PULL_OFF);
-
-	gpio_set_pin_function(PA21, GPIO_PIN_FUNCTION_OFF);
-
-	// GPIO on PA22
-
-	// Set pin direction to input
-	gpio_set_pin_direction(PA22, GPIO_DIRECTION_IN);
-
-	gpio_set_pin_pull_mode(PA22,
-	                       // <y> Pull configuration
-	                       // <id> pad_pull_config
-	                       // <GPIO_PULL_OFF"> Off
-	                       // <GPIO_PULL_UP"> Pull-up
-	                       // <GPIO_PULL_DOWN"> Pull-down
-	                       GPIO_PULL_OFF);
-
-	gpio_set_pin_function(PA22, GPIO_PIN_FUNCTION_OFF);
-
-	// GPIO on PA23
-
-	// Set pin direction to input
-	gpio_set_pin_direction(PA23, GPIO_DIRECTION_IN);
-
-	gpio_set_pin_pull_mode(PA23,
-	                       // <y> Pull configuration
-	                       // <id> pad_pull_config
-	                       // <GPIO_PULL_OFF"> Off
-	                       // <GPIO_PULL_UP"> Pull-up
-	                       // <GPIO_PULL_DOWN"> Pull-down
-	                       GPIO_PULL_OFF);
-
-	gpio_set_pin_function(PA23, GPIO_PIN_FUNCTION_OFF);
-
-	// GPIO on PA27
-
-	// Set pin direction to input
-	gpio_set_pin_direction(PA27, GPIO_DIRECTION_IN);
-
-	gpio_set_pin_pull_mode(PA27,
-	                       // <y> Pull configuration
-	                       // <id> pad_pull_config
-	                       // <GPIO_PULL_OFF"> Off
-	                       // <GPIO_PULL_UP"> Pull-up
-	                       // <GPIO_PULL_DOWN"> Pull-down
-	                       GPIO_PULL_OFF);
-
-	gpio_set_pin_function(PA27, GPIO_PIN_FUNCTION_OFF);
-
-	// GPIO on PA30
-
-	// Set pin direction to input
-	gpio_set_pin_direction(PA30, GPIO_DIRECTION_IN);
-
-	gpio_set_pin_pull_mode(PA30,
-	                       // <y> Pull configuration
-	                       // <id> pad_pull_config
-	                       // <GPIO_PULL_OFF"> Off
-	                       // <GPIO_PULL_UP"> Pull-up
-	                       // <GPIO_PULL_DOWN"> Pull-down
-	                       GPIO_PULL_OFF);
-
-	gpio_set_pin_function(PA30, GPIO_PIN_FUNCTION_OFF);
-
-	// GPIO on PA31
-
-	// Set pin direction to input
-	gpio_set_pin_direction(PA31, GPIO_DIRECTION_IN);
-
-	gpio_set_pin_pull_mode(PA31,
-	                       // <y> Pull configuration
-	                       // <id> pad_pull_config
-	                       // <GPIO_PULL_OFF"> Off
-	                       // <GPIO_PULL_UP"> Pull-up
-	                       // <GPIO_PULL_DOWN"> Pull-down
-	                       GPIO_PULL_OFF);
-
-	gpio_set_pin_function(PA31, GPIO_PIN_FUNCTION_OFF);
-
-	// GPIO on PB02
-
-	// Set pin direction to input
-	gpio_set_pin_direction(PB02, GPIO_DIRECTION_IN);
-
-	gpio_set_pin_pull_mode(PB02,
-	                       // <y> Pull configuration
-	                       // <id> pad_pull_config
-	                       // <GPIO_PULL_OFF"> Off
-	                       // <GPIO_PULL_UP"> Pull-up
-	                       // <GPIO_PULL_DOWN"> Pull-down
-	                       GPIO_PULL_OFF);
-
-	gpio_set_pin_function(PB02, GPIO_PIN_FUNCTION_OFF);
-
-	// GPIO on PB03
-
-	// Set pin direction to input
-	gpio_set_pin_direction(PB03, GPIO_DIRECTION_IN);
-
-	gpio_set_pin_pull_mode(PB03,
-	                       // <y> Pull configuration
-	                       // <id> pad_pull_config
-	                       // <GPIO_PULL_OFF"> Off
-	                       // <GPIO_PULL_UP"> Pull-up
-	                       // <GPIO_PULL_DOWN"> Pull-down
-	                       GPIO_PULL_OFF);
-
-	gpio_set_pin_function(PB03, GPIO_PIN_FUNCTION_OFF);
-
-	// GPIO on PB08
-
-	// Set pin direction to input
-	gpio_set_pin_direction(PB08, GPIO_DIRECTION_IN);
-
-	gpio_set_pin_pull_mode(PB08,
-	                       // <y> Pull configuration
-	                       // <id> pad_pull_config
-	                       // <GPIO_PULL_OFF"> Off
-	                       // <GPIO_PULL_UP"> Pull-up
-	                       // <GPIO_PULL_DOWN"> Pull-down
-	                       GPIO_PULL_OFF);
-
-	gpio_set_pin_function(PB08, GPIO_PIN_FUNCTION_OFF);
-
-	// GPIO on PB09
-
-	// Set pin direction to input
-	gpio_set_pin_direction(PB09, GPIO_DIRECTION_IN);
-
-	gpio_set_pin_pull_mode(PB09,
-	                       // <y> Pull configuration
-	                       // <id> pad_pull_config
-	                       // <GPIO_PULL_OFF"> Off
-	                       // <GPIO_PULL_UP"> Pull-up
-	                       // <GPIO_PULL_DOWN"> Pull-down
-	                       GPIO_PULL_OFF);
-
-	gpio_set_pin_function(PB09, GPIO_PIN_FUNCTION_OFF);
-
-	// GPIO on PB10
-
-	// Set pin direction to input
-	gpio_set_pin_direction(PB10, GPIO_DIRECTION_IN);
-
-	gpio_set_pin_pull_mode(PB10,
-	                       // <y> Pull configuration
-	                       // <id> pad_pull_config
-	                       // <GPIO_PULL_OFF"> Off
-	                       // <GPIO_PULL_UP"> Pull-up
-	                       // <GPIO_PULL_DOWN"> Pull-down
-	                       GPIO_PULL_OFF);
-
-	gpio_set_pin_function(PB10, GPIO_PIN_FUNCTION_OFF);
-
-	// GPIO on PB11
-
-	// Set pin direction to input
-	gpio_set_pin_direction(PB11, GPIO_DIRECTION_IN);
-
-	gpio_set_pin_pull_mode(PB11,
-	                       // <y> Pull configuration
-	                       // <id> pad_pull_config
-	                       // <GPIO_PULL_OFF"> Off
-	                       // <GPIO_PULL_UP"> Pull-up
-	                       // <GPIO_PULL_DOWN"> Pull-down
-	                       GPIO_PULL_OFF);
-
-	gpio_set_pin_function(PB11, GPIO_PIN_FUNCTION_OFF);
-
-	// GPIO on PB22
-
-	// Set pin direction to input
-	gpio_set_pin_direction(PB22, GPIO_DIRECTION_IN);
-
-	gpio_set_pin_pull_mode(PB22,
-	                       // <y> Pull configuration
-	                       // <id> pad_pull_config
-	                       // <GPIO_PULL_OFF"> Off
-	                       // <GPIO_PULL_UP"> Pull-up
-	                       // <GPIO_PULL_DOWN"> Pull-down
-	                       GPIO_PULL_OFF);
-
-	gpio_set_pin_function(PB22, GPIO_PIN_FUNCTION_OFF);
-
-	// GPIO on PB23
-
-	// Set pin direction to input
-	gpio_set_pin_direction(PB23, GPIO_DIRECTION_IN);
-
-	gpio_set_pin_pull_mode(PB23,
-	                       // <y> Pull configuration
-	                       // <id> pad_pull_config
-	                       // <GPIO_PULL_OFF"> Off
-	                       // <GPIO_PULL_UP"> Pull-up
-	                       // <GPIO_PULL_DOWN"> Pull-down
-	                       GPIO_PULL_OFF);
-
-	gpio_set_pin_function(PB23, GPIO_PIN_FUNCTION_OFF);
-
 	ADC_0_init();
 
 	DAC_0_init();
 
+	EVENT_SYSTEM_0_init();
+
 	TIMER_0_init();
 
-	I2C_0_init();
-
 	SPI_0_init();
+
+	I2C_0_init();
 
 	USART_0_init();
 
@@ -742,5 +355,5 @@ void system_init(void)
 
 	RAND_0_init();
 
-	USB_0_init();
+	USB_DEVICE_INSTANCE_init();
 }

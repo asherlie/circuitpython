@@ -111,7 +111,7 @@ int32_t dac_sync_enable_channel(struct dac_sync_descriptor *const descr, const u
  */
 int32_t dac_sync_disable_channel(struct dac_sync_descriptor *const descr, const uint8_t ch);
 
-/** \brief DAC convert digital data to analog output.
+/** \brief DAC converts digital data to analog output.
  *  \param[in] descr   Pointer to the HAL DAC descriptor
  *  \param[in] ch the  Channel selected to output
  *  \param[in] buffer  Pointer to digital data or buffer

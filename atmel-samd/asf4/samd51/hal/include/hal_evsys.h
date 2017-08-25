@@ -1,9 +1,9 @@
 /**
  * \file
  *
- * \brief Sleep related functionality declaration.
+ * \brief HAL event system related functionality declaration.
  *
- * Copyright (C) 2014 Atmel Corporation. All rights reserved.
+ * Copyright (C) 2016 Atmel Corporation. All rights reserved.
  *
  * \asf_license_start
  *
@@ -41,44 +41,86 @@
  *
  */
 
-#ifndef _HAL_SLEEP_H_INCLUDED
-#define _HAL_SLEEP_H_INCLUDED
+#include <hpl_evsys.h>
 
-#include <hpl_sleep.h>
+#ifndef _HAL_EVSYS_H_INCLUDED
+#define _HAL_EVSYS_H_INCLUDED
+
+#include <compiler.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /**
- * \addtogroup doc_driver_hal_helper_sleep
+ * \addtogroup doc_driver_hal_evsys
  *
- *@{
+ * @{
  */
 
 /**
- * \brief Set the sleep mode of the device and put the MCU to sleep
+ * \brief Initialize event system.
  *
- * For an overview of which systems are disabled in sleep for the different
- * sleep modes, see the data sheet.
- *
- * \param[in] mode Sleep mode to use
- *
- * \return The status of a sleep request
- * \retval -1 The requested sleep mode was invalid or not available
- * \retval  0 The operation completed successfully, returned after leaving the
- *            sleep
+ * \return Initialization status.
  */
-int sleep(const uint8_t mode);
+int32_t event_system_init(void);
+
+/**
+ * \brief Deinitialize event system.
+ *
+ * \return De-initialization status.
+ */
+int32_t event_system_deinit(void);
+
+/**
+ * \brief Enable event reception by the given user from the given channel
+ *
+ * \param[in] user A user to enable
+ * \param[in] channel A channel the user is assigned to
+ *
+ * \return Status of operation.
+ */
+int32_t event_system_enable_user(const uint16_t user, const uint16_t channel);
+
+/**
+ * \brief Disable event reception by the given user from the given channel
+ *
+ * \param[in] user A user to disable
+ * \param[in] channel A channel the user is assigned to
+ *
+ * \return Status of operation.
+ */
+int32_t event_system_disable_user(const uint16_t user, const uint16_t channel);
+
+/**
+ * \brief Enable event generation by the given generator for the given channel
+ *
+ * \param[in] generator A generator to disable
+ * \param[in] channel A channel the generator is assigned to
+ *
+ * \return Status of operation.
+ */
+int32_t event_system_enable_generator(const uint16_t generator, const uint16_t channel);
+
+/**
+ * \brief Disable event generation by the given generator for the given channel
+ *
+ * \param[in] generator A generator to disable
+ * \param[in] channel A channel the generator is assigned to
+ *
+ * \return Status of operation.
+ */
+int32_t event_system_disable_generator(const uint16_t generator, const uint16_t channel);
 
 /**
  * \brief Retrieve the current driver version
  *
  * \return Current driver version.
  */
-uint32_t sleep_get_version(void);
+uint32_t event_system_get_version(void);
+
 /**@}*/
 #ifdef __cplusplus
 }
 #endif
-#endif /* _HAL_SLEEP_H_INCLUDED */
+#endif /* _HAL_EVSYS_H_INCLUDED */

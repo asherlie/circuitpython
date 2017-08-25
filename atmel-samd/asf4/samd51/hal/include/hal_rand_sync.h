@@ -113,7 +113,7 @@ uint32_t rand_sync_read32(const struct rand_sync_desc *const desc);
 /**
  *  \brief Read the 8-bit Random Number Sequence into a buffer
  *  \param[in] desc Pointer to the device descriptor instance struct
- *  \param[out] buf Pointer to the buffer to fill array of generated numbers
+ *  \param[out] buf Pointer to the buffer to fill an array of generated numbers
  *  \param[in] len Number of random numbers to read
  */
 void rand_sync_read_buf8(const struct rand_sync_desc *const desc, uint8_t *buf, uint32_t len);
@@ -121,7 +121,7 @@ void rand_sync_read_buf8(const struct rand_sync_desc *const desc, uint8_t *buf, 
 /**
  *  \brief Read the 32-bit Random Number Sequence into a buffer
  *  \param[in] desc Pointer to the device descriptor instance struct
- *  \param[out] buf Pointer to the buffer to fill array of generated numbers
+ *  \param[out] buf Pointer to the buffer to fill an array of generated numbers
  *  \param[in] len Number of random numbers to read
  */
 void rand_sync_read_buf32(const struct rand_sync_desc *const desc, uint32_t *buf, uint32_t len);
@@ -129,7 +129,7 @@ void rand_sync_read_buf32(const struct rand_sync_desc *const desc, uint32_t *buf
 /**
  * \brief Retrieve the current driver version
  *
- * \return Current driver version
+ * \return Current driver version.
  */
 uint32_t rand_sync_get_version(void);
 

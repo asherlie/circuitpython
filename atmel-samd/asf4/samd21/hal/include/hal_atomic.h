@@ -65,8 +65,8 @@ typedef uint32_t hal_atomic_t;
  * \brief Helper macro for entering critical sections
  *
  * This macro is recommended to be used instead of a direct call
- * hal_enterCritical() function to to enter critical
- * sections. No semicolon required after the macro.
+ * hal_enterCritical() function to enter critical
+ * sections. No semicolon is required after the macro.
  *
  * \section atomic_usage Usage Example
  * \code
@@ -84,8 +84,8 @@ typedef uint32_t hal_atomic_t;
  * \brief Helper macro for leaving critical sections
  *
  * This macro is recommended to be used instead of a direct call
- * hal_leaveCritical() function to to leave critical
- * sections. No semicolon required after the macro.
+ * hal_leaveCritical() function to leave critical
+ * sections. No semicolon is required after the macro.
  *
  * \section atomic_usage Usage Example
  * \code
@@ -117,15 +117,15 @@ void atomic_enter_critical(hal_atomic_t volatile *atomic);
  * so that global interrupts are only re-enabled
  * upon leaving the outermost nested critical section.
  *
- * \param[in] atomic The pointer to a variable which stores the latest stored
- * value of global interrupt enable flag
+ * \param[in] atomic The pointer to a variable, which stores the latest stored
+ * value of the global interrupt enable flag
  */
 void atomic_leave_critical(hal_atomic_t volatile *atomic);
 
 /**
  * \brief Retrieve the current driver version
  *
- * \return Current driver version
+ * \return Current driver version.
  */
 uint32_t atomic_get_version(void);
 /**@}*/

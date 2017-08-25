@@ -28,8 +28,8 @@
 #ifndef _COMPONENT_VERSION_H_INCLUDED
 #define _COMPONENT_VERSION_H_INCLUDED
 
-#define COMPONENT_VERSION_MAJOR 0
-#define COMPONENT_VERSION_MINOR 1
+#define COMPONENT_VERSION_MAJOR 1
+#define COMPONENT_VERSION_MINOR 0
 
 //
 // The COMPONENT_VERSION define is composed of the major and the minor version number.
@@ -38,18 +38,18 @@
 // The rest of the COMPONENT_VERSION is the major version, with leading zeros. The COMPONENT_VERSION
 // is at least 8 digits long.
 //
-#define COMPONENT_VERSION 00000001
+#define COMPONENT_VERSION 00010000
 
 //
 // The build number does not refer to the component, but to the build number
 // of the device pack that provides the component.
 //
-#define BUILD_NUMBER 61
+#define BUILD_NUMBER 66
 
 //
 // The COMPONENT_VERSION_STRING is a string (enclosed in ") that can be used for logging or embedding.
 //
-#define COMPONENT_VERSION_STRING "0.1"
+#define COMPONENT_VERSION_STRING "1.0"
 
 //
 // The COMPONENT_DATE_STRING contains a timestamp of when the pack was generated.
@@ -59,7 +59,7 @@
 //     "%Y-%m-%d %H:%M:%S"
 //
 //
-#define COMPONENT_DATE_STRING "2017-01-26 16:39:41"
+#define COMPONENT_DATE_STRING "2017-05-22 10:59:01"
 
 #endif/* #ifndef _COMPONENT_VERSION_H_INCLUDED */
 

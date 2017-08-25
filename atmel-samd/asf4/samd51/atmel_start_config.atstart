@@ -2,7 +2,7 @@ format_version: '2'
 name: My Project
 board:
   identifier: CustomBoard
-  device: SAMD51G19A-MN
+  device: SAMD51G19A-MF
 details: null
 application: null
 middlewares:
@@ -61,7 +61,7 @@ middlewares:
     api: USB:Device:Core
     dependencies:
       USB Chapter 9: USB_CHAPTER_9
-      USB Device instance: USB_0
+      USB Device instance: USB_DEVICE_INSTANCE
   USB_DEVICE_COMPOSITE_0:
     user_label: USB_DEVICE_COMPOSITE_0
     configuration:
@@ -111,7 +111,7 @@ middlewares:
 drivers:
   ADC_0:
     user_label: ADC_0
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::ADC0::driver_config_definition::ADC::HAL:Driver:ADC.Sync
+    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MF::ADC0::driver_config_definition::ADC::HAL:Driver:ADC.Sync
     functionality: ADC
     api: HAL:Driver:ADC_Sync
     configuration:
@@ -157,7 +157,7 @@ drivers:
           adc_gclk_selection: Generic clock generator 0
   DAC_0:
     user_label: DAC_0
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::DAC::driver_config_definition::DAC::HAL:Driver:DAC.Sync
+    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MF::DAC::driver_config_definition::DAC::HAL:Driver:DAC.Sync
     functionality: DAC
     api: HAL:Driver:DAC_Sync
     configuration:
@@ -192,7 +192,7 @@ drivers:
           dac_gclk_selection: Generic clock generator 0
   DMAC:
     user_label: DMAC
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::DMAC::driver_config_definition::DMAC::HAL:HPL:DMAC
+    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MF::DMAC::driver_config_definition::DMAC::HAL:HPL:DMAC
     functionality: System
     api: HAL:HPL:DMAC
     configuration:
@@ -726,9 +726,408 @@ drivers:
     variant: null
     clocks:
       domain_group: null
+  EVENT_SYSTEM_0:
+    user_label: EVENT_SYSTEM_0
+    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MF::EVSYS::driver_config_definition::Event.System::HAL:Driver:Event.system
+    functionality: Event_System
+    api: HAL:Driver:Event_system
+    configuration:
+      evsys_channel_0: No channel output selected
+      evsys_channel_1: No channel output selected
+      evsys_channel_10: No channel output selected
+      evsys_channel_11: No channel output selected
+      evsys_channel_12: No channel output selected
+      evsys_channel_17: No channel output selected
+      evsys_channel_18: No channel output selected
+      evsys_channel_19: No channel output selected
+      evsys_channel_2: No channel output selected
+      evsys_channel_20: No channel output selected
+      evsys_channel_21: No channel output selected
+      evsys_channel_22: No channel output selected
+      evsys_channel_23: No channel output selected
+      evsys_channel_24: No channel output selected
+      evsys_channel_25: No channel output selected
+      evsys_channel_26: No channel output selected
+      evsys_channel_27: No channel output selected
+      evsys_channel_28: No channel output selected
+      evsys_channel_29: No channel output selected
+      evsys_channel_3: No channel output selected
+      evsys_channel_30: No channel output selected
+      evsys_channel_31: No channel output selected
+      evsys_channel_32: No channel output selected
+      evsys_channel_33: No channel output selected
+      evsys_channel_34: No channel output selected
+      evsys_channel_35: No channel output selected
+      evsys_channel_36: No channel output selected
+      evsys_channel_37: No channel output selected
+      evsys_channel_38: No channel output selected
+      evsys_channel_39: No channel output selected
+      evsys_channel_4: No channel output selected
+      evsys_channel_40: No channel output selected
+      evsys_channel_41: No channel output selected
+      evsys_channel_42: No channel output selected
+      evsys_channel_43: No channel output selected
+      evsys_channel_44: No channel output selected
+      evsys_channel_45: No channel output selected
+      evsys_channel_46: No channel output selected
+      evsys_channel_47: No channel output selected
+      evsys_channel_48: No channel output selected
+      evsys_channel_49: No channel output selected
+      evsys_channel_5: No channel output selected
+      evsys_channel_50: No channel output selected
+      evsys_channel_51: No channel output selected
+      evsys_channel_52: No channel output selected
+      evsys_channel_53: No channel output selected
+      evsys_channel_54: No channel output selected
+      evsys_channel_55: No channel output selected
+      evsys_channel_56: No channel output selected
+      evsys_channel_57: No channel output selected
+      evsys_channel_58: No channel output selected
+      evsys_channel_59: No channel output selected
+      evsys_channel_6: No channel output selected
+      evsys_channel_60: No channel output selected
+      evsys_channel_61: No channel output selected
+      evsys_channel_62: No channel output selected
+      evsys_channel_63: No channel output selected
+      evsys_channel_64: No channel output selected
+      evsys_channel_65: No channel output selected
+      evsys_channel_66: No channel output selected
+      evsys_channel_7: No channel output selected
+      evsys_channel_8: No channel output selected
+      evsys_channel_9: No channel output selected
+      evsys_channel_setting_0: false
+      evsys_channel_setting_1: false
+      evsys_channel_setting_10: false
+      evsys_channel_setting_11: false
+      evsys_channel_setting_12: false
+      evsys_channel_setting_13: false
+      evsys_channel_setting_14: false
+      evsys_channel_setting_15: false
+      evsys_channel_setting_16: false
+      evsys_channel_setting_17: false
+      evsys_channel_setting_18: false
+      evsys_channel_setting_19: false
+      evsys_channel_setting_2: false
+      evsys_channel_setting_20: false
+      evsys_channel_setting_21: false
+      evsys_channel_setting_22: false
+      evsys_channel_setting_23: false
+      evsys_channel_setting_24: false
+      evsys_channel_setting_25: false
+      evsys_channel_setting_26: false
+      evsys_channel_setting_27: false
+      evsys_channel_setting_28: false
+      evsys_channel_setting_29: false
+      evsys_channel_setting_3: false
+      evsys_channel_setting_30: false
+      evsys_channel_setting_31: false
+      evsys_channel_setting_4: false
+      evsys_channel_setting_5: false
+      evsys_channel_setting_6: false
+      evsys_channel_setting_7: false
+      evsys_channel_setting_8: false
+      evsys_channel_setting_9: false
+      evsys_edgsel_0: No event output when using the resynchronized or synchronous
+        path
+      evsys_edgsel_1: No event output when using the resynchronized or synchronous
+        path
+      evsys_edgsel_10: No event output when using the resynchronized or synchronous
+        path
+      evsys_edgsel_11: No event output when using the resynchronized or synchronous
+        path
+      evsys_edgsel_12: No event output when using the resynchronized or synchronous
+        path
+      evsys_edgsel_13: No event output when using the resynchronized or synchronous
+        path
+      evsys_edgsel_14: No event output when using the resynchronized or synchronous
+        path
+      evsys_edgsel_15: No event output when using the resynchronized or synchronous
+        path
+      evsys_edgsel_16: No event output when using the resynchronized or synchronous
+        path
+      evsys_edgsel_17: No event output when using the resynchronized or synchronous
+        path
+      evsys_edgsel_18: No event output when using the resynchronized or synchronous
+        path
+      evsys_edgsel_19: No event output when using the resynchronized or synchronous
+        path
+      evsys_edgsel_2: No event output when using the resynchronized or synchronous
+        path
+      evsys_edgsel_20: No event output when using the resynchronized or synchronous
+        path
+      evsys_edgsel_21: No event output when using the resynchronized or synchronous
+        path
+      evsys_edgsel_22: No event output when using the resynchronized or synchronous
+        path
+      evsys_edgsel_23: No event output when using the resynchronized or synchronous
+        path
+      evsys_edgsel_24: No event output when using the resynchronized or synchronous
+        path
+      evsys_edgsel_25: No event output when using the resynchronized or synchronous
+        path
+      evsys_edgsel_26: No event output when using the resynchronized or synchronous
+        path
+      evsys_edgsel_27: No event output when using the resynchronized or synchronous
+        path
+      evsys_edgsel_28: No event output when using the resynchronized or synchronous
+        path
+      evsys_edgsel_29: No event output when using the resynchronized or synchronous
+        path
+      evsys_edgsel_3: No event output when using the resynchronized or synchronous
+        path
+      evsys_edgsel_30: No event output when using the resynchronized or synchronous
+        path
+      evsys_edgsel_31: No event output when using the resynchronized or synchronous
+        path
+      evsys_edgsel_4: No event output when using the resynchronized or synchronous
+        path
+      evsys_edgsel_5: No event output when using the resynchronized or synchronous
+        path
+      evsys_edgsel_6: No event output when using the resynchronized or synchronous
+        path
+      evsys_edgsel_7: No event output when using the resynchronized or synchronous
+        path
+      evsys_edgsel_8: No event output when using the resynchronized or synchronous
+        path
+      evsys_edgsel_9: No event output when using the resynchronized or synchronous
+        path
+      evsys_evd_0: false
+      evsys_evd_1: false
+      evsys_evd_10: false
+      evsys_evd_11: false
+      evsys_evd_12: false
+      evsys_evd_13: false
+      evsys_evd_14: false
+      evsys_evd_15: false
+      evsys_evd_16: false
+      evsys_evd_17: false
+      evsys_evd_18: false
+      evsys_evd_19: false
+      evsys_evd_2: false
+      evsys_evd_20: false
+      evsys_evd_21: false
+      evsys_evd_22: false
+      evsys_evd_23: false
+      evsys_evd_24: false
+      evsys_evd_25: false
+      evsys_evd_26: false
+      evsys_evd_27: false
+      evsys_evd_28: false
+      evsys_evd_29: false
+      evsys_evd_3: false
+      evsys_evd_30: false
+      evsys_evd_31: false
+      evsys_evd_4: false
+      evsys_evd_5: false
+      evsys_evd_6: false
+      evsys_evd_7: false
+      evsys_evd_8: false
+      evsys_evd_9: false
+      evsys_evgen_0: No event generator
+      evsys_evgen_1: No event generator
+      evsys_evgen_10: No event generator
+      evsys_evgen_11: No event generator
+      evsys_evgen_12: No event generator
+      evsys_evgen_13: No event generator
+      evsys_evgen_14: No event generator
+      evsys_evgen_15: No event generator
+      evsys_evgen_16: No event generator
+      evsys_evgen_17: No event generator
+      evsys_evgen_18: No event generator
+      evsys_evgen_19: No event generator
+      evsys_evgen_2: No event generator
+      evsys_evgen_20: No event generator
+      evsys_evgen_21: No event generator
+      evsys_evgen_22: No event generator
+      evsys_evgen_23: No event generator
+      evsys_evgen_24: No event generator
+      evsys_evgen_25: No event generator
+      evsys_evgen_26: No event generator
+      evsys_evgen_27: No event generator
+      evsys_evgen_28: No event generator
+      evsys_evgen_29: No event generator
+      evsys_evgen_3: No event generator
+      evsys_evgen_30: No event generator
+      evsys_evgen_31: No event generator
+      evsys_evgen_4: No event generator
+      evsys_evgen_5: No event generator
+      evsys_evgen_6: No event generator
+      evsys_evgen_7: No event generator
+      evsys_evgen_8: No event generator
+      evsys_evgen_9: No event generator
+      evsys_ondemand_0: false
+      evsys_ondemand_1: false
+      evsys_ondemand_10: false
+      evsys_ondemand_11: false
+      evsys_ondemand_12: false
+      evsys_ondemand_13: false
+      evsys_ondemand_14: false
+      evsys_ondemand_15: false
+      evsys_ondemand_16: false
+      evsys_ondemand_17: false
+      evsys_ondemand_18: false
+      evsys_ondemand_19: false
+      evsys_ondemand_2: false
+      evsys_ondemand_20: false
+      evsys_ondemand_21: false
+      evsys_ondemand_22: false
+      evsys_ondemand_23: false
+      evsys_ondemand_24: false
+      evsys_ondemand_25: false
+      evsys_ondemand_26: false
+      evsys_ondemand_27: false
+      evsys_ondemand_28: false
+      evsys_ondemand_29: false
+      evsys_ondemand_3: false
+      evsys_ondemand_30: false
+      evsys_ondemand_31: false
+      evsys_ondemand_4: false
+      evsys_ondemand_5: false
+      evsys_ondemand_6: false
+      evsys_ondemand_7: false
+      evsys_ondemand_8: false
+      evsys_ondemand_9: false
+      evsys_ovr_0: false
+      evsys_ovr_1: false
+      evsys_ovr_10: false
+      evsys_ovr_11: false
+      evsys_ovr_12: false
+      evsys_ovr_13: false
+      evsys_ovr_14: false
+      evsys_ovr_15: false
+      evsys_ovr_16: false
+      evsys_ovr_17: false
+      evsys_ovr_18: false
+      evsys_ovr_19: false
+      evsys_ovr_2: false
+      evsys_ovr_20: false
+      evsys_ovr_21: false
+      evsys_ovr_22: false
+      evsys_ovr_23: false
+      evsys_ovr_24: false
+      evsys_ovr_25: false
+      evsys_ovr_26: false
+      evsys_ovr_27: false
+      evsys_ovr_28: false
+      evsys_ovr_29: false
+      evsys_ovr_3: false
+      evsys_ovr_30: false
+      evsys_ovr_31: false
+      evsys_ovr_4: false
+      evsys_ovr_5: false
+      evsys_ovr_6: false
+      evsys_ovr_7: false
+      evsys_ovr_8: false
+      evsys_ovr_9: false
+      evsys_path_0: Synchronous path
+      evsys_path_1: Synchronous path
+      evsys_path_10: Synchronous path
+      evsys_path_11: Synchronous path
+      evsys_path_12: Synchronous path
+      evsys_path_13: Synchronous path
+      evsys_path_14: Synchronous path
+      evsys_path_15: Synchronous path
+      evsys_path_16: Synchronous path
+      evsys_path_17: Synchronous path
+      evsys_path_18: Synchronous path
+      evsys_path_19: Synchronous path
+      evsys_path_2: Synchronous path
+      evsys_path_20: Synchronous path
+      evsys_path_21: Synchronous path
+      evsys_path_22: Synchronous path
+      evsys_path_23: Synchronous path
+      evsys_path_24: Synchronous path
+      evsys_path_25: Synchronous path
+      evsys_path_26: Synchronous path
+      evsys_path_27: Synchronous path
+      evsys_path_28: Synchronous path
+      evsys_path_29: Synchronous path
+      evsys_path_3: Synchronous path
+      evsys_path_30: Synchronous path
+      evsys_path_31: Synchronous path
+      evsys_path_4: Synchronous path
+      evsys_path_5: Synchronous path
+      evsys_path_6: Synchronous path
+      evsys_path_7: Synchronous path
+      evsys_path_8: Synchronous path
+      evsys_path_9: Synchronous path
+      evsys_runstdby_0: false
+      evsys_runstdby_1: false
+      evsys_runstdby_10: false
+      evsys_runstdby_11: false
+      evsys_runstdby_12: false
+      evsys_runstdby_13: false
+      evsys_runstdby_14: false
+      evsys_runstdby_15: false
+      evsys_runstdby_16: false
+      evsys_runstdby_17: false
+      evsys_runstdby_18: false
+      evsys_runstdby_19: false
+      evsys_runstdby_2: false
+      evsys_runstdby_20: false
+      evsys_runstdby_21: false
+      evsys_runstdby_22: false
+      evsys_runstdby_23: false
+      evsys_runstdby_24: false
+      evsys_runstdby_25: false
+      evsys_runstdby_26: false
+      evsys_runstdby_27: false
+      evsys_runstdby_28: false
+      evsys_runstdby_29: false
+      evsys_runstdby_3: false
+      evsys_runstdby_30: false
+      evsys_runstdby_31: false
+      evsys_runstdby_4: false
+      evsys_runstdby_5: false
+      evsys_runstdby_6: false
+      evsys_runstdby_7: false
+      evsys_runstdby_8: false
+      evsys_runstdby_9: false
+    optional_signals: []
+    variant: null
+    clocks:
+      domain_group:
+        nodes:
+        - name: Channel 0
+          input: Generic clock generator 0
+        - name: Channel 1
+          input: Generic clock generator 0
+        - name: Channel 2
+          input: Generic clock generator 0
+        - name: Channel 3
+          input: Generic clock generator 0
+        - name: Channel 4
+          input: Generic clock generator 0
+        - name: Channel 5
+          input: Generic clock generator 0
+        - name: Channel 6
+          input: Generic clock generator 0
+        - name: Channel 7
+          input: Generic clock generator 0
+        - name: Channel 8
+          input: Generic clock generator 0
+        - name: Channel 9
+          input: Generic clock generator 0
+        - name: Channel 10
+          input: Generic clock generator 0
+        - name: Channel 11
+          input: Generic clock generator 0
+        configuration:
+          evsys_clk_selection_0: Generic clock generator 0
+          evsys_clk_selection_1: Generic clock generator 0
+          evsys_clk_selection_10: Generic clock generator 0
+          evsys_clk_selection_11: Generic clock generator 0
+          evsys_clk_selection_2: Generic clock generator 0
+          evsys_clk_selection_3: Generic clock generator 0
+          evsys_clk_selection_4: Generic clock generator 0
+          evsys_clk_selection_5: Generic clock generator 0
+          evsys_clk_selection_6: Generic clock generator 0
+          evsys_clk_selection_7: Generic clock generator 0
+          evsys_clk_selection_8: Generic clock generator 0
+          evsys_clk_selection_9: Generic clock generator 0
   GCLK:
     user_label: GCLK
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::GCLK::driver_config_definition::GCLK::HAL:HPL:GCLK
+    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MF::GCLK::driver_config_definition::GCLK::HAL:HPL:GCLK
     functionality: System
     api: HAL:HPL:GCLK
     configuration:
@@ -846,7 +1245,7 @@ drivers:
       domain_group: null
   MCLK:
     user_label: MCLK
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::MCLK::driver_config_definition::MCLK::HAL:HPL:MCLK
+    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MF::MCLK::driver_config_definition::MCLK::HAL:HPL:MCLK
     functionality: System
     api: HAL:HPL:MCLK
     configuration:
@@ -867,7 +1266,7 @@ drivers:
         configuration: {}
   OSC32KCTRL:
     user_label: OSC32KCTRL
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::OSC32KCTRL::driver_config_definition::OSC32KCTRL::HAL:HPL:OSC32KCTRL
+    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MF::OSC32KCTRL::driver_config_definition::OSC32KCTRL::HAL:HPL:OSC32KCTRL
     functionality: System
     api: HAL:HPL:OSC32KCTRL
     configuration:
@@ -895,7 +1294,7 @@ drivers:
       domain_group: null
   OSCCTRL:
     user_label: OSCCTRL
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::OSCCTRL::driver_config_definition::OSCCTRL::HAL:HPL:OSCCTRL
+    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MF::OSCCTRL::driver_config_definition::OSCCTRL::HAL:HPL:OSCCTRL
     functionality: System
     api: HAL:HPL:OSCCTRL
     configuration:
@@ -904,7 +1303,7 @@ drivers:
       dfll_arch_ccdis: false
       dfll_arch_coarse: 31
       dfll_arch_cstep: 1
-      dfll_arch_enable: true
+      dfll_arch_enable: false
       dfll_arch_fine: 128
       dfll_arch_fstep: 1
       dfll_arch_llaw: false
@@ -912,12 +1311,12 @@ drivers:
       dfll_arch_qldis: false
       dfll_arch_runstdby: false
       dfll_arch_stable: false
-      dfll_arch_usbcrm: true
+      dfll_arch_usbcrm: false
       dfll_arch_waitlock: true
       dfll_mode: Open Loop Mode
       dfll_mul: 0
       dfll_ref_clock: Generic clock generator 3
-      enable_dfll: true
+      enable_dfll: false
       enable_fdpll0: false
       enable_fdpll1: false
       enable_xosc0: false
@@ -976,7 +1375,7 @@ drivers:
       domain_group: null
   RAMECC:
     user_label: RAMECC
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::RAMECC::driver_config_definition::RAMECC::HAL:HPL:RAMECC
+    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MF::RAMECC::driver_config_definition::RAMECC::HAL:HPL:RAMECC
     functionality: System
     api: HAL:HPL:RAMECC
     configuration: {}
@@ -986,7 +1385,7 @@ drivers:
       domain_group: null
   TIMER_0:
     user_label: TIMER_0
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::RTC::driver_config_definition::Timer::HAL:Driver:Timer
+    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MF::RTC::driver_config_definition::Timer::HAL:Driver:Timer
     functionality: Timer
     api: HAL:Driver:Timer
     configuration:
@@ -1015,9 +1414,49 @@ drivers:
           input: RTC source
         configuration:
           rtc_clk_selection: RTC source
+  SPI_0:
+    user_label: SPI_0
+    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MF::SERCOM0::driver_config_definition::SPI.Master::HAL:Driver:SPI.Master.Sync
+    functionality: SPI
+    api: HAL:Driver:SPI_Master_Sync
+    configuration:
+      spi_master_advanced: false
+      spi_master_arch_cpha: Sample input on leading edge
+      spi_master_arch_cpol: SCK is low when idle
+      spi_master_arch_dbgstop: Keep running
+      spi_master_arch_dord: MSB first
+      spi_master_arch_ibon: In data stream
+      spi_master_arch_runstdby: false
+      spi_master_baud_rate: 50000
+      spi_master_character_size: 8 bits
+      spi_master_dummybyte: 511
+      spi_master_rx_enable: true
+    optional_signals: []
+    variant:
+      specification: TXPO=0, RXPO=2
+      required_signals:
+      - name: SERCOM0/PAD/0
+        pad: PA04
+        label: MOSI
+      - name: SERCOM0/PAD/1
+        pad: PA05
+        label: SCK
+      - name: SERCOM0/PAD/2
+        pad: PA06
+        label: MISO
+    clocks:
+      domain_group:
+        nodes:
+        - name: Core
+          input: Generic clock generator 0
+        - name: Slow
+          input: Generic clock generator 3
+        configuration:
+          core_gclk_selection: Generic clock generator 0
+          slow_gclk_selection: Generic clock generator 3
   I2C_0:
     user_label: I2C_0
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::SERCOM0::driver_config_definition::I2C.Master.Standard~2FFast-mode::HAL:Driver:I2C.Master.Sync
+    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MF::SERCOM0::driver_config_definition::I2C.Master.Standard~2FFast-mode::HAL:Driver:I2C.Master.Sync
     functionality: I2C
     api: HAL:Driver:I2C_Master_Sync
     configuration:
@@ -1051,49 +1490,9 @@ drivers:
         configuration:
           core_gclk_selection: Generic clock generator 0
           slow_gclk_selection: Generic clock generator 3
-  SPI_0:
-    user_label: SPI_0
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::SERCOM1::driver_config_definition::SPI.Master::HAL:Driver:SPI.Master.Sync
-    functionality: SPI
-    api: HAL:Driver:SPI_Master_Sync
-    configuration:
-      spi_master_advanced: false
-      spi_master_arch_cpha: Sample input on leading edge
-      spi_master_arch_cpol: SCK is low when idle
-      spi_master_arch_dbgstop: Keep running
-      spi_master_arch_dord: MSB first
-      spi_master_arch_ibon: In data stream
-      spi_master_arch_runstdby: false
-      spi_master_baud_rate: 50000
-      spi_master_character_size: 8 bits
-      spi_master_dummybyte: 511
-      spi_master_rx_enable: true
-    optional_signals: []
-    variant:
-      specification: TXPO=0, RXPO=2
-      required_signals:
-      - name: SERCOM1/PAD/0
-        pad: PA00
-        label: MOSI
-      - name: SERCOM1/PAD/1
-        pad: PA01
-        label: SCK
-      - name: SERCOM1/PAD/2
-        pad: PA18
-        label: MISO
-    clocks:
-      domain_group:
-        nodes:
-        - name: Core
-          input: Generic clock generator 0
-        - name: Slow
-          input: Generic clock generator 3
-        configuration:
-          core_gclk_selection: Generic clock generator 0
-          slow_gclk_selection: Generic clock generator 3
   USART_0:
     user_label: USART_0
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::SERCOM2::driver_config_definition::UART::HAL:Driver:USART.Sync
+    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MF::SERCOM1::driver_config_definition::UART::HAL:Driver:USART.Sync
     functionality: USART
     api: HAL:Driver:USART_Sync
     configuration:
@@ -1119,11 +1518,11 @@ drivers:
     variant:
       specification: TXPO=0, RXPO=1, CMODE=0
       required_signals:
-      - name: SERCOM2/PAD/0
-        pad: PA12
+      - name: SERCOM1/PAD/0
+        pad: PA00
         label: TX
-      - name: SERCOM2/PAD/1
-        pad: PA13
+      - name: SERCOM1/PAD/1
+        pad: PA01
         label: RX
     clocks:
       domain_group:
@@ -1137,7 +1536,7 @@ drivers:
           slow_gclk_selection: Generic clock generator 3
   DELAY_0:
     user_label: DELAY_0
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::SysTick::driver_config_definition::Delay::HAL:Driver:Delay
+    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MF::SysTick::driver_config_definition::Delay::HAL:Driver:Delay
     functionality: Delay
     api: HAL:Driver:Delay
     configuration:
@@ -1148,7 +1547,7 @@ drivers:
       domain_group: null
   PWM_0:
     user_label: PWM_0
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::TC0::driver_config_definition::PWM::HAL:Driver:PWM
+    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MF::TC0::driver_config_definition::PWM::HAL:Driver:PWM
     functionality: PWM
     api: HAL:Driver:PWM
     configuration:
@@ -1181,7 +1580,7 @@ drivers:
           tc_gclk_selection: Generic clock generator 0
   RAND_0:
     user_label: RAND_0
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::TRNG::driver_config_definition::RAND::HAL:Driver:RAND.Sync
+    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MF::TRNG::driver_config_definition::RAND::HAL:Driver:RAND.Sync
     functionality: RAND
     api: HAL:Driver:RAND_Sync
     configuration:
@@ -1191,9 +1590,9 @@ drivers:
     variant: null
     clocks:
       domain_group: null
-  USB_0:
-    user_label: USB_0
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::USB::driver_config_definition::USB.Device::HAL:Driver:USB.Device
+  USB_DEVICE_INSTANCE:
+    user_label: USB_DEVICE_INSTANCE
+    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MF::USB::driver_config_definition::USB.Device::HAL:Driver:USB.Device
     functionality: USB
     api: HAL:Driver:USB_Device
     configuration:
@@ -1235,224 +1634,56 @@ drivers:
 pads:
   PA00:
     name: PA00
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PA00
-    mode: Digital output
+    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MF::pad::PA00
+    mode: Peripheral IO
     user_label: PA00
     configuration: null
   PA01:
     name: PA01
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PA01
-    mode: Digital output
+    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MF::pad::PA01
+    mode: Peripheral IO
     user_label: PA01
-    configuration: null
-  PA02:
-    name: PA02
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PA02
-    mode: Digital input
-    user_label: PA02
-    configuration: null
-  PA03:
-    name: PA03
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PA03
-    mode: Digital input
-    user_label: PA03
-    configuration: null
-  PB08:
-    name: PB08
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PB08
-    mode: Digital input
-    user_label: PB08
-    configuration: null
-  PB09:
-    name: PB09
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PB09
-    mode: Digital input
-    user_label: PB09
     configuration: null
   PA04:
     name: PA04
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PA04
-    mode: Digital input
+    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MF::pad::PA04
+    mode: Digital output
     user_label: PA04
     configuration: null
   PA05:
     name: PA05
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PA05
-    mode: Digital input
+    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MF::pad::PA05
+    mode: Digital output
     user_label: PA05
     configuration: null
   PA06:
     name: PA06
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PA06
+    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MF::pad::PA06
     mode: Digital input
     user_label: PA06
     configuration: null
-  PA07:
-    name: PA07
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PA07
-    mode: Digital input
-    user_label: PA07
-    configuration: null
   PA08:
     name: PA08
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PA08
-    mode: I2C
+    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MF::pad::PA08
+    mode: Peripheral IO
     user_label: PA08
     configuration: null
   PA09:
     name: PA09
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PA09
-    mode: I2C
+    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MF::pad::PA09
+    mode: Peripheral IO
     user_label: PA09
-    configuration: null
-  PA10:
-    name: PA10
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PA10
-    mode: Digital input
-    user_label: PA10
-    configuration: null
-  PA11:
-    name: PA11
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PA11
-    mode: Digital input
-    user_label: PA11
-    configuration: null
-  PB10:
-    name: PB10
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PB10
-    mode: Digital input
-    user_label: PB10
-    configuration: null
-  PB11:
-    name: PB11
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PB11
-    mode: Digital input
-    user_label: PB11
-    configuration: null
-  PA12:
-    name: PA12
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PA12
-    mode: Peripheral IO
-    user_label: PA12
-    configuration: null
-  PA13:
-    name: PA13
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PA13
-    mode: Peripheral IO
-    user_label: PA13
-    configuration: null
-  PA14:
-    name: PA14
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PA14
-    mode: Digital input
-    user_label: PA14
-    configuration: null
-  PA15:
-    name: PA15
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PA15
-    mode: Digital input
-    user_label: PA15
-    configuration: null
-  PA16:
-    name: PA16
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PA16
-    mode: Digital input
-    user_label: PA16
-    configuration: null
-  PA17:
-    name: PA17
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PA17
-    mode: Digital input
-    user_label: PA17
-    configuration: null
-  PA18:
-    name: PA18
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PA18
-    mode: Digital input
-    user_label: PA18
-    configuration: null
-  PA19:
-    name: PA19
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PA19
-    mode: Digital input
-    user_label: PA19
-    configuration: null
-  PA20:
-    name: PA20
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PA20
-    mode: Digital input
-    user_label: PA20
-    configuration: null
-  PA21:
-    name: PA21
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PA21
-    mode: Digital input
-    user_label: PA21
-    configuration: null
-  PA22:
-    name: PA22
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PA22
-    mode: Digital input
-    user_label: PA22
-    configuration: null
-  PA23:
-    name: PA23
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PA23
-    mode: Digital input
-    user_label: PA23
     configuration: null
   PA24:
     name: PA24
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PA24
+    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MF::pad::PA24
     mode: Advanced
     user_label: PA24
     configuration: null
   PA25:
     name: PA25
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PA25
+    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MF::pad::PA25
     mode: Advanced
     user_label: PA25
-    configuration: null
-  PB22:
-    name: PB22
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PB22
-    mode: Digital input
-    user_label: PB22
-    configuration: null
-  PB23:
-    name: PB23
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PB23
-    mode: Digital input
-    user_label: PB23
-    configuration: null
-  PA27:
-    name: PA27
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PA27
-    mode: Digital input
-    user_label: PA27
-    configuration: null
-  PA30:
-    name: PA30
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PA30
-    mode: Digital input
-    user_label: PA30
-    configuration: null
-  PA31:
-    name: PA31
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PA31
-    mode: Digital input
-    user_label: PA31
-    configuration: null
-  PB02:
-    name: PB02
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PB02
-    mode: Digital input
-    user_label: PB02
-    configuration: null
-  PB03:
-    name: PB03
-    definition: Atmel:SAMD51_Drivers:0.0.1::SAMD51G19A-MN::pad::PB03
-    mode: Digital input
-    user_label: PB03
     configuration: null
 toolchain_options: []

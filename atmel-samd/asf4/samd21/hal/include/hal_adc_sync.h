@@ -80,7 +80,7 @@ struct adc_sync_descriptor {
  *
  * \param[out] descr An ADC descriptor to initialize
  * \param[in] hw     The pointer to hardware instance
- * \param[in] func   The pointer to as set of functions pointers
+ * \param[in] func   The pointer to a set of functions pointers
  *
  * \return Initialization status.
  */
@@ -128,7 +128,7 @@ int32_t adc_sync_disable_channel(struct adc_sync_descriptor *const descr, const 
 /**
  * \brief Read data from ADC
  *
- * \param[in] descr    The pointer to ADC descriptor
+ * \param[in] descr    The pointer to the ADC descriptor
  * \param[in] channel  Channel number
  * \param[in] buf      A buffer to read data to
  * \param[in] length   The size of a buffer
@@ -143,10 +143,10 @@ int32_t adc_sync_read_channel(struct adc_sync_descriptor *const descr, const uin
  *
  * This function sets ADC reference source.
  *
- * \param[in] descr     The pointer to ADC descriptor
+ * \param[in] descr     The pointer to the ADC descriptor
  * \param[in] reference A reference source to set
  *
- * \return Status of ADC reference source setting.
+ * \return Status of the ADC reference source setting.
  */
 int32_t adc_sync_set_reference(struct adc_sync_descriptor *const descr, const adc_reference_t reference);
 
@@ -155,10 +155,10 @@ int32_t adc_sync_set_reference(struct adc_sync_descriptor *const descr, const ad
  *
  * This function sets ADC resolution.
  *
- * \param[in] descr      The pointer to ADC descriptor
+ * \param[in] descr      The pointer to the ADC descriptor
  * \param[in] resolution A resolution to set
  *
- * \return Status of ADC resolution setting.
+ * \return Status of the ADC resolution setting.
  */
 int32_t adc_sync_set_resolution(struct adc_sync_descriptor *const descr, const adc_resolution_t resolution);
 
@@ -167,12 +167,12 @@ int32_t adc_sync_set_resolution(struct adc_sync_descriptor *const descr, const a
  *
  * This function sets ADC positive and negative input sources.
  *
- * \param[in] descr     The pointer to ADC descriptor
+ * \param[in] descr     The pointer to the ADC descriptor
  * \param[in] pos_input A positive input source to set
  * \param[in] neg_input A negative input source to set
  * \param[in] channel   Channel number
  *
- * \return Status of ADC channels setting.
+ * \return Status of the ADC channels setting.
  */
 int32_t adc_sync_set_inputs(struct adc_sync_descriptor *const descr, const adc_pos_input_t pos_input,
                             const adc_neg_input_t neg_input, const uint8_t channel);
@@ -182,10 +182,10 @@ int32_t adc_sync_set_inputs(struct adc_sync_descriptor *const descr, const adc_p
  *
  * This function sets ADC conversion mode.
  *
- * \param[in] descr The pointer to ADC descriptor
+ * \param[in] descr The pointer to the ADC descriptor
  * \param[in] mode  A conversion mode to set
  *
- * \return Status of ADC conversion mode setting.
+ * \return Status of the ADC conversion mode setting.
  */
 int32_t adc_sync_set_conversion_mode(struct adc_sync_descriptor *const descr, const enum adc_conversion_mode mode);
 
@@ -194,11 +194,11 @@ int32_t adc_sync_set_conversion_mode(struct adc_sync_descriptor *const descr, co
  *
  * This function sets ADC differential mode.
  *
- * \param[in] descr   The pointer to ADC descriptor
+ * \param[in] descr   The pointer to the ADC descriptor
  * \param[in] channel Channel number
  * \param[in] mode    A differential mode to set
  *
- * \return Status of ADC differential mode setting.
+ * \return Status of the ADC differential mode setting.
  */
 int32_t adc_sync_set_channel_differential_mode(struct adc_sync_descriptor *const descr, const uint8_t channel,
                                                const enum adc_differential_mode mode);
@@ -208,11 +208,11 @@ int32_t adc_sync_set_channel_differential_mode(struct adc_sync_descriptor *const
  *
  * This function sets ADC channel gain.
  *
- * \param[in] descr   The pointer to ADC descriptor
+ * \param[in] descr   The pointer to the ADC descriptor
  * \param[in] channel Channel number
  * \param[in] gain    A gain to set
  *
- * \return Status of ADC gain setting.
+ * \return Status of the ADC gain setting.
  */
 int32_t adc_sync_set_channel_gain(struct adc_sync_descriptor *const descr, const uint8_t channel,
                                   const adc_gain_t gain);
@@ -222,10 +222,10 @@ int32_t adc_sync_set_channel_gain(struct adc_sync_descriptor *const descr, const
  *
  * This function sets ADC window mode.
  *
- * \param[in] descr The pointer to ADC descriptor
+ * \param[in] descr The pointer to the ADC descriptor
  * \param[in] mode  A window mode to set
  *
- * \return Status of ADC window mode setting.
+ * \return Status of the ADC window mode setting.
  */
 int32_t adc_sync_set_window_mode(struct adc_sync_descriptor *const descr, const adc_window_mode_t mode);
 
@@ -234,11 +234,11 @@ int32_t adc_sync_set_window_mode(struct adc_sync_descriptor *const descr, const 
  *
  * This function sets ADC positive and negative thresholds.
  *
- * \param[in] descr         The pointer to ADC descriptor
+ * \param[in] descr         The pointer to the ADC descriptor
  * \param[in] low_threshold A lower thresholds to set
  * \param[in] up_threshold  An upper thresholds to set
  *
- * \return Status of ADC thresholds setting.
+ * \return Status of the ADC thresholds setting.
  */
 int32_t adc_sync_set_thresholds(struct adc_sync_descriptor *const descr, const adc_threshold_t low_threshold,
                                 const adc_threshold_t up_threshold);
@@ -248,7 +248,7 @@ int32_t adc_sync_set_thresholds(struct adc_sync_descriptor *const descr, const a
  *
  * This function retrieves ADC threshold state.
  *
- * \param[in] descr  The pointer to ADC descriptor
+ * \param[in] descr  The pointer to the ADC descriptor
  * \param[out] state The threshold state
  *
  * \return The state of ADC thresholds state retrieving.
@@ -261,7 +261,7 @@ int32_t adc_sync_get_threshold_state(const struct adc_sync_descriptor *const des
  *
  * This function checks if the ADC has finished the conversion.
  *
- * \param[in] descr   The pointer to ADC descriptor
+ * \param[in] descr   The pointer to the ADC descriptor
  * \param[in] channel Channel number
  *
  * \return The status of ADC conversion completion checking.
@@ -273,7 +273,7 @@ int32_t adc_sync_is_channel_conversion_complete(const struct adc_sync_descriptor
 /**
  * \brief Retrieve the current driver version
  *
- * \return Current driver version
+ * \return Current driver version.
  */
 uint32_t adc_sync_get_version(void);
 /**@}*/

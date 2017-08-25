@@ -54,10 +54,10 @@
 #define REG_DSU_MBSTATUS0          (0x41002070) /**< \brief (DSU) MBIST Memory Status 0 */
 #define REG_DSU_DCFG0              (0x410020F0) /**< \brief (DSU) Device Configuration 0 */
 #define REG_DSU_DCFG1              (0x410020F4) /**< \brief (DSU) Device Configuration 1 */
-#define REG_DSU_ENTRY0             (0x41003000) /**< \brief (DSU) Coresight ROM Table Entry 0 */
-#define REG_DSU_ENTRY1             (0x41003004) /**< \brief (DSU) Coresight ROM Table Entry 1 */
-#define REG_DSU_END                (0x41003008) /**< \brief (DSU) Coresight ROM Table End */
-#define REG_DSU_MEMTYPE            (0x41003FCC) /**< \brief (DSU) Coresight ROM Table Memory Type */
+#define REG_DSU_ENTRY0             (0x41003000) /**< \brief (DSU) CoreSight ROM Table Entry 0 */
+#define REG_DSU_ENTRY1             (0x41003004) /**< \brief (DSU) CoreSight ROM Table Entry 1 */
+#define REG_DSU_END                (0x41003008) /**< \brief (DSU) CoreSight ROM Table End */
+#define REG_DSU_MEMTYPE            (0x41003FCC) /**< \brief (DSU) CoreSight ROM Table Memory Type */
 #define REG_DSU_PID4               (0x41003FD0) /**< \brief (DSU) Peripheral Identification 4 */
 #define REG_DSU_PID5               (0x41003FD4) /**< \brief (DSU) Peripheral Identification 5 */
 #define REG_DSU_PID6               (0x41003FD8) /**< \brief (DSU) Peripheral Identification 6 */
@@ -94,10 +94,10 @@
 #define REG_DSU_MBSTATUS0          (*(RwReg  *)0x41002070UL) /**< \brief (DSU) MBIST Memory Status 0 */
 #define REG_DSU_DCFG0              (*(RwReg  *)0x410020F0UL) /**< \brief (DSU) Device Configuration 0 */
 #define REG_DSU_DCFG1              (*(RwReg  *)0x410020F4UL) /**< \brief (DSU) Device Configuration 1 */
-#define REG_DSU_ENTRY0             (*(RoReg  *)0x41003000UL) /**< \brief (DSU) Coresight ROM Table Entry 0 */
-#define REG_DSU_ENTRY1             (*(RoReg  *)0x41003004UL) /**< \brief (DSU) Coresight ROM Table Entry 1 */
-#define REG_DSU_END                (*(RoReg  *)0x41003008UL) /**< \brief (DSU) Coresight ROM Table End */
-#define REG_DSU_MEMTYPE            (*(RoReg  *)0x41003FCCUL) /**< \brief (DSU) Coresight ROM Table Memory Type */
+#define REG_DSU_ENTRY0             (*(RoReg  *)0x41003000UL) /**< \brief (DSU) CoreSight ROM Table Entry 0 */
+#define REG_DSU_ENTRY1             (*(RoReg  *)0x41003004UL) /**< \brief (DSU) CoreSight ROM Table Entry 1 */
+#define REG_DSU_END                (*(RoReg  *)0x41003008UL) /**< \brief (DSU) CoreSight ROM Table End */
+#define REG_DSU_MEMTYPE            (*(RoReg  *)0x41003FCCUL) /**< \brief (DSU) CoreSight ROM Table Memory Type */
 #define REG_DSU_PID4               (*(RoReg  *)0x41003FD0UL) /**< \brief (DSU) Peripheral Identification 4 */
 #define REG_DSU_PID5               (*(RoReg  *)0x41003FD4UL) /**< \brief (DSU) Peripheral Identification 5 */
 #define REG_DSU_PID6               (*(RoReg  *)0x41003FD8UL) /**< \brief (DSU) Peripheral Identification 6 */

@@ -72,7 +72,7 @@ void delay_init(void *const hw);
  *
  * This function performs delay for the given amount of microseconds.
  *
- * \param[in] us The amount of us to delay for
+ * \param[in] us The amount delay in us
  */
 void delay_us(const uint16_t us);
 
@@ -81,14 +81,14 @@ void delay_us(const uint16_t us);
  *
  * This function performs delay for the given amount of milliseconds.
  *
- * \param[in] ms The amount of ms to delay for
+ * \param[in] ms The amount delay in ms
  */
 void delay_ms(const uint16_t ms);
 
 /**
  * \brief Retrieve the current driver version
  *
- * \return Current driver version
+ * \return Current driver version.
  */
 uint32_t delay_get_version(void);
 

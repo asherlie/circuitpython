@@ -91,51 +91,64 @@ struct pwm_descriptor {
 };
 
 /** \brief Initialize the PWM HAL instance and hardware
- *  \param[in] descr Pointer to the HAL PWM descriptor.
+ *
+ *  \param[in] descr Pointer to the HAL PWM descriptor
  *  \param[in] hw The pointer to hardware instance
- *  \param[in] func The pointer to as set of functions pointers
+ *  \param[in] func The pointer to a set of functions pointers
+ *
  *  \return Operation status.
  */
 int32_t pwm_init(struct pwm_descriptor *const descr, void *const hw, struct _pwm_hpl_interface *const func);
 
 /** \brief Deinitialize the PWM HAL instance and hardware
- *  \param[in] descr Pointer to the HAL PWM descriptor.
+ *
+ *  \param[in] descr Pointer to the HAL PWM descriptor
+ *
  *  \return Operation status.
  */
 int32_t pwm_deinit(struct pwm_descriptor *const descr);
 
 /** \brief PWM output start
- *  \param[in] descr Pointer to the HAL PWM descriptor.
+ *
+ *  \param[in] descr Pointer to the HAL PWM descriptor
+ *
  *  \return Operation status.
  */
 int32_t pwm_enable(struct pwm_descriptor *const descr);
 
 /** \brief PWM output stop
- *  \param[in] descr Pointer to the HAL PWM descriptor.
+ *
+ *  \param[in] descr Pointer to the HAL PWM descriptor
+ *
  *  \return Operation status.
  */
 int32_t pwm_disable(struct pwm_descriptor *const descr);
 
 /** \brief Register PWM callback
- *  \param[in] descr Pointer to the HAL PWM descriptor.
+ *
+ *  \param[in] descr Pointer to the HAL PWM descriptor
  *  \param[in] type Callback type
  *  \param[in] cb A callback function, passing NULL de-registers callback
+ *
  *  \return Operation status.
- *  \retval 0 Success.
- *  \retval -1 Error.
+ *  \retval 0 Success
+ *  \retval -1 Error
  */
 int32_t pwm_register_callback(struct pwm_descriptor *const descr, enum pwm_callback_type type, pwm_cb_t cb);
 
 /** \brief Change PWM parameter
- *  \param[in] descr Pointer to the HAL PWM descriptor.
- *  \param[in] period Total period of one PWM cycle.
- *  \param[in] duty_cycle Period of PWM first half during one cycle.
+ *
+ *  \param[in] descr Pointer to the HAL PWM descriptor
+ *  \param[in] period Total period of one PWM cycle
+ *  \param[in] duty_cycle Period of PWM first half during one cycle
+ *
  *  \return Operation status.
  */
 int32_t pwm_set_parameters(struct pwm_descriptor *const descr, const pwm_period_t period,
                            const pwm_period_t duty_cycle);
 
 /** \brief Get PWM driver version
+ *
  *  \return Current driver version.
  */
 uint32_t pwm_get_version(void);

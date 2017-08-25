@@ -44,7 +44,7 @@
 #ifndef _HPL_SPI_ASYNC_H_INCLUDED
 #define _HPL_SPI_ASYNC_H_INCLUDED
 
-#include <hpl_spi_sync.h>
+#include <hpl_spi.h>
 #include <hpl_irq.h>
 
 /**

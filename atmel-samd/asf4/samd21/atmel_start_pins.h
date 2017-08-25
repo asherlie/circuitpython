@@ -10,6 +10,17 @@
 
 #include <hal_gpio.h>
 
+// SAMD21 has 8 pin functions
+
+#define GPIO_PIN_FUNCTION_A 0
+#define GPIO_PIN_FUNCTION_B 1
+#define GPIO_PIN_FUNCTION_C 2
+#define GPIO_PIN_FUNCTION_D 3
+#define GPIO_PIN_FUNCTION_E 4
+#define GPIO_PIN_FUNCTION_F 5
+#define GPIO_PIN_FUNCTION_G 6
+#define GPIO_PIN_FUNCTION_H 7
+
 #define PA00 GPIO(GPIO_PORTA, 0)
 #define PA01 GPIO(GPIO_PORTA, 1)
 #define PA02 GPIO(GPIO_PORTA, 2)

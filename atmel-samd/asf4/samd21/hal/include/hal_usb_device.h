@@ -60,7 +60,7 @@ extern "C" {
 struct usb_d_ep_status {
 	/** Endpoint address, including direction. */
 	uint8_t ep;
-	/** Endpoint transfer status code that trigger the callback.
+	/** Endpoint transfer status code that triggers the callback.
 	 *  \ref usb_xfer_code. */
 	uint8_t code;
 	/** Endpoint error, if \c code is \ref USB_TRANS_ERROR. */
@@ -185,7 +185,7 @@ void usb_d_send_remotewakeup(void);
  *
  *  Note that endpoint 0 must be initialized as control endpoint.
  *
- *  \param[in] max_pkt_size Max packet size of EP0.
+ *  \param[in] max_pkt_size Max. packet size of EP0.
  *  \return Operation status.
  *  \retval 0 Success.
  *  \retval <0 Error code.
@@ -197,7 +197,7 @@ int32_t usb_d_ep0_init(const uint8_t max_pkt_size);
  *
  *  \param[in] ep The endpoint address.
  *  \param[in] attr The endpoint attributes.
- *  \param[in] max_pkt_size Max packet size of EP0.
+ *  \param[in] max_pkt_size Max. packet size of EP0.
  *  \return Operation status.
  *  \retval 0 Success.
  *  \retval <0 Error code.
@@ -248,12 +248,12 @@ uint8_t *usb_d_ep_get_req(const uint8_t ep);
 /**
  *  \brief Endpoint transfer.
  *
- *  For control endpoints, start transfer according to direction in bmRequest
+ *  For control endpoints, start the transfer according to the direction in the bmRequest
  *  type, and finish with STATUS stage.
  *  For non-control endpoints, the transfer will be unique direction. Defined by
- *  bit 8 of endpoint address.
+ *  bit 8 of the endpoint address.
  *
- *  \param[in] xfer Pointer to transfer description.
+ *  \param[in] xfer Pointer to the transfer description.
  *  \return Operation status.
  *  \retval 0 Success.
  *  \retval <0 Error code.
@@ -261,17 +261,17 @@ uint8_t *usb_d_ep_get_req(const uint8_t ep);
 int32_t usb_d_ep_transfer(const struct usb_d_transfer *xfer);
 
 /**
- *  \brief Abort on-going transfer on specific endpoint.
+ *  \brief Abort an on-going transfer on a specific endpoint.
  *
  *  \param[in] ep The endpoint address.
  */
 void usb_d_ep_abort(const uint8_t ep);
 
 /**
- *  \brief Retrieve Endpoint status.
+ *  \brief Retrieve the endpoint status.
  *
  *  \param[in] ep The endpoint address.
- *  \param[out] stat Pointer to buffer to fill status description.
+ *  \param[out] stat Pointer to the buffer to fill the status description.
  *
  *  \return Endpoint status.
  *  \retval 1 Busy.
@@ -291,7 +291,8 @@ int32_t usb_d_ep_get_status(const uint8_t ep, struct usb_d_ep_status *stat);
 int32_t usb_d_ep_halt(const uint8_t ep, const enum usb_ep_halt_ctrl ctrl);
 
 /** \brief Retrieve the current driver version
- *  \return Current driver version
+ *
+ *  \return Current driver version.
  */
 uint32_t usb_d_get_version(void);
 

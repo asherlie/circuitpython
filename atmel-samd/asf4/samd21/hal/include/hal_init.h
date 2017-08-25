@@ -71,7 +71,7 @@ static inline void init_mcu(void)
 /**
  * \brief Retrieve the current driver version
  *
- * \return Current driver version
+ * \return Current driver version.
  */
 uint32_t init_get_version(void);
 

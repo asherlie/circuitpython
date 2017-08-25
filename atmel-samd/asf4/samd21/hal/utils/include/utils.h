@@ -341,18 +341,18 @@ typedef void (*FUNC_PTR)(void);
 #define pos_of_mask(mask) ctz(mask)
 
 /**
- * \brief Return division result of a/b and Round up the result to the closest
+ * \brief Return division result of a/b and round up the result to the closest
  *        number divisible by "b"
  */
 #define round_up(a, b) (((a)-1) / (b) + 1)
 
 /**
- * \brief Get the minimal of x and y
+ * \brief Get the minimum of x and y
  */
 #define min(x, y) ((x) > (y) ? (y) : (x))
 
 /**
- * \brief Get maximum of x and y
+ * \brief Get the maximum of x and y
  */
 #define max(x, y) ((x) > (y) ? (x) : (y))
 

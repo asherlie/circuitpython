@@ -69,7 +69,8 @@ struct spi_m_sync_descriptor {
 	uint16_t flags;
 };
 
-/** \brief Initialize the SPI HAL instance and hardware for polling mode
+/** \brief Initialize SPI HAL instance and hardware for polling mode
+ *
  *  Initialize SPI HAL with polling mode.
  *
  *  \param[in] spi Pointer to the HAL SPI instance.
@@ -82,6 +83,7 @@ struct spi_m_sync_descriptor {
 int32_t spi_m_sync_init(struct spi_m_sync_descriptor *spi, void *const hw);
 
 /** \brief Deinitialize the SPI HAL instance and hardware
+ *
  *  Abort transfer, disable and reset SPI, deinit software.
  *
  *  \param[in] spi Pointer to the HAL SPI instance.
@@ -113,11 +115,12 @@ void spi_m_sync_enable(struct spi_m_sync_descriptor *spi);
 void spi_m_sync_disable(struct spi_m_sync_descriptor *spi);
 
 /** \brief Set SPI baudrate
+ *
  *  Works if SPI is initialized as master, it sets the baudrate.
  *
  *  \param[in] spi Pointer to the HAL SPI instance.
  *  \param[in] baud_val The target baudrate value
- *                  (See "baudrate calculation" for calculating the value).
+ *                  (see "baudrate calculation" for calculating the value).
  *
  *  \return Operation status.
  *  \retval ERR_NONE Success.
@@ -127,12 +130,13 @@ void spi_m_sync_disable(struct spi_m_sync_descriptor *spi);
 int32_t spi_m_sync_set_baudrate(struct spi_m_sync_descriptor *spi, const uint32_t baud_val);
 
 /** \brief Set SPI mode
- *  Set SPI transfer mode (\ref spi_transfer_mode), which controls
- *  clock polarity and clock phase.
- *  Mode 0: leading edge is rising edge, data sample on leading edge.
- *  Mode 1: leading edge is rising edge, data sample on trailing edge.
- *  Mode 2: leading edge is falling edge, data sample on leading edge.
- *  Mode 3: leading edge is falling edge, data sample on trailing edge.
+ *
+ *  Set the SPI transfer mode (\ref spi_transfer_mode),
+ *  which controls the clock polarity and clock phase:
+ *  - Mode 0: leading edge is rising edge, data sample on leading edge.
+ *  - Mode 1: leading edge is rising edge, data sample on trailing edge.
+ *  - Mode 2: leading edge is falling edge, data sample on leading edge.
+ *  - Mode 3: leading edge is falling edge, data sample on trailing edge.
  *
  *  \param[in] spi Pointer to the HAL SPI instance.
  *  \param[in] mode The mode (0~3).
@@ -145,11 +149,12 @@ int32_t spi_m_sync_set_baudrate(struct spi_m_sync_descriptor *spi, const uint32_
 int32_t spi_m_sync_set_mode(struct spi_m_sync_descriptor *spi, const enum spi_transfer_mode mode);
 
 /** \brief Set SPI transfer character size in number of bits
- *  The character size (\ref spi_char_size) influence the way the
- *  data is sent/received.
- *  For char size <= 8 data is stored byte by byte.
- *  For char size between 9 ~ 16 data is stored in 2-byte length.
- *  Note that the default and recommended char size is 8 bit since it's
+ *
+ *  The character size (\ref spi_char_size) influence the way the data is
+ *  sent/received.
+ *  For char size <= 8-bit, data is stored byte by byte.
+ *  For char size between 9-bit ~ 16-bit, data is stored in 2-byte length.
+ *  Note that the default and recommended char size is 8-bit since it's
  *  supported by all system.
  *
  *  \param[in] spi Pointer to the HAL SPI instance.
@@ -174,8 +179,9 @@ int32_t spi_m_sync_set_char_size(struct spi_m_sync_descriptor *spi, const enum s
  */
 int32_t spi_m_sync_set_data_order(struct spi_m_sync_descriptor *spi, const enum spi_data_order dord);
 
-/** \brief Do SPI data transfer (TX & RX) in polling way
- *  Activate CS, do TX & RX and deactivate CS. It blocks.
+/** \brief Perform the SPI data transfer (TX and RX) in polling way
+ *
+ *  Activate CS, do TX and RX and deactivate CS. It blocks.
  *
  *  \param[in, out] spi Pointer to the HAL SPI instance.
  *  \param[in] xfer Pointer to the transfer information (\ref spi_xfer).
@@ -187,11 +193,11 @@ int32_t spi_m_sync_set_data_order(struct spi_m_sync_descriptor *spi, const enum 
 int32_t spi_m_sync_transfer(struct spi_m_sync_descriptor *spi, const struct spi_xfer *xfer);
 
 /**
- * \brief Return I/O descriptor for this SPI instance
+ * \brief Return the I/O descriptor for this SPI instance
  *
- * This function will return a I/O instance for this SPI driver instance
+ * This function will return an I/O instance for this SPI driver instance.
  *
- * \param[in] spi An SPI master descriptor which is used to communicate through
+ * \param[in] spi An SPI master descriptor, which is used to communicate through
  *                SPI
  * \param[in, out] io A pointer to an I/O descriptor pointer type
  *
@@ -200,7 +206,8 @@ int32_t spi_m_sync_transfer(struct spi_m_sync_descriptor *spi, const struct spi_
 int32_t spi_m_sync_get_io_descriptor(struct spi_m_sync_descriptor *const spi, struct io_descriptor **io);
 
 /** \brief Retrieve the current driver version
- *  \return Current driver version
+ *
+ *  \return Current driver version.
  */
 uint32_t spi_m_sync_get_version(void);
 

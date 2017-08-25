@@ -92,7 +92,8 @@ void _sysctrl_init_sources(void)
 #endif
 
 #if CONF_OSC32K_CONFIG == 1
-	calib = SYSCTRL->OSC32K.bit.CALIB;
+	/* OSC32K calibration value at bit 44:38 of memory 0x00806020 */
+	calib = (*((uint32_t *)0x00806024) & 0x0001FC0) >> 6;
 
 	hri_sysctrl_write_OSC32K_reg(hw,
 #if CONF_OSC32K_OVERWRITE_CALIBRATION == 1
@@ -114,7 +115,7 @@ void _sysctrl_init_sources(void)
 #if CONF_OSCULP32K_CONFIG == 1
 	hri_sysctrl_write_OSCULP32K_reg(hw,
 #if OSC32K_OVERWRITE_CALIBRATION == 1
-	                                SYSCTRL_OSCULP32K_CALIB(OSCULP32K_CALIB) |
+	                                SYSCTRL_OSCULP32K_CALIB(CONF_OSCULP32K_CALIB) |
 #else
 	                                SYSCTRL_OSCULP32K_CALIB(calib) |
 #endif

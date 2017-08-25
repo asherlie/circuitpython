@@ -12,26 +12,15 @@
 #endif
 
 // <h> Generic Clock Generator Control
-// <y> Generic clock generator 0 source
-
-// <GCLK_GENCTRL_SRC_XOSC0"> External Crystal Oscillator 8-48MHz (XOSC0)
-
+// <y> Generic clock generator 0 source// <GCLK_GENCTRL_SRC_XOSC0"> External Crystal Oscillator 8-48MHz (XOSC0)
 // <GCLK_GENCTRL_SRC_XOSC1"> External Crystal Oscillator 8-48MHz (XOSC1)
-
 // <GCLK_GENCTRL_SRC_GCLKIN"> Generic clock generator input pad
-
 // <GCLK_GENCTRL_SRC_GCLKGEN1"> Generic clock generator 1
-
 // <GCLK_GENCTRL_SRC_OSCULP32K"> 32kHz Ultra Low Power Internal Oscillator (OSCULP32K)
-
 // <GCLK_GENCTRL_SRC_XOSC32K"> 32kHz External Crystal Oscillator (XOSC32K)
-
 // <GCLK_GENCTRL_SRC_DFLL"> Digital Frequency Locked Loop (DFLL48M)
-
 // <GCLK_GENCTRL_SRC_DPLL0"> Digital Phase Locked Loop (DPLL0)
-
 // <GCLK_GENCTRL_SRC_DPLL1"> Digital Phase Locked Loop (DPLL1)
-
 // <i> This defines the clock source for generic clock generator 0
 // <id> gclk_gen_0_oscillator
 #ifndef CONF_GCLK_GEN_0_SOURCE
@@ -98,24 +87,14 @@
 #endif
 
 // <h> Generic Clock Generator Control
-// <y> Generic clock generator 1 source
-
-// <GCLK_GENCTRL_SRC_XOSC0"> External Crystal Oscillator 8-48MHz (XOSC0)
-
+// <y> Generic clock generator 1 source// <GCLK_GENCTRL_SRC_XOSC0"> External Crystal Oscillator 8-48MHz (XOSC0)
 // <GCLK_GENCTRL_SRC_XOSC1"> External Crystal Oscillator 8-48MHz (XOSC1)
-
 // <GCLK_GENCTRL_SRC_GCLKIN"> Generic clock generator input pad
-
 // <GCLK_GENCTRL_SRC_OSCULP32K"> 32kHz Ultra Low Power Internal Oscillator (OSCULP32K)
-
 // <GCLK_GENCTRL_SRC_XOSC32K"> 32kHz External Crystal Oscillator (XOSC32K)
-
 // <GCLK_GENCTRL_SRC_DFLL"> Digital Frequency Locked Loop (DFLL48M)
-
 // <GCLK_GENCTRL_SRC_DPLL0"> Digital Phase Locked Loop (DPLL0)
-
 // <GCLK_GENCTRL_SRC_DPLL1"> Digital Phase Locked Loop (DPLL1)
-
 // <i> This defines the clock source for generic clock generator 1
 // <id> gclk_gen_1_oscillator
 #ifndef CONF_GCLK_GEN_1_SOURCE
@@ -182,26 +161,15 @@
 #endif
 
 // <h> Generic Clock Generator Control
-// <y> Generic clock generator 2 source
-
-// <GCLK_GENCTRL_SRC_XOSC0"> External Crystal Oscillator 8-48MHz (XOSC0)
-
+// <y> Generic clock generator 2 source// <GCLK_GENCTRL_SRC_XOSC0"> External Crystal Oscillator 8-48MHz (XOSC0)
 // <GCLK_GENCTRL_SRC_XOSC1"> External Crystal Oscillator 8-48MHz (XOSC1)
-
 // <GCLK_GENCTRL_SRC_GCLKIN"> Generic clock generator input pad
-
 // <GCLK_GENCTRL_SRC_GCLKGEN1"> Generic clock generator 1
-
 // <GCLK_GENCTRL_SRC_OSCULP32K"> 32kHz Ultra Low Power Internal Oscillator (OSCULP32K)
-
 // <GCLK_GENCTRL_SRC_XOSC32K"> 32kHz External Crystal Oscillator (XOSC32K)
-
 // <GCLK_GENCTRL_SRC_DFLL"> Digital Frequency Locked Loop (DFLL48M)
-
 // <GCLK_GENCTRL_SRC_DPLL0"> Digital Phase Locked Loop (DPLL0)
-
 // <GCLK_GENCTRL_SRC_DPLL1"> Digital Phase Locked Loop (DPLL1)
-
 // <i> This defines the clock source for generic clock generator 2
 // <id> gclk_gen_2_oscillator
 #ifndef CONF_GCLK_GEN_2_SOURCE
@@ -268,26 +236,15 @@
 #endif
 
 // <h> Generic Clock Generator Control
-// <y> Generic clock generator 3 source
-
-// <GCLK_GENCTRL_SRC_XOSC0"> External Crystal Oscillator 8-48MHz (XOSC0)
-
+// <y> Generic clock generator 3 source// <GCLK_GENCTRL_SRC_XOSC0"> External Crystal Oscillator 8-48MHz (XOSC0)
 // <GCLK_GENCTRL_SRC_XOSC1"> External Crystal Oscillator 8-48MHz (XOSC1)
-
 // <GCLK_GENCTRL_SRC_GCLKIN"> Generic clock generator input pad
-
 // <GCLK_GENCTRL_SRC_GCLKGEN1"> Generic clock generator 1
-
 // <GCLK_GENCTRL_SRC_OSCULP32K"> 32kHz Ultra Low Power Internal Oscillator (OSCULP32K)
-
 // <GCLK_GENCTRL_SRC_XOSC32K"> 32kHz External Crystal Oscillator (XOSC32K)
-
 // <GCLK_GENCTRL_SRC_DFLL"> Digital Frequency Locked Loop (DFLL48M)
-
 // <GCLK_GENCTRL_SRC_DPLL0"> Digital Phase Locked Loop (DPLL0)
-
 // <GCLK_GENCTRL_SRC_DPLL1"> Digital Phase Locked Loop (DPLL1)
-
 // <i> This defines the clock source for generic clock generator 3
 // <id> gclk_gen_3_oscillator
 #ifndef CONF_GCLK_GEN_3_SOURCE
@@ -354,26 +311,15 @@
 #endif
 
 // <h> Generic Clock Generator Control
-// <y> Generic clock generator 4 source
-
-// <GCLK_GENCTRL_SRC_XOSC0"> External Crystal Oscillator 8-48MHz (XOSC0)
-
+// <y> Generic clock generator 4 source// <GCLK_GENCTRL_SRC_XOSC0"> External Crystal Oscillator 8-48MHz (XOSC0)
 // <GCLK_GENCTRL_SRC_XOSC1"> External Crystal Oscillator 8-48MHz (XOSC1)
-
 // <GCLK_GENCTRL_SRC_GCLKIN"> Generic clock generator input pad
-
 // <GCLK_GENCTRL_SRC_GCLKGEN1"> Generic clock generator 1
-
 // <GCLK_GENCTRL_SRC_OSCULP32K"> 32kHz Ultra Low Power Internal Oscillator (OSCULP32K)
-
 // <GCLK_GENCTRL_SRC_XOSC32K"> 32kHz External Crystal Oscillator (XOSC32K)
-
 // <GCLK_GENCTRL_SRC_DFLL"> Digital Frequency Locked Loop (DFLL48M)
-
 // <GCLK_GENCTRL_SRC_DPLL0"> Digital Phase Locked Loop (DPLL0)
-
 // <GCLK_GENCTRL_SRC_DPLL1"> Digital Phase Locked Loop (DPLL1)
-
 // <i> This defines the clock source for generic clock generator 4
 // <id> gclk_gen_4_oscillator
 #ifndef CONF_GCLK_GEN_4_SOURCE
@@ -440,26 +386,15 @@
 #endif
 
 // <h> Generic Clock Generator Control
-// <y> Generic clock generator 5 source
-
-// <GCLK_GENCTRL_SRC_XOSC0"> External Crystal Oscillator 8-48MHz (XOSC0)
-
+// <y> Generic clock generator 5 source// <GCLK_GENCTRL_SRC_XOSC0"> External Crystal Oscillator 8-48MHz (XOSC0)
 // <GCLK_GENCTRL_SRC_XOSC1"> External Crystal Oscillator 8-48MHz (XOSC1)
-
 // <GCLK_GENCTRL_SRC_GCLKIN"> Generic clock generator input pad
-
 // <GCLK_GENCTRL_SRC_GCLKGEN1"> Generic clock generator 1
-
 // <GCLK_GENCTRL_SRC_OSCULP32K"> 32kHz Ultra Low Power Internal Oscillator (OSCULP32K)
-
 // <GCLK_GENCTRL_SRC_XOSC32K"> 32kHz External Crystal Oscillator (XOSC32K)
-
 // <GCLK_GENCTRL_SRC_DFLL"> Digital Frequency Locked Loop (DFLL48M)
-
 // <GCLK_GENCTRL_SRC_DPLL0"> Digital Phase Locked Loop (DPLL0)
-
 // <GCLK_GENCTRL_SRC_DPLL1"> Digital Phase Locked Loop (DPLL1)
-
 // <i> This defines the clock source for generic clock generator 5
 // <id> gclk_gen_5_oscillator
 #ifndef CONF_GCLK_GEN_5_SOURCE
@@ -526,26 +461,15 @@
 #endif
 
 // <h> Generic Clock Generator Control
-// <y> Generic clock generator 6 source
-
-// <GCLK_GENCTRL_SRC_XOSC0"> External Crystal Oscillator 8-48MHz (XOSC0)
-
+// <y> Generic clock generator 6 source// <GCLK_GENCTRL_SRC_XOSC0"> External Crystal Oscillator 8-48MHz (XOSC0)
 // <GCLK_GENCTRL_SRC_XOSC1"> External Crystal Oscillator 8-48MHz (XOSC1)
-
 // <GCLK_GENCTRL_SRC_GCLKIN"> Generic clock generator input pad
-
 // <GCLK_GENCTRL_SRC_GCLKGEN1"> Generic clock generator 1
-
 // <GCLK_GENCTRL_SRC_OSCULP32K"> 32kHz Ultra Low Power Internal Oscillator (OSCULP32K)
-
 // <GCLK_GENCTRL_SRC_XOSC32K"> 32kHz External Crystal Oscillator (XOSC32K)
-
 // <GCLK_GENCTRL_SRC_DFLL"> Digital Frequency Locked Loop (DFLL48M)
-
 // <GCLK_GENCTRL_SRC_DPLL0"> Digital Phase Locked Loop (DPLL0)
-
 // <GCLK_GENCTRL_SRC_DPLL1"> Digital Phase Locked Loop (DPLL1)
-
 // <i> This defines the clock source for generic clock generator 6
 // <id> gclk_gen_6_oscillator
 #ifndef CONF_GCLK_GEN_6_SOURCE
@@ -612,26 +536,15 @@
 #endif
 
 // <h> Generic Clock Generator Control
-// <y> Generic clock generator 7 source
-
-// <GCLK_GENCTRL_SRC_XOSC0"> External Crystal Oscillator 8-48MHz (XOSC0)
-
+// <y> Generic clock generator 7 source// <GCLK_GENCTRL_SRC_XOSC0"> External Crystal Oscillator 8-48MHz (XOSC0)
 // <GCLK_GENCTRL_SRC_XOSC1"> External Crystal Oscillator 8-48MHz (XOSC1)
-
 // <GCLK_GENCTRL_SRC_GCLKIN"> Generic clock generator input pad
-
 // <GCLK_GENCTRL_SRC_GCLKGEN1"> Generic clock generator 1
-
 // <GCLK_GENCTRL_SRC_OSCULP32K"> 32kHz Ultra Low Power Internal Oscillator (OSCULP32K)
-
 // <GCLK_GENCTRL_SRC_XOSC32K"> 32kHz External Crystal Oscillator (XOSC32K)
-
 // <GCLK_GENCTRL_SRC_DFLL"> Digital Frequency Locked Loop (DFLL48M)
-
 // <GCLK_GENCTRL_SRC_DPLL0"> Digital Phase Locked Loop (DPLL0)
-
 // <GCLK_GENCTRL_SRC_DPLL1"> Digital Phase Locked Loop (DPLL1)
-
 // <i> This defines the clock source for generic clock generator 7
 // <id> gclk_gen_7_oscillator
 #ifndef CONF_GCLK_GEN_7_SOURCE
@@ -698,26 +611,15 @@
 #endif
 
 // <h> Generic Clock Generator Control
-// <y> Generic clock generator 8 source
-
-// <GCLK_GENCTRL_SRC_XOSC0"> External Crystal Oscillator 8-48MHz (XOSC0)
-
+// <y> Generic clock generator 8 source// <GCLK_GENCTRL_SRC_XOSC0"> External Crystal Oscillator 8-48MHz (XOSC0)
 // <GCLK_GENCTRL_SRC_XOSC1"> External Crystal Oscillator 8-48MHz (XOSC1)
-
 // <GCLK_GENCTRL_SRC_GCLKIN"> Generic clock generator input pad
-
 // <GCLK_GENCTRL_SRC_GCLKGEN1"> Generic clock generator 1
-
 // <GCLK_GENCTRL_SRC_OSCULP32K"> 32kHz Ultra Low Power Internal Oscillator (OSCULP32K)
-
 // <GCLK_GENCTRL_SRC_XOSC32K"> 32kHz External Crystal Oscillator (XOSC32K)
-
 // <GCLK_GENCTRL_SRC_DFLL"> Digital Frequency Locked Loop (DFLL48M)
-
 // <GCLK_GENCTRL_SRC_DPLL0"> Digital Phase Locked Loop (DPLL0)
-
 // <GCLK_GENCTRL_SRC_DPLL1"> Digital Phase Locked Loop (DPLL1)
-
 // <i> This defines the clock source for generic clock generator 8
 // <id> gclk_gen_8_oscillator
 #ifndef CONF_GCLK_GEN_8_SOURCE
@@ -784,26 +686,15 @@
 #endif
 
 // <h> Generic Clock Generator Control
-// <y> Generic clock generator 9 source
-
-// <GCLK_GENCTRL_SRC_XOSC0"> External Crystal Oscillator 8-48MHz (XOSC0)
-
+// <y> Generic clock generator 9 source// <GCLK_GENCTRL_SRC_XOSC0"> External Crystal Oscillator 8-48MHz (XOSC0)
 // <GCLK_GENCTRL_SRC_XOSC1"> External Crystal Oscillator 8-48MHz (XOSC1)
-
 // <GCLK_GENCTRL_SRC_GCLKIN"> Generic clock generator input pad
-
 // <GCLK_GENCTRL_SRC_GCLKGEN1"> Generic clock generator 1
-
 // <GCLK_GENCTRL_SRC_OSCULP32K"> 32kHz Ultra Low Power Internal Oscillator (OSCULP32K)
-
 // <GCLK_GENCTRL_SRC_XOSC32K"> 32kHz External Crystal Oscillator (XOSC32K)
-
 // <GCLK_GENCTRL_SRC_DFLL"> Digital Frequency Locked Loop (DFLL48M)
-
 // <GCLK_GENCTRL_SRC_DPLL0"> Digital Phase Locked Loop (DPLL0)
-
 // <GCLK_GENCTRL_SRC_DPLL1"> Digital Phase Locked Loop (DPLL1)
-
 // <i> This defines the clock source for generic clock generator 9
 // <id> gclk_gen_9_oscillator
 #ifndef CONF_GCLK_GEN_9_SOURCE
@@ -870,26 +761,15 @@
 #endif
 
 // <h> Generic Clock Generator Control
-// <y> Generic clock generator 10 source
-
-// <GCLK_GENCTRL_SRC_XOSC0"> External Crystal Oscillator 8-48MHz (XOSC0)
-
+// <y> Generic clock generator 10 source// <GCLK_GENCTRL_SRC_XOSC0"> External Crystal Oscillator 8-48MHz (XOSC0)
 // <GCLK_GENCTRL_SRC_XOSC1"> External Crystal Oscillator 8-48MHz (XOSC1)
-
 // <GCLK_GENCTRL_SRC_GCLKIN"> Generic clock generator input pad
-
 // <GCLK_GENCTRL_SRC_GCLKGEN1"> Generic clock generator 1
-
 // <GCLK_GENCTRL_SRC_OSCULP32K"> 32kHz Ultra Low Power Internal Oscillator (OSCULP32K)
-
 // <GCLK_GENCTRL_SRC_XOSC32K"> 32kHz External Crystal Oscillator (XOSC32K)
-
 // <GCLK_GENCTRL_SRC_DFLL"> Digital Frequency Locked Loop (DFLL48M)
-
 // <GCLK_GENCTRL_SRC_DPLL0"> Digital Phase Locked Loop (DPLL0)
-
 // <GCLK_GENCTRL_SRC_DPLL1"> Digital Phase Locked Loop (DPLL1)
-
 // <i> This defines the clock source for generic clock generator 10
 // <id> gclk_gen_10_oscillator
 #ifndef CONF_GCLK_GEN_10_SOURCE
@@ -956,26 +836,15 @@
 #endif
 
 // <h> Generic Clock Generator Control
-// <y> Generic clock generator 11 source
-
-// <GCLK_GENCTRL_SRC_XOSC0"> External Crystal Oscillator 8-48MHz (XOSC0)
-
+// <y> Generic clock generator 11 source// <GCLK_GENCTRL_SRC_XOSC0"> External Crystal Oscillator 8-48MHz (XOSC0)
 // <GCLK_GENCTRL_SRC_XOSC1"> External Crystal Oscillator 8-48MHz (XOSC1)
-
 // <GCLK_GENCTRL_SRC_GCLKIN"> Generic clock generator input pad
-
 // <GCLK_GENCTRL_SRC_GCLKGEN1"> Generic clock generator 1
-
 // <GCLK_GENCTRL_SRC_OSCULP32K"> 32kHz Ultra Low Power Internal Oscillator (OSCULP32K)
-
 // <GCLK_GENCTRL_SRC_XOSC32K"> 32kHz External Crystal Oscillator (XOSC32K)
-
 // <GCLK_GENCTRL_SRC_DFLL"> Digital Frequency Locked Loop (DFLL48M)
-
 // <GCLK_GENCTRL_SRC_DPLL0"> Digital Phase Locked Loop (DPLL0)
-
 // <GCLK_GENCTRL_SRC_DPLL1"> Digital Phase Locked Loop (DPLL1)
-
 // <i> This defines the clock source for generic clock generator 11
 // <id> gclk_gen_11_oscillator
 #ifndef CONF_GCLK_GEN_11_SOURCE

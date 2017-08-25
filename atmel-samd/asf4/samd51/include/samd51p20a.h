@@ -57,22 +57,28 @@ typedef volatile       uint8_t  RoReg8;  /**< Read only  8-bit register (volatil
 #endif
 typedef volatile       uint32_t WoReg;   /**< Write only 32-bit register (volatile unsigned int) */
 typedef volatile       uint16_t WoReg16; /**< Write only 16-bit register (volatile unsigned int) */
-typedef volatile       uint32_t WoReg8;  /**< Write only  8-bit register (volatile unsigned int) */
+typedef volatile       uint8_t  WoReg8;  /**< Write only  8-bit register (volatile unsigned int) */
 typedef volatile       uint32_t RwReg;   /**< Read-Write 32-bit register (volatile unsigned int) */
 typedef volatile       uint16_t RwReg16; /**< Read-Write 16-bit register (volatile unsigned int) */
 typedef volatile       uint8_t  RwReg8;  /**< Read-Write  8-bit register (volatile unsigned int) */
-#if !defined(_UL)
-#define _U(x)          x ## U            /**< C code: Unsigned integer literal constant value */
-#define _L(x)          x ## L            /**< C code: Long integer literal constant value */
-#define _UL(x)         x ## UL           /**< C code: Unsigned Long integer literal constant value */
 #endif
-#else
-#if !defined(_UL)
-#define _U(x)          x                 /**< Assembler: Unsigned integer literal constant value */
-#define _L(x)          x                 /**< Assembler: Long integer literal constant value */
-#define _UL(x)         x                 /**< Assembler: Unsigned Long integer literal constant value */
+
+#if !defined(SKIP_INTEGER_LITERALS)
+#if defined(_U_) || defined(_L_) || defined(_UL_)
+  #error "Integer Literals macros already defined elsewhere"
 #endif
-#endif
+
+#if !(defined(__ASSEMBLY__) || defined(__IAR_SYSTEMS_ASM__))
+/* Macros that deal with adding suffixes to integer literal constants for C/C++ */
+#define _U_(x)         x ## U            /**< C code: Unsigned integer literal constant value */
+#define _L_(x)         x ## L            /**< C code: Long integer literal constant value */
+#define _UL_(x)        x ## UL           /**< C code: Unsigned Long integer literal constant value */
+#else /* Assembler */
+#define _U_(x)         x                 /**< Assembler: Unsigned integer literal constant value */
+#define _L_(x)         x                 /**< Assembler: Long integer literal constant value */
+#define _UL_(x)        x                 /**< Assembler: Unsigned Long integer literal constant value */
+#endif /* !(defined(__ASSEMBLY__) || defined(__IAR_SYSTEMS_ASM__)) */
+#endif /* SKIP_INTEGER_LITERALS */
 
 /* ************************************************************************** */
 /**  CMSIS DEFINITIONS FOR SAMD51P20A */
@@ -544,12 +550,12 @@ void SDHC1_Handler               ( void );
  * \brief Configuration of the Cortex-M4 Processor and Core Peripherals
  */
 
-//#define LITTLE_ENDIAN          1        
+#define LITTLE_ENDIAN          1        
 #define __CM4_REV              1         /*!< Core revision r0p1 */
 #define __DEBUG_LVL            3         /*!< Full debug plus DWT data matching */
 #define __FPU_PRESENT          1         /*!< FPU present or not */
 #define __MPU_PRESENT          1         /*!< MPU present or not */
-#define __NVIC_PRIO_BITS       2         /*!< Number of bits used for Priority Levels */
+#define __NVIC_PRIO_BITS       3         /*!< Number of bits used for Priority Levels */
 #define __TRACE_LVL            2         /*!< Full trace: ITM, DWT triggers and counters, ETM */
 #define __VTOR_PRESENT         1         /*!< VTOR present or not */
 #define __Vendor_SysTickConfig 0         /*!< Set to 1 if different SysTick Config is used */
@@ -1066,35 +1072,35 @@ void SDHC1_Handler               ( void );
 /**  MEMORY MAPPING DEFINITIONS FOR SAMD51P20A */
 /* ************************************************************************** */
 
-#define HSRAM_SIZE            _UL(0x00040000) /* 256 kB */
-#define FLASH_SIZE            _UL(0x00100000) /* 1024 kB */
+#define HSRAM_SIZE            _UL_(0x00040000) /* 256 kB */
+#define FLASH_SIZE            _UL_(0x00100000) /* 1024 kB */
 #define FLASH_PAGE_SIZE       512
 #define FLASH_NB_OF_PAGES     2048
 #define FLASH_USER_PAGE_SIZE  512
-#define BKUPRAM_SIZE          _UL(0x00002000) /* 8 kB */
-#define QSPI_SIZE             _UL(0x01000000) /* 16384 kB */
+#define BKUPRAM_SIZE          _UL_(0x00002000) /* 8 kB */
+#define QSPI_SIZE             _UL_(0x01000000) /* 16384 kB */
 
-#define FLASH_ADDR            _UL(0x00000000) /**< FLASH base address */
-#define CMCC_DATARAM_ADDR     _UL(0x03000000) /**< CMCC_DATARAM base address */
-#define CMCC_DATARAM_SIZE     _UL(0x00001000) /**< CMCC_DATARAM size */
-#define CMCC_TAGRAM_ADDR      _UL(0x03001000) /**< CMCC_TAGRAM base address */
-#define CMCC_TAGRAM_SIZE      _UL(0x00000400) /**< CMCC_TAGRAM size */
-#define CMCC_VALIDRAM_ADDR    _UL(0x03002000) /**< CMCC_VALIDRAM base address */
-#define CMCC_VALIDRAM_SIZE    _UL(0x00000040) /**< CMCC_VALIDRAM size */
-#define HSRAM_ADDR            _UL(0x20000000) /**< HSRAM base address */
-#define HSRAM_ETB_ADDR        _UL(0x20000000) /**< HSRAM_ETB base address */
-#define HSRAM_ETB_SIZE        _UL(0x00008000) /**< HSRAM_ETB size */
-#define HSRAM_RET1_ADDR       _UL(0x20000000) /**< HSRAM_RET1 base address */
-#define HSRAM_RET1_SIZE       _UL(0x00008000) /**< HSRAM_RET1 size */
-#define HPB0_ADDR             _UL(0x40000000) /**< HPB0 base address */
-#define HPB1_ADDR             _UL(0x41000000) /**< HPB1 base address */
-#define HPB2_ADDR             _UL(0x42000000) /**< HPB2 base address */
-#define HPB3_ADDR             _UL(0x43000000) /**< HPB3 base address */
-#define SEEPROM_ADDR          _UL(0x44000000) /**< SEEPROM base address */
-#define BKUPRAM_ADDR          _UL(0x47000000) /**< BKUPRAM base address */
-#define PPB_ADDR              _UL(0xE0000000) /**< PPB base address */
+#define FLASH_ADDR            _UL_(0x00000000) /**< FLASH base address */
+#define CMCC_DATARAM_ADDR     _UL_(0x03000000) /**< CMCC_DATARAM base address */
+#define CMCC_DATARAM_SIZE     _UL_(0x00001000) /**< CMCC_DATARAM size */
+#define CMCC_TAGRAM_ADDR      _UL_(0x03001000) /**< CMCC_TAGRAM base address */
+#define CMCC_TAGRAM_SIZE      _UL_(0x00000400) /**< CMCC_TAGRAM size */
+#define CMCC_VALIDRAM_ADDR    _UL_(0x03002000) /**< CMCC_VALIDRAM base address */
+#define CMCC_VALIDRAM_SIZE    _UL_(0x00000040) /**< CMCC_VALIDRAM size */
+#define HSRAM_ADDR            _UL_(0x20000000) /**< HSRAM base address */
+#define HSRAM_ETB_ADDR        _UL_(0x20000000) /**< HSRAM_ETB base address */
+#define HSRAM_ETB_SIZE        _UL_(0x00008000) /**< HSRAM_ETB size */
+#define HSRAM_RET1_ADDR       _UL_(0x20000000) /**< HSRAM_RET1 base address */
+#define HSRAM_RET1_SIZE       _UL_(0x00008000) /**< HSRAM_RET1 size */
+#define HPB0_ADDR             _UL_(0x40000000) /**< HPB0 base address */
+#define HPB1_ADDR             _UL_(0x41000000) /**< HPB1 base address */
+#define HPB2_ADDR             _UL_(0x42000000) /**< HPB2 base address */
+#define HPB3_ADDR             _UL_(0x43000000) /**< HPB3 base address */
+#define SEEPROM_ADDR          _UL_(0x44000000) /**< SEEPROM base address */
+#define BKUPRAM_ADDR          _UL_(0x47000000) /**< BKUPRAM base address */
+#define PPB_ADDR              _UL_(0xE0000000) /**< PPB base address */
 
-#define DSU_DID_RESETVALUE    _UL(0x60060000)
+#define DSU_DID_RESETVALUE    _UL_(0x60060000)
 #define PORT_GROUPS           4
 
 /* ************************************************************************** */

@@ -110,14 +110,15 @@ int32_t i2c_m_sync_deinit(struct i2c_m_sync_desc *i2c);
  * \param[in] addr_len The slave address length, can be I2C_M_TEN or I2C_M_SEVEN
  *
  * \return Masked slave address. The mask is a maximum 10-bit address, and 10th
- *         bit set if 10-bit address is used
+ *         bit is set if a 10-bit address is used
  */
 int32_t i2c_m_sync_set_slaveaddr(struct i2c_m_sync_desc *i2c, int16_t addr, int32_t addr_len);
 
 /**
  * \brief Set baudrate
  *
- * This function set the I2C device to specified baudrate, only takes effect when hardware is disabled
+ * This function sets the I2C device to the specified baudrate.
+ * It only takes effect when the hardware is disabled.
  *
  * \param[in] i2c An I2C descriptor, which is used to communicate through I2C
  * \param[in] clkrate Unused parameter. Should always be 0
@@ -145,7 +146,7 @@ int32_t i2c_m_sync_enable(struct i2c_m_sync_desc *i2c);
 /**
  * \brief Sync version of disable hardware
  *
- * This function disables the I2C device then waits for this disabling operation to be done
+ * This function disables the I2C device and then waits for this disabling operation to be done
  *
  * \param[in] i2c An I2C descriptor, which is used to communicate through I2C
  *
@@ -158,43 +159,45 @@ int32_t i2c_m_sync_disable(struct i2c_m_sync_desc *i2c);
 /**
  * \brief Sync version of write command to I2C slave
  *
- * This function will write the value to a specified reg in I2C slave device and
- * then waits for this operation to be done.
+ * This function will write the value to a specified register in the I2C slave device and
+ * then wait for this operation to be done.
  *
  * The sequence of this routine is
  * sta->address(write)->ack->reg address->ack->resta->address(write)->ack->reg value->nack->stt
  *
  * \param[in] i2c An I2C descriptor, which is used to communicate through I2C
- * \param[in] reg The internal address/register of I2C slave device
- * \param[in] value The value write to I2C slave device
+ * \param[in] reg The internal address/register of the I2C slave device
+ * \param[in] buffer The buffer holding data to write to the I2C slave device
+ * \param[in] length The length (in bytes) to write to the I2C slave device
  *
  * \return Whether successfully write to the device
  * \retval <0 The passed parameters were invalid or write fail
  * \retval 0 Writing to register is completed successfully
  */
-int32_t i2c_m_sync_cmd_write(struct i2c_m_sync_desc *i2c, uint8_t reg, uint8_t value);
+int32_t i2c_m_sync_cmd_write(struct i2c_m_sync_desc *i2c, uint8_t reg, uint8_t *buffer, uint8_t length);
 
 /**
  * \brief Sync version of read register value from I2C slave
  *
- * This function will read a byte value from a specified reg in I2C slave device and
- * then waits for this operation to be done.
+ * This function will read a byte value from a specified register in the I2C slave device and
+ * then wait for this operation to be done.
  *
  * The sequence of this routine is
  * sta->address(write)->ack->reg address->ack->resta->address(read)->ack->reg value->nack->stt
  *
  * \param[in] i2c An I2C descriptor, which is used to communicate through I2C
- * \param[in] reg The internal address/register of I2C slave device
- * \param[in] value The value write to I2C slave device
+ * \param[in] reg The internal address/register of the I2C slave device
+ * \param[in] buffer The buffer to hold the read data from the I2C slave device
+ * \param[in] length The length (in bytes) to read from the I2C slave device
  *
  * \return Whether successfully read from the device
  * \retval <0 The passed parameters were invalid or read fail
  * \retval 0 Reading from register is completed successfully
  */
-int32_t i2c_m_sync_cmd_read(struct i2c_m_sync_desc *i2c, uint8_t reg, uint8_t *value);
+int32_t i2c_m_sync_cmd_read(struct i2c_m_sync_desc *i2c, uint8_t reg, uint8_t *buffer, uint8_t length);
 
 /**
- * \brief Sync version of transfer message to/from I2C slave
+ * \brief Sync version of transfer message to/from the I2C slave
  *
  * This function will transfer a message between the I2C slave and the master. This function will wait for the operation
  * to be done.
@@ -238,7 +241,7 @@ int32_t i2c_m_sync_get_io_descriptor(struct i2c_m_sync_desc *const i2c, struct i
 /**
  * \brief Retrieve the current driver version
  *
- * \return Current driver version
+ * \return Current driver version.
  */
 uint32_t i2c_m_sync_get_version(void);
 

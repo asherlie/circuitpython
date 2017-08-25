@@ -1,9 +1,9 @@
 /**
  * \file
  *
- * \brief Reset related functionality declaration.
+ * \brief HAL event system related functionality implementation.
  *
- * Copyright (C) 2014 Atmel Corporation. All rights reserved.
+ * Copyright (C) 2016 Atmel Corporation. All rights reserved.
  *
  * \asf_license_start
  *
@@ -41,63 +41,68 @@
  *
  */
 
-#ifndef _HPL_RESET_H_INCLUDED
-#define _HPL_RESET_H_INCLUDED
+#include "hal_evsys.h"
+#include <hpl_evsys.h>
 
 /**
- * \addtogroup HPL Reset
- *
- * \section hpl_reset_rev Revision History
- * - v1.0.0 Initial Release
- *
- *@{
+ * \brief Driver version
  */
-
-#ifndef _UNIT_TEST_
-#include <compiler.h>
-#endif
-
-#ifdef __cplusplus
-extern "C" {
-#endif
+#define DRIVER_VERSION 0x00000001u
 
 /**
- * \brief Reset reason enumeration
- *
- * The list of possible reset reasons.
+ * \brief Initialize event system.
  */
-enum reset_reason {
-
-	RESET_REASON_POR     = 1,
-	RESET_REASON_BODCORE = 2,
-	RESET_REASON_BODVDD  = 4,
-	RESET_REASON_EXT     = 8,
-	RESET_REASON_WDT     = 16,
-	RESET_REASON_SYST    = 32,
-	RESET_REASON_BACKUP  = 64
-};
-
-/**
- * \name HPL functions
- */
-//@{
-/**
- * \brief Retrieve the reset reason
- *
- * Retrieves the reset reason of the last MCU reset.
- *
- *\return An enum value indicating the reason of the last reset.
- */
-enum reset_reason _get_reset_reason(void);
-
-/**
- * \brief Reset MCU
- */
-void _reset_mcu(void);
-//@}
-
-#ifdef __cplusplus
+int32_t event_system_init(void)
+{
+	return _event_system_init();
 }
-#endif
-/**@}*/
-#endif /* _HPL_RESET_H_INCLUDED */
+
+/**
+ * \brief Deinitialize event system.
+ */
+int32_t event_system_deinit(void)
+{
+	return _event_system_deinit();
+}
+
+/**
+ * \brief Enable event reception by the given user from the given channel
+ */
+int32_t event_system_enable_user(const uint16_t user, const uint16_t channel)
+{
+	return _event_system_enable_user(user, channel, true);
+}
+
+/**
+ * \brief Enable event reception by the given user from the given channel
+ */
+int32_t event_system_disable_user(const uint16_t user, const uint16_t channel)
+{
+	return _event_system_enable_user(user, channel, false);
+}
+
+/**
+ * \brief Enable event generation by the given generator for the given channel
+ */
+int32_t event_system_enable_generator(const uint16_t generator, const uint16_t channel)
+{
+	return _event_system_enable_generator(generator, channel, true);
+}
+
+/**
+ * \brief Enable event generation by the given generator for the given channel
+ */
+int32_t event_system_disable_generator(const uint16_t generator, const uint16_t channel)
+{
+	return _event_system_enable_generator(generator, channel, false);
+}
+
+/**
+ * \brief Retrieve the current driver version
+ *
+ * \return Current driver version
+ */
+uint32_t event_system_get_version(void)
+{
+	return DRIVER_VERSION;
+}

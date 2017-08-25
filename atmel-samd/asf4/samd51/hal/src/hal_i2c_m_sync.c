@@ -161,7 +161,7 @@ int32_t i2c_m_sync_set_baudrate(struct i2c_m_sync_desc *i2c, uint32_t clkrate, u
 /**
  * \brief Sync version of i2c write command
  */
-int32_t i2c_m_sync_cmd_write(struct i2c_m_sync_desc *i2c, uint8_t reg, uint8_t value)
+int32_t i2c_m_sync_cmd_write(struct i2c_m_sync_desc *i2c, uint8_t reg, uint8_t *buffer, uint8_t length)
 {
 	struct _i2c_m_msg msg;
 	int32_t           ret;
@@ -179,7 +179,8 @@ int32_t i2c_m_sync_cmd_write(struct i2c_m_sync_desc *i2c, uint8_t reg, uint8_t v
 	}
 
 	msg.flags  = I2C_M_STOP;
-	msg.buffer = &value;
+	msg.buffer = buffer;
+	msg.len    = length;
 
 	ret = _i2c_m_sync_transfer(&i2c->device, &msg);
 
@@ -194,7 +195,7 @@ int32_t i2c_m_sync_cmd_write(struct i2c_m_sync_desc *i2c, uint8_t reg, uint8_t v
 /**
  * \brief Sync version of i2c read command
  */
-int32_t i2c_m_sync_cmd_read(struct i2c_m_sync_desc *i2c, uint8_t reg, uint8_t *value)
+int32_t i2c_m_sync_cmd_read(struct i2c_m_sync_desc *i2c, uint8_t reg, uint8_t *buffer, uint8_t length)
 {
 	struct _i2c_m_msg msg;
 	int32_t           ret;
@@ -212,7 +213,8 @@ int32_t i2c_m_sync_cmd_read(struct i2c_m_sync_desc *i2c, uint8_t reg, uint8_t *v
 	}
 
 	msg.flags  = I2C_M_STOP | I2C_M_RD;
-	msg.buffer = value;
+	msg.buffer = buffer;
+	msg.len    = length;
 
 	ret = _i2c_m_sync_transfer(&i2c->device, &msg);
 

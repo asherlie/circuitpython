@@ -145,17 +145,17 @@ bool is_list_element(const struct list_descriptor *const list, const void *const
 /**
  * \brief Removes list head
  *
- * This function removes list head and sets the next element after the list
- * head as new list head.
+ * This function removes the list head and sets the next element after the list
+ * head as a new list head.
  *
  * \param[in] list The pointer to a list
  *
- * \return The pointer to new list head of NULL if list head is NULL
+ * \return The pointer to the new list head of NULL if the list head is NULL
  */
 void *list_remove_head(struct list_descriptor *const list);
 
 /**
- * \brief Removes list element
+ * \brief Removes the list element
  *
  * \param[in] list The pointer to a list
  * \param[in] element An element to remove
