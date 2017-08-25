@@ -24,23 +24,15 @@
  * THE SOFTWARE.
  */
 
-#include "flash_api.h"
-#include "reset.h"
+#include "boards/board.h"
+#include "mpconfigboard.h"
 
-#include "include/sam.h"
+void board_init(void) {
+}
 
-// Copied from inc/uf2.h in https://github.com/Microsoft/uf2-samd21
-#ifdef SAMD21
-#define DBL_TAP_PTR ((volatile uint32_t *)(HMCRAMC0_ADDR + HMCRAMC0_SIZE - 4))
-#else
-    #ifdef SAMD51
-    #define DBL_TAP_PTR ((volatile uint32_t *)(HSRAM_ADDR + HSRAM_SIZE - 4))
-    #endif
-#endif
-#define DBL_TAP_MAGIC 0xf01669ef // Randomly selected, adjusted to have first and last bit set
+bool board_requests_safe_mode(void) {
+    return false;
+}
 
-void reset_to_bootloader(void) {
-    flash_flush();
-    *DBL_TAP_PTR = DBL_TAP_MAGIC;
-    NVIC_SystemReset();
+void reset_board(void) {
 }

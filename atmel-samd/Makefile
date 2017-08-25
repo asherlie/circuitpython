@@ -76,14 +76,15 @@ BASE_CFLAGS = \
 
 CFLAGS = $(INC) -Wall -Werror -std=gnu11 -nostdlib $(BASE_CFLAGS) $(CFLAGS_MOD) $(COPT)
 
-ifeq ($(CHIP_VARIANT), samd21)
+ifeq ($(CHIP_FAMILY), samd21)
 CFLAGS += \
 	-mthumb \
 	-mabi=aapcs-linux \
 	-mcpu=cortex-m0plus \
 	-msoft-float \
 	-mfloat-abi=soft
-else ifeq ($(CHIP_VARIANT), samd51)
+endif
+ifeq ($(CHIP_FAMILY), samd51)
 CFLAGS += \
 	-mthumb \
 	-mabi=aapcs-linux \
@@ -98,7 +99,7 @@ ifeq ($(DEBUG), 1)
 # NDEBUG disables assert() statements. This reduces code size pretty dramatically, per tannewt.
 # Turn on Python modules useful for debugging (e.g. uheap, ustack).
 CFLAGS += -Os -ggdb -DNDEBUG
-ifeq ($(CHIP_VARIANT), SAMD21)
+ifeq ($(CHIP_FAMILY), samd21)
 CFLAGS += -DENABLE_MICRO_TRACE_BUFFER
 endif
 else
@@ -127,10 +128,10 @@ LDFLAGS = $(CFLAGS) -nostartfiles -fshort-enums -Wl,-nostdlib -Wl,-T,$(LD_FILE) 
 LIBS = -lgcc -lc
 
 
-ifeq ($(CHIP_VARIANT), samd21)
+ifeq ($(CHIP_FAMILY), samd21)
 LDFLAGS += -mthumb -mcpu=cortex-m0plus -Lasf/thirdparty/CMSIS/Lib/GCC/
 LIBS = -larm_cortexM0l_math -lm $(LIBS)
-else  ifeq ($(CHIP_VARIANT), samd51)
+else ifeq ($(CHIP_VARIANT), samd51)
 LDFLAGS += -mthumb -mcpu=cortex-m4
 endif
 
@@ -139,6 +140,7 @@ SRC_ASF = $(addprefix asf4/$(CHIP_FAMILY)/,\
 
 # Skip this source for now.
 #	access_vfs.c \
+	shared_dma.c \
 	$(FLASH_IMPL) \
 
 SRC_C = \
@@ -150,7 +152,6 @@ SRC_C = \
 	mphalport.c \
 	reset.c \
 	$(CHIP_FAMILY)_pins.c \
-	shared_dma.c \
 	rgb_led_status.c \
 	tick.c \
 	usb.c \

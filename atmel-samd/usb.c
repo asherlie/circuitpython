@@ -24,37 +24,40 @@
  * THE SOFTWARE.
  */
 
+#include "usb.h"
+
 #include <stdint.h>
 
+#include "hal/include/hal_gpio.h"
 #include "usb/class/cdc/device/cdcdf_acm.h"
 // #include "hiddf_mouse.h"
 // #include "hiddf_keyboard.h"
 #include "usb/class/hid/device/hiddf_generic.h"
 #include "usb/class/composite/device/composite_desc.h"
 
-#include "hal/include/hal_gpio.h"
+#include "autoreload.h"
 
-// // Store received characters on our own so that we can filter control characters
-// // and act immediately on CTRL-C for example.
-//
-// // Receive buffer
-// static uint8_t usb_rx_buf[USB_RX_BUF_SIZE];
-//
-// // Receive buffer head
-// static volatile uint8_t usb_rx_buf_head;
-//
-// // Receive buffer tail
-// static volatile uint8_t usb_rx_buf_tail;
-//
-// // Number of bytes in receive buffer
-// volatile uint8_t usb_rx_count;
-//
-// volatile bool mp_cdc_enabled = false;
+// Store received characters on our own so that we can filter control characters
+// and act immediately on CTRL-C for example.
+
+// Receive buffer
+static uint8_t usb_rx_buf[USB_RX_BUF_SIZE];
+
+// Receive buffer head
+static volatile uint8_t usb_rx_buf_head;
+
+// Receive buffer tail
+static volatile uint8_t usb_rx_buf_tail;
+
+// Number of bytes in receive buffer
+volatile uint8_t usb_rx_count;
+
+volatile bool mp_cdc_enabled = false;
 
 // void usb_rx_notify(void)
 // {
 //     volatile hal_atomic_t flags;
-//     if (mp_cdc_enabled) {
+//     if (cdcdf_acm_is_enabled()) {
 //         while (udi_cdc_is_rx_ready()) {
 //             uint8_t c;
 //
@@ -81,7 +84,7 @@
 //             usb_rx_count++;
 //             // WARNING(tannewt): This call can call us back with the next
 //             // character!
-//             c = udi_cdc_getc();
+//             c = cdcdf_acm_read(&c, 1);
 //
 //             if (c == mp_interrupt_char) {
 //                 // We consumed a character rather than adding it to the rx
@@ -102,32 +105,6 @@
 //             atomic_leave_critical(&flags);
 //         }
 //     }
-// }
-
-// int receive_usb(void) {
-//     if (usb_rx_count == 0) {
-//         return 0;
-//     }
-//
-//     // Disable autoreset if someone is using the repl.
-//     autoreset_disable();
-//
-//     // Copy from head.
-//     int data;
-//     CRITICAL_SECTION_ENTER();
-//     data = usb_rx_buf[usb_rx_buf_head];
-//     usb_rx_buf_head++;
-//     usb_rx_count--;
-//     if ((USB_RX_BUF_SIZE) == usb_rx_buf_head) {
-//       usb_rx_buf_head = 0;
-//     }
-//     CRITICAL_SECTION_LEAVE();
-//
-//     // Call usb_rx_notify if we just emptied a spot in the buffer.
-//     if (usb_rx_count == USB_RX_BUF_SIZE - 1) {
-//          usb_rx_notify();
-//     }
-//     return data;
 // }
 
 static uint8_t multi_desc_bytes[] = {
@@ -174,13 +151,13 @@ static void init_hardware(void) {
 static bool usb_device_cb_bulk_out(const uint8_t ep, const enum usb_xfer_code rc, const uint32_t count)
 {
 
+    //cdcdf_acm_read((uint8_t *)usbd_cdc_buffer, 64);
     /* No error. */
     return false;
 }
 
 static bool usb_device_cb_bulk_in(const uint8_t ep, const enum usb_xfer_code rc, const uint32_t count)
 {
-
     /* No error. */
     return false;
 }
@@ -221,28 +198,33 @@ void init_usb(void) {
     //usbdc_register_handler(USBDC_HDL_SOF, &usbd_sof_event_h);
 }
 
-void usb_write(const uint8_t* buffer, uint32_t len) {
-    // // Always make sure there is enough room in the usb buffer for the outgoing
-    // // string. If there isn't we risk getting caught in a loop within the usb
-    // // code as it tries to send all the characters it can't buffer.
-    // uint32_t start = 0;
-    // uint64_t start_tick = common_hal_time_monotonic();
-    // uint64_t duration = 0;
-    // if (mp_cdc_enabled) {
-    //     while (start < len && duration < 10) {
-    //         uint8_t buffer_space = udi_cdc_get_free_tx_buffer();
-    //         uint8_t transmit = min(len - start, buffer_space);
-    //         if (transmit > 0) {
-    //             if (udi_cdc_write_buf(str + start, transmit) > 0) {
-    //                 // It didn't transmit successfully so give up.
-    //                 break;
-    //             }
-    //         }
-    //         start += transmit;
-    //         #ifdef MICROPY_VM_HOOK_LOOP
-    //             MICROPY_VM_HOOK_LOOP
-    //         #endif
-    //         duration = (common_hal_time_monotonic() - start_tick);
-    //     }
+int usb_read(void) {
+    if (usb_rx_count == 0) {
+        return 0;
+    }
+    //
+    // // Disable autoreload if someone is using the repl.
+    // autoreload_disable();
+    //
+    // // Copy from head.
+    // int data;
+    // CRITICAL_SECTION_ENTER();
+    // data = usb_rx_buf[usb_rx_buf_head];
+    // usb_rx_buf_head++;
+    // usb_rx_count--;
+    // if ((USB_RX_BUF_SIZE) == usb_rx_buf_head) {
+    //   usb_rx_buf_head = 0;
     // }
+    // CRITICAL_SECTION_LEAVE();
+    //
+    // // Call usb_rx_notify if we just emptied a spot in the buffer.
+    // if (usb_rx_count == USB_RX_BUF_SIZE - 1) {
+    //      usb_rx_notify();
+    // }
+    // return data;
+    return usb_rx_buf[usb_rx_buf_head];
+}
+
+void usb_write(const uint8_t* buffer, uint32_t len) {
+    cdcdf_acm_write((uint8_t *)buffer, len);
 }
