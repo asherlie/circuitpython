@@ -125,14 +125,15 @@ endif
 
 #LIBM_FILE_NAME   = $(shell $(CC) $(CFLAGS) -print-file-name=libm.a)
 LDFLAGS = $(CFLAGS) -nostartfiles -fshort-enums -Wl,-nostdlib -Wl,-T,$(LD_FILE) -Wl,-Map=$@.map -Wl,-cref -Wl,-gc-sections -specs=nano.specs
-LIBS = -lgcc -lc
+LIBS := -lgcc -lc
 
 
 ifeq ($(CHIP_FAMILY), samd21)
 LDFLAGS += -mthumb -mcpu=cortex-m0plus -Lasf/thirdparty/CMSIS/Lib/GCC/
-LIBS = -larm_cortexM0l_math -lm $(LIBS)
-else ifeq ($(CHIP_VARIANT), samd51)
+LIBS := -larm_cortexM0l_math -lm $(LIBS)
+else ifeq ($(CHIP_FAMILY), samd51)
 LDFLAGS += -mthumb -mcpu=cortex-m4
+LIBS := -lm $(LIBS)
 endif
 
 SRC_ASF = $(addprefix asf4/$(CHIP_FAMILY)/,\
