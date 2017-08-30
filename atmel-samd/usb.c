@@ -36,6 +36,8 @@
 #include "usb/class/composite/device/composite_desc.h"
 #include "peripheral_clk_config.h"
 
+#include "lib/utils/interrupt_char.h"
+
 #include "autoreload.h"
 
 // Store received characters on our own so that we can filter control characters
@@ -54,59 +56,6 @@ static volatile uint8_t usb_rx_buf_tail;
 volatile uint8_t usb_rx_count;
 
 volatile bool mp_cdc_enabled = false;
-
-// void usb_rx_notify(void)
-// {
-//     volatile hal_atomic_t flags;
-//     if (cdcdf_acm_is_enabled()) {
-//         while (udi_cdc_is_rx_ready()) {
-//             uint8_t c;
-//
-//             atomic_enter_critical(&flags);
-//             // If our buffer is full, then don't get another character otherwise
-//             // we'll lose a previous character.
-//             if (usb_rx_count >= USB_RX_BUF_SIZE) {
-//                 atomic_leave_critical(&flags);
-//                 break;
-//             }
-//
-//             uint8_t current_tail = usb_rx_buf_tail;
-//             // Pretend we've received a character so that any nested calls to
-//             // this function have to consider the spot we've reserved.
-//             if ((USB_RX_BUF_SIZE - 1) == usb_rx_buf_tail) {
-//                 // Reached the end of buffer, revert back to beginning of
-//                 // buffer.
-//                 usb_rx_buf_tail = 0x00;
-//             } else {
-//                 usb_rx_buf_tail++;
-//             }
-//             // The count of characters present in receive buffer is
-//             // incremented.
-//             usb_rx_count++;
-//             // WARNING(tannewt): This call can call us back with the next
-//             // character!
-//             c = cdcdf_acm_read(&c, 1);
-//
-//             if (c == mp_interrupt_char) {
-//                 // We consumed a character rather than adding it to the rx
-//                 // buffer so undo the modifications we made to count and the
-//                 // tail.
-//                 usb_rx_count--;
-//                 usb_rx_buf_tail = current_tail;
-//                 atomic_leave_critical(&flags);
-//                 mp_keyboard_interrupt();
-//                 // Don't put the interrupt into the buffer, just continue.
-//                 continue;
-//             }
-//
-//             // We put the next character where we expected regardless of whether
-//             // the next character was already loaded in the buffer.
-//             usb_rx_buf[current_tail] = c;
-//
-//             atomic_leave_critical(&flags);
-//         }
-//     }
-// }
 
 static uint8_t multi_desc_bytes[] = {
  /* Device descriptors and Configuration descriptors list. */
@@ -151,12 +100,42 @@ static void init_hardware(void) {
 
 static bool usb_device_cb_bulk_out(const uint8_t ep, const enum usb_xfer_code rc, const uint32_t count)
 {
-    int32_t result = cdcdf_acm_read((uint8_t *)usb_rx_buf, count);
-    usb_rx_count += count;
-    while (result != ERR_NONE) {}
-    result = cdcdf_acm_write((uint8_t *)usb_rx_buf, usb_rx_count);
-    while (result < ERR_NONE) {}
-    usb_rx_count = 0;
+    volatile hal_atomic_t flags;
+    atomic_enter_critical(&flags);
+    // If our buffer can't fit the data received, then error out.
+    if (count > (uint8_t) (USB_RX_BUF_SIZE - usb_rx_count)) {
+        atomic_leave_critical(&flags);
+        return true;
+    }
+
+    uint8_t buf[count];
+    int32_t result = cdcdf_acm_read(buf, count);
+    if (result != ERR_NONE) {
+        return true;
+    }
+
+    for (uint16_t i = 0; i < count; i++) {
+        uint8_t c = buf[i];
+        if (c == mp_interrupt_char) {
+            atomic_leave_critical(&flags);
+            mp_keyboard_interrupt();
+            // Don't put the interrupt into the buffer, just continue.
+            return false;
+        } else {
+            // The count of characters present in receive buffer is
+            // incremented.
+            usb_rx_count++;
+            usb_rx_buf[usb_rx_buf_tail] = c;
+            usb_rx_buf_tail++;
+            if (usb_rx_buf_tail == USB_RX_BUF_SIZE) {
+                // Reached the end of buffer, revert back to beginning of
+                // buffer.
+                usb_rx_buf_tail = 0x00;
+            }
+        }
+    }
+    atomic_leave_critical(&flags);
+
     /* No error. */
     return false;
 }
@@ -169,10 +148,10 @@ static bool usb_device_cb_bulk_in(const uint8_t ep, const enum usb_xfer_code rc,
 
 static bool usb_device_cb_state_c(usb_cdc_control_signal_t state)
 {
-    uint8_t buf[64];
+    //uint8_t buf[64];
     if (state.rs232.DTR) {
         // Start Rx and throw away packet.
-        cdcdf_acm_read((uint8_t *)buf, 64);
+        //cdcdf_acm_read((uint8_t *)buf, 64);
     }
 
     /* No error. */
@@ -197,47 +176,70 @@ void init_usb(void) {
     int32_t result = usbdc_start(&multi_desc);
     while (result != ERR_NONE) {}
     usbdc_attach();
+}
 
-    while (!cdcdf_acm_is_enabled()) {}
-
-    // Maybe wait for USB to be connected.
+static inline bool cdc_enabled(void) {
+    if (mp_cdc_enabled) {
+        return true;
+    }
+    if (!cdcdf_acm_is_enabled()) {
+        return false;
+    }
     cdcdf_acm_register_callback(CDCDF_ACM_CB_READ, (FUNC_PTR)usb_device_cb_bulk_out);
     cdcdf_acm_register_callback(CDCDF_ACM_CB_WRITE, (FUNC_PTR)usb_device_cb_bulk_in);
     cdcdf_acm_register_callback(CDCDF_ACM_CB_STATE_C, (FUNC_PTR)usb_device_cb_state_c);
-    //usbdc_register_handler(USBDC_HDL_SOF, &usbd_sof_event_h);
+    mp_cdc_enabled = true;
 
-    const char* works = "it works\n";
-    result = cdcdf_acm_write((uint8_t *)works, 9);
-    while (result < ERR_NONE) {}
+    // Ignored read.
+    uint8_t buf[64];
+    cdcdf_acm_read(buf, 64);
+    return true;
+}
+
+bool usb_bytes_available(void) {
+    if (usb_rx_count == 0) {
+        cdc_enabled();
+        return false;
+    }
+    return usb_rx_count > 0;
 }
 
 int usb_read(void) {
-    if (usb_rx_count == 0) {
+    if (!cdc_enabled() || usb_rx_count == 0) {
         return 0;
     }
-    //
-    // // Disable autoreload if someone is using the repl.
-    // autoreload_disable();
-    //
-    // // Copy from head.
-    // int data;
-    // CRITICAL_SECTION_ENTER();
-    // data = usb_rx_buf[usb_rx_buf_head];
-    // usb_rx_buf_head++;
-    // usb_rx_count--;
-    // if ((USB_RX_BUF_SIZE) == usb_rx_buf_head) {
-    //   usb_rx_buf_head = 0;
-    // }
-    // CRITICAL_SECTION_LEAVE();
-    //
-    // // Call usb_rx_notify if we just emptied a spot in the buffer.
-    // if (usb_rx_count == USB_RX_BUF_SIZE - 1) {
-    //      usb_rx_notify();
-    // }
-    // return data;
-    return usb_rx_buf[usb_rx_buf_head];
+
+    // Disable autoreload if someone is using the repl.
+    // TODO(tannewt): Check that we're actually in the REPL. It could be an
+    // input() call from a script.
+    autoreload_disable();
+
+    // Copy from head.
+    int data;
+    CRITICAL_SECTION_ENTER();
+    data = usb_rx_buf[usb_rx_buf_head];
+    usb_rx_buf_head++;
+    usb_rx_count--;
+    if ((USB_RX_BUF_SIZE) == usb_rx_buf_head) {
+      usb_rx_buf_head = 0;
+    }
+    CRITICAL_SECTION_LEAVE();
+
+    usb_write((uint8_t *)&data, 1);
+
+    return 0;
 }
 
 void usb_write(const uint8_t* buffer, uint32_t len) {
-    cdcdf_acm_write((uint8_t *)buffer, len);
+    if (!cdc_enabled()) {
+        return;
+    }
+    int32_t result = cdcdf_acm_write((uint8_t *)buffer, len);
+    while (result == USB_BUSY) {
+        #ifdef MICROPY_VM_HOOK_LOOP
+            MICROPY_VM_HOOK_LOOP
+        #endif
+        result = cdcdf_acm_write((uint8_t *)buffer, len);
+    }
+    while (result != ERR_NONE) {}
 }

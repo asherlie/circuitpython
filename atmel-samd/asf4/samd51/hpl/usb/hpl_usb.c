@@ -1944,6 +1944,7 @@ int32_t _usb_d_dev_ep_trans(const struct usb_d_transfer *trans)
 	if (!_usb_is_addr4dma(trans->buf, trans->size) || (!_usb_is_aligned(trans->buf))
 	    || (!dir && (trans->size < ept->size))) {
 		if (!ept->cache) {
+			return -33;
 			return -USB_ERR_FUNC;
 		}
 		/* Use cache all the time. */

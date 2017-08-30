@@ -27,6 +27,7 @@
 #ifndef __MICROPY_INCLUDED_ATMEL_SAMD_USB_H__
 #define __MICROPY_INCLUDED_ATMEL_SAMD_USB_H__
 
+#include <stdbool.h>
 #include <stdint.h>
 
 #define USB_RX_BUF_SIZE 128
@@ -34,5 +35,6 @@
 void init_usb(void);
 int usb_read(void);
 void usb_write(const uint8_t* buffer, uint32_t len);
+bool usb_bytes_available(void);
 
 #endif  // __MICROPY_INCLUDED_ATMEL_SAMD_USB_H__

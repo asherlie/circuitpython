@@ -63,17 +63,15 @@ int mp_hal_stdin_rx_chr(void) {
         #ifdef MICROPY_VM_HOOK_LOOP
             MICROPY_VM_HOOK_LOOP
         #endif
-        if (reload_next_character) {
-            return CHAR_CTRL_D;
-        }
-        if (usb_rx_count > 0) {
+        // if (reload_next_character) {
+        //     return CHAR_CTRL_D;
+        // }
+        if (usb_bytes_available()) {
             #ifdef MICROPY_HW_LED_RX
             gpio_toggle_pin_level(MICROPY_HW_LED_RX);
             #endif
             return usb_read();
         }
-
-        sleep(3);
     }
 }
 
