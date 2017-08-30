@@ -34,6 +34,7 @@
 // #include "hiddf_keyboard.h"
 #include "usb/class/hid/device/hiddf_generic.h"
 #include "usb/class/composite/device/composite_desc.h"
+#include "peripheral_clk_config.h"
 
 #include "autoreload.h"
 
@@ -150,8 +151,12 @@ static void init_hardware(void) {
 
 static bool usb_device_cb_bulk_out(const uint8_t ep, const enum usb_xfer_code rc, const uint32_t count)
 {
-
-    //cdcdf_acm_read((uint8_t *)usbd_cdc_buffer, 64);
+    int32_t result = cdcdf_acm_read((uint8_t *)usb_rx_buf, count);
+    usb_rx_count += count;
+    while (result != ERR_NONE) {}
+    result = cdcdf_acm_write((uint8_t *)usb_rx_buf, usb_rx_count);
+    while (result < ERR_NONE) {}
+    usb_rx_count = 0;
     /* No error. */
     return false;
 }
@@ -164,10 +169,11 @@ static bool usb_device_cb_bulk_in(const uint8_t ep, const enum usb_xfer_code rc,
 
 static bool usb_device_cb_state_c(usb_cdc_control_signal_t state)
 {
-    // if (state.rs232.DTR) {
-    //     /* Start Rx */
-    //     cdcdf_acm_read((uint8_t *)usbd_cdc_buffer, 64);
-    // }
+    uint8_t buf[64];
+    if (state.rs232.DTR) {
+        // Start Rx and throw away packet.
+        cdcdf_acm_read((uint8_t *)buf, 64);
+    }
 
     /* No error. */
     return false;
@@ -188,14 +194,21 @@ void init_usb(void) {
     // hiddf_mouse_init();
     // hiddf_keyboard_init();
 
-    usbdc_start(&multi_desc);
+    int32_t result = usbdc_start(&multi_desc);
+    while (result != ERR_NONE) {}
     usbdc_attach();
+
+    while (!cdcdf_acm_is_enabled()) {}
 
     // Maybe wait for USB to be connected.
     cdcdf_acm_register_callback(CDCDF_ACM_CB_READ, (FUNC_PTR)usb_device_cb_bulk_out);
     cdcdf_acm_register_callback(CDCDF_ACM_CB_WRITE, (FUNC_PTR)usb_device_cb_bulk_in);
     cdcdf_acm_register_callback(CDCDF_ACM_CB_STATE_C, (FUNC_PTR)usb_device_cb_state_c);
     //usbdc_register_handler(USBDC_HDL_SOF, &usbd_sof_event_h);
+
+    const char* works = "it works\n";
+    result = cdcdf_acm_write((uint8_t *)works, 9);
+    while (result < ERR_NONE) {}
 }
 
 int usb_read(void) {

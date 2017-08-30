@@ -659,7 +659,7 @@ void Reset_Handler(void)
 #endif
 
 	/* Initialize the C library */
-	__libc_init_array();
+	//__libc_init_array();
 
 	/* Branch to main function */
 	main();

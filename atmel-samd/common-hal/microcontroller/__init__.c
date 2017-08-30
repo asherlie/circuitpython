@@ -49,13 +49,13 @@ void common_hal_mcu_enable_interrupts(void) {
 
 // NVM is only available on Express boards for now.
 #if CIRCUITPY_INTERNAL_NVM_SIZE > 0
-nvm_bytearray_obj_t common_hal_mcu_nvm_obj = {
-    .base = {
-        .type = &nvm_bytearray_type,
-    },
-    .len = NVMCTRL_ROW_SIZE,
-    .start_address = (uint8_t*) (FLASH_SIZE - NVMCTRL_ROW_SIZE)
-};
+// nvm_bytearray_obj_t common_hal_mcu_nvm_obj = {
+//     .base = {
+//         .type = &nvm_bytearray_type,
+//     },
+//     .len = NVMCTRL_ROW_SIZE,
+//     .start_address = (uint8_t*) (FLASH_SIZE - NVMCTRL_ROW_SIZE)
+// };
 #endif
 
 // This maps MCU pin names to pin objects.

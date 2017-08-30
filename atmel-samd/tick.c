@@ -6,6 +6,7 @@
 #include "hpl/pm/hpl_pm_base.h"
 #include "hpl/tc/hpl_tc_base.h"
 #include "hpl/gclk/hpl_gclk_base.h"
+#include "include/component/gclk.h"
 
 #include "tick.h"
 
@@ -29,11 +30,11 @@ void tick_init() {
     #ifdef SAMD21
     _pm_enable_bus_clock(PM_BUS_APBC, TC5);
     #endif
-    _gclk_enable_channel(TC5_GCLK_ID, CONF_GCLK_TC5_SRC);
+    _gclk_enable_channel(TC5_GCLK_ID, GCLK_SOURCE_DFLL48M);
 
     timer_init(&ms_timer, TC5, _tc_get_timer());
 
-    timer_set_clock_cycles_per_tick(&ms_timer, CONF_GCLK_TC5_FREQUENCY / 1000 - 1);
+    timer_set_clock_cycles_per_tick(&ms_timer, 48000000 / 1000 - 1);
     task.cb       = timer_tick;
     task.interval = 1;
     task.mode     = TIMER_TASK_REPEAT;

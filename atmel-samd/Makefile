@@ -33,7 +33,9 @@ INC += -I. \
        -Iasf4/$(CHIP_FAMILY)/hal/include \
        -Iasf4/$(CHIP_FAMILY)/hal/utils/include \
        -Iasf4/$(CHIP_FAMILY)/hri \
+       -Iasf4/$(CHIP_FAMILY)/hpl/core \
        -Iasf4/$(CHIP_FAMILY)/hpl/port \
+       -Iasf4/$(CHIP_FAMILY)/hpl/tc \
        -Iasf4/$(CHIP_FAMILY)/include \
        -Iasf4/$(CHIP_FAMILY)/CMSIS/Include \
        -Iasf4/$(CHIP_FAMILY)/usb \
@@ -65,8 +67,8 @@ BASE_CFLAGS = \
 	-Wunreachable-code \
 	-Wcast-align \
 	-D__$(CHIP_VARIANT)__ \
-	-DUSB_DEVICE_PRODUCT_ID=$(USB_PID) \
-	-DUSB_DEVICE_VENDOR_ID=$(USB_VID) \
+	-DCONF_USB_COMPOSITE_IDPRODUCT=$(USB_PID) \
+	-DCONF_USB_COMPOSITE_IDVENDER=$(USB_VID) \
 	-DBOARD=USER_BOARD \
 	-ffunction-sections \
 	-fdata-sections \
@@ -82,7 +84,8 @@ CFLAGS += \
 	-mabi=aapcs-linux \
 	-mcpu=cortex-m0plus \
 	-msoft-float \
-	-mfloat-abi=soft
+	-mfloat-abi=soft \
+	-DSAMD21
 endif
 ifeq ($(CHIP_FAMILY), samd51)
 CFLAGS += \
@@ -91,7 +94,8 @@ CFLAGS += \
 	-mlong-calls \
 	-mcpu=cortex-m4 \
 	-mfloat-abi=softfp \
-	-mfpu=fpv4-sp-d16
+	-mfpu=fpv4-sp-d16 \
+	-DSAMD51
 endif
 
 #Debugging/Optimization
@@ -136,8 +140,40 @@ LDFLAGS += -mthumb -mcpu=cortex-m4
 LIBS := -lm $(LIBS)
 endif
 
-SRC_ASF = $(addprefix asf4/$(CHIP_FAMILY)/,\
-	)
+SRC_ASF := \
+	gcc/gcc/startup_$(CHIP_FAMILY).c \
+	gcc/system_$(CHIP_FAMILY).c \
+	hal/src/hal_atomic.c \
+	hal/src/hal_delay.c \
+	hal/src/hal_sleep.c \
+	hal/src/hal_timer.c \
+	hal/src/hal_usb_device.c \
+	hpl/core/hpl_init.c \
+	hpl/gclk/hpl_gclk.c \
+	hpl/mclk/hpl_mclk.c \
+	hpl/osc32kctrl/hpl_osc32kctrl.c \
+	hpl/oscctrl/hpl_oscctrl.c \
+	hpl/pm/hpl_pm.c \
+	hpl/rtc/hpl_rtc.c \
+	hpl/systick/hpl_systick.c \
+	hpl/tc/hpl_tc.c \
+	hpl/usb/hpl_usb.c \
+	usb/class/cdc/device/cdcdf_acm.c \
+	usb/device/usbdc.c \
+	usb/usb_protocol.c \
+	hal/utils/src/utils_list.c \
+
+ifeq ($(CHIP_FAMILY), samd21)
+SRC_ASF += \
+	hpl/core/hpl_core_m0plus_base.c \
+
+else ifeq ($(CHIP_FAMILY), samd51)
+SRC_ASF += \
+	hpl/core/hpl_core_m4.c \
+
+endif
+
+SRC_ASF := $(addprefix asf4/$(CHIP_FAMILY)/, $(SRC_ASF))
 
 # Skip this source for now.
 #	access_vfs.c \
@@ -157,8 +193,6 @@ SRC_C = \
 	tick.c \
 	usb.c \
 	bindings/samd/__init__.c \
-	asf4/$(CHIP_FAMILY)/gcc/gcc/startup_$(CHIP_FAMILY).c \
-	asf4/$(CHIP_FAMILY)/gcc/system_$(CHIP_FAMILY).c \
 	boards/$(BOARD)/board.c \
 	boards/$(BOARD)/pins.c \
 	lib/oofatfs/ff.c \

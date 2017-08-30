@@ -18,6 +18,7 @@
 #include "boards/board.h"
 
 // ASF 4
+#include "atmel_start_pins.h"
 #include "hal/include/hal_delay.h"
 #include "hal/include/hal_gpio.h"
 #include "hal/include/hal_init.h"
@@ -33,13 +34,6 @@
 //#include "common-hal/pulseio/PWMOut.h"
 //#include "common-hal/usb_hid/__init__.h"
 
-#ifdef EXPRESS_BOARD
-//#include "common-hal/touchio/TouchIn.h"
-#define INTERNAL_CIRCUITPY_CONFIG_START_ADDR (0x00040000 - 0x100)
-#else
-#define INTERNAL_CIRCUITPY_CONFIG_START_ADDR (0x00040000 - 0x010000 - 0x100)
-#endif
-
 #include "autoreload.h"
 #include "flash_api.h"
 #include "mpconfigboard.h"
@@ -49,7 +43,7 @@
 #include "usb.h"
 
 #ifdef EXPRESS_BOARD
-#include "common-hal/touchio/TouchIn.h"
+// #include "common-hal/touchio/TouchIn.h"
 #define INTERNAL_CIRCUITPY_CONFIG_START_ADDR (0x00040000 - 0x100 - CIRCUITPY_INTERNAL_NVM_SIZE)
 #else
 #define INTERNAL_CIRCUITPY_CONFIG_START_ADDR (0x00040000 - 0x010000 - 0x100 - CIRCUITPY_INTERNAL_NVM_SIZE)
@@ -88,40 +82,40 @@ void do_str(const char *src, mp_parse_input_kind_t input_kind) {
 // we don't make this function static because it needs a lot of stack and we
 // want it to be executed without using stack within main() function
 void init_flash_fs(void) {
-    // init the vfs object
-    fs_user_mount_t *vfs_fat = &fs_user_mount_flash;
-    vfs_fat->flags = 0;
-    flash_init_vfs(vfs_fat);
-
-    // try to mount the flash
-    FRESULT res = f_mount(&vfs_fat->fatfs);
-
-    if (res == FR_NO_FILESYSTEM) {
-        // no filesystem so create a fresh one
-
-        uint8_t working_buf[_MAX_SS];
-        res = f_mkfs(&vfs_fat->fatfs, FM_FAT, 0, working_buf, sizeof(working_buf));
-        // Flush the new file system to make sure its repaired immediately.
-        flash_flush();
-        if (res != FR_OK) {
-            return;
-        }
-
-        // set label
-        f_setlabel(&vfs_fat->fatfs, "CIRCUITPY");
-    } else if (res != FR_OK) {
-        return;
-    }
-    mp_vfs_mount_t *vfs = &mp_vfs_mount_flash;
-    vfs->str = "/";
-    vfs->len = 1;
-    vfs->obj = MP_OBJ_FROM_PTR(vfs_fat);
-    vfs->next = NULL;
-    MP_STATE_VM(vfs_mount_table) = vfs;
-
-    // The current directory is used as the boot up directory.
-    // It is set to the internal flash filesystem by default.
-    MP_STATE_PORT(vfs_cur) = vfs;
+    // // init the vfs object
+    // fs_user_mount_t *vfs_fat = &fs_user_mount_flash;
+    // vfs_fat->flags = 0;
+    // flash_init_vfs(vfs_fat);
+    //
+    // // try to mount the flash
+    // FRESULT res = f_mount(&vfs_fat->fatfs);
+    //
+    // if (res == FR_NO_FILESYSTEM) {
+    //     // no filesystem so create a fresh one
+    //
+    //     uint8_t working_buf[_MAX_SS];
+    //     res = f_mkfs(&vfs_fat->fatfs, FM_FAT, 0, working_buf, sizeof(working_buf));
+    //     // Flush the new file system to make sure its repaired immediately.
+    //     flash_flush();
+    //     if (res != FR_OK) {
+    //         return;
+    //     }
+    //
+    //     // set label
+    //     f_setlabel(&vfs_fat->fatfs, "CIRCUITPY");
+    // } else if (res != FR_OK) {
+    //     return;
+    // }
+    // mp_vfs_mount_t *vfs = &mp_vfs_mount_flash;
+    // vfs->str = "/";
+    // vfs->len = 1;
+    // vfs->obj = MP_OBJ_FROM_PTR(vfs_fat);
+    // vfs->next = NULL;
+    // MP_STATE_VM(vfs_mount_table) = vfs;
+    //
+    // // The current directory is used as the boot up directory.
+    // // It is set to the internal flash filesystem by default.
+    // MP_STATE_PORT(vfs_cur) = vfs;
 }
 
 static char heap[16384 + 4096];
@@ -133,7 +127,7 @@ void reset_mp(void) {
 
     // Sync the file systems in case any used RAM from the GC to cache. As soon
     // as we re-init the GC all bets are off on the cache.
-    flash_flush();
+    // flash_flush();
 
     // Clear the readline history. It references the heap we're about to destroy.
     readline_init0();
@@ -322,7 +316,7 @@ bool start_mp(safe_mode_t safe_mode) {
         }
         if (usb_rx_count > 0) {
             // Skip REPL if reload was requested.
-            return receive_usb() == CHAR_CTRL_D;
+            return usb_read() == CHAR_CTRL_D;
         }
 
         if (!cdc_enabled_before && mp_cdc_enabled) {
@@ -532,6 +526,12 @@ safe_mode_t samd_init(void) {
     // port_pin_set_config(MICROPY_HW_LED1, &pin_conf);
     // port_pin_set_output_level(MICROPY_HW_LED1, false);
 
+    // Output clocks for debugging.
+    gpio_set_pin_function(PIN_PA10, GPIO_PIN_FUNCTION_M); // GCLK4, D3
+    gpio_set_pin_function(PIN_PA11, GPIO_PIN_FUNCTION_M); // GCLK5, A4
+    gpio_set_pin_function(PIN_PB14, GPIO_PIN_FUNCTION_M); // GCLK0, D5
+    gpio_set_pin_function(PIN_PB15, GPIO_PIN_FUNCTION_M); // GCLK1, D6
+
     rgb_led_status_init();
 
     // Init the nvm controller.
@@ -556,34 +556,34 @@ safe_mode_t samd_init(void) {
         return USER_SAFE_MODE;
     }
 
-    #if CIRCUITPY_INTERNAL_NVM_SIZE > 0
-    // Upgrade the nvm flash to include one sector for eeprom emulation.
-    struct nvm_fusebits fuses;
-    if (nvm_get_fuses(&fuses) == STATUS_OK &&
-            fuses.eeprom_size == NVM_EEPROM_EMULATOR_SIZE_0) {
-        #ifdef INTERNAL_FLASH_FS
-        // Shift the internal file system up one row.
-        for (uint8_t row = 0; row < TOTAL_INTERNAL_FLASH_SIZE / NVMCTRL_ROW_SIZE; row++) {
-            uint32_t new_row_address = INTERNAL_FLASH_MEM_SEG1_START_ADDR + row * NVMCTRL_ROW_SIZE;
-            nvm_erase_row(new_row_address);
-            nvm_write_buffer(new_row_address,
-                             (uint8_t*) (new_row_address + CIRCUITPY_INTERNAL_EEPROM_SIZE),
-                             NVMCTRL_ROW_SIZE);
-        }
-        #endif
-        uint32_t nvm_size = CIRCUITPY_INTERNAL_NVM_SIZE;
-        uint8_t enum_value = 6;
-        while (nvm_size > 256 && enum_value != 255) {
-            nvm_size /= 2;
-            enum_value -= 1;
-        }
-        if (enum_value != 255 && nvm_size == 256) {
-            // Mark the last section as eeprom now.
-            fuses.eeprom_size = (enum nvm_eeprom_emulator_size) enum_value;
-            nvm_set_fuses(&fuses);
-        }
-    }
-    #endif
+    // #if CIRCUITPY_INTERNAL_NVM_SIZE > 0
+    // // Upgrade the nvm flash to include one sector for eeprom emulation.
+    // struct nvm_fusebits fuses;
+    // if (nvm_get_fuses(&fuses) == STATUS_OK &&
+    //         fuses.eeprom_size == NVM_EEPROM_EMULATOR_SIZE_0) {
+    //     #ifdef INTERNAL_FLASH_FS
+    //     // Shift the internal file system up one row.
+    //     for (uint8_t row = 0; row < TOTAL_INTERNAL_FLASH_SIZE / NVMCTRL_ROW_SIZE; row++) {
+    //         uint32_t new_row_address = INTERNAL_FLASH_MEM_SEG1_START_ADDR + row * NVMCTRL_ROW_SIZE;
+    //         nvm_erase_row(new_row_address);
+    //         nvm_write_buffer(new_row_address,
+    //                          (uint8_t*) (new_row_address + CIRCUITPY_INTERNAL_EEPROM_SIZE),
+    //                          NVMCTRL_ROW_SIZE);
+    //     }
+    //     #endif
+    //     uint32_t nvm_size = CIRCUITPY_INTERNAL_NVM_SIZE;
+    //     uint8_t enum_value = 6;
+    //     while (nvm_size > 256 && enum_value != 255) {
+    //         nvm_size /= 2;
+    //         enum_value -= 1;
+    //     }
+    //     if (enum_value != 255 && nvm_size == 256) {
+    //         // Mark the last section as eeprom now.
+    //         fuses.eeprom_size = (enum nvm_eeprom_emulator_size) enum_value;
+    //         nvm_set_fuses(&fuses);
+    //     }
+    // }
+    // #endif
 
     return NO_SAFE_MODE;
 }
@@ -623,7 +623,7 @@ int main(void) {
 
     // If not in safe mode, run boot before initing USB and capture output in a
     // file.
-    if (safe_mode == NO_SAFE_MODE && MP_STATE_VM(vfs_mount_table) != NULL) {
+    if (false && safe_mode == NO_SAFE_MODE && MP_STATE_VM(vfs_mount_table) != NULL) {
         new_status_color(BOOT_RUNNING);
         #ifdef CIRCUITPY_BOOT_OUTPUT_FILE
         // Since USB isn't up yet we can cheat and let ourselves write the boot
@@ -645,7 +645,7 @@ int main(void) {
 
         #ifdef CIRCUITPY_BOOT_OUTPUT_FILE
         f_close(boot_output_file);
-        flash_flush();
+        //flash_flush();
         boot_output_file = NULL;
         #endif
 
