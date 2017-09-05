@@ -11,6 +11,7 @@
 #include "shared-module/bitbangio/types.h"
 #include "rgb_led_status.h"
 #include "samd21_pins.h"
+#include "dim_neopixel.h"
 
 #ifdef MICROPY_HW_NEOPIXEL
 static uint8_t status_neopixel_color[3];
@@ -91,28 +92,32 @@ void reset_status_led() {
 
 void new_status_color(uint32_t rgb) {
     #if defined(MICROPY_HW_NEOPIXEL) || (defined(MICROPY_HW_APA102_MOSI) && defined(MICROPY_HW_APA102_SCK))
+    uint32_t rgb_adjusted = rgb;
     if (current_status_color == rgb) {
         return;
     }
-    current_status_color = rgb;
+    if(dim_neopixel_is_enabled()){
+        rgb_adjusted = color_brightness(rgb, get_dim_level());
+    }
+    current_status_color = rgb_adjusted;
     #endif
 
     #ifdef MICROPY_HW_NEOPIXEL
         if (neopixel_in_use) {
             return;
         }
-        status_neopixel_color[0] = (rgb >> 8) & 0xff;
-        status_neopixel_color[1] = (rgb >> 16) & 0xff;
-        status_neopixel_color[2] = rgb & 0xff;
+        status_neopixel_color[0] = (rgb_adjusted >> 8) & 0xff;
+        status_neopixel_color[1] = (rgb_adjusted >> 16) & 0xff;
+        status_neopixel_color[2] = rgb_adjusted & 0xff;
         common_hal_neopixel_write(&status_neopixel, status_neopixel_color, 3);
     #endif
     #if defined(MICROPY_HW_APA102_MOSI) && defined(MICROPY_HW_APA102_SCK)
         if (apa102_mosi_in_use || apa102_sck_in_use) {
             return;
         }
-        status_apa102_color[5] = rgb & 0xff;
-        status_apa102_color[6] = (rgb >> 8) & 0xff;
-        status_apa102_color[7] = (rgb >> 16) & 0xff;
+        status_apa102_color[5] = rgb_adjusted & 0xff;
+        status_apa102_color[6] = (rgb_adjusted >> 8) & 0xff;
+        status_apa102_color[7] = (rgb_adjusted >> 16) & 0xff;
 
         #ifdef CIRCUITPY_BITBANG_APA102
         shared_module_bitbangio_spi_write(&status_apa102, status_apa102_color, 8);

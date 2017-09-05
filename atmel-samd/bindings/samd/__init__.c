@@ -26,6 +26,7 @@
  #include "py/obj.h"
  #include "py/runtime.h"
  #include "autoreload.h"
+ #include "dim_neopixel.h"
 
 //| :mod:`samd` --- SAMD implementation settings
 //| =================================================
@@ -56,10 +57,46 @@ STATIC mp_obj_t samd_disable_autoreload(void) {
 }
 MP_DEFINE_CONST_FUN_OBJ_0(samd_disable_autoreload_obj, samd_disable_autoreload);
 
+//| .. method:: enable_dim_neopixel()
+//|
+//|   Enable dim neopixel mode
+//|   `enable_dim_neopixel` is called.
+//|
+STATIC mp_obj_t samd_enable_dim_neopixel(void){
+      dim_neopixel_enable();
+      return mp_const_none;
+}
+MP_DEFINE_CONST_FUN_OBJ_0(samd_enable_dim_neopixel_obj, samd_enable_dim_neopixel);
+
+//| .. method:: disable_dim_neopixel()
+//|
+//|   Disable dim neopixel mode
+//|   `disable_dim_neopixel` is called.
+//|
+STATIC mp_obj_t samd_disable_dim_neopixel(void){
+      dim_neopixel_disable();
+      return mp_const_none;
+}
+MP_DEFINE_CONST_FUN_OBJ_0(samd_disable_dim_neopixel_obj, samd_disable_dim_neopixel);
+
+//| .. method:: set_dim_level()
+//|
+//|   Set brightness of dim neopixel mode from 0-255
+//|   `set_dim_level` is called.
+//|
+STATIC mp_obj_t samd_set_dim_level(mp_obj_t lvl){
+      set_dim_level((int)mp_obj_get_int(lvl));
+      return mp_const_none;
+}
+MP_DEFINE_CONST_FUN_OBJ_1(samd_set_dim_level_obj, samd_set_dim_level);
+
 STATIC const mp_rom_map_elem_t samd_module_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR_samd) },
     { MP_OBJ_NEW_QSTR(MP_QSTR_enable_autoreload),  MP_ROM_PTR(&samd_enable_autoreload_obj)},
     { MP_OBJ_NEW_QSTR(MP_QSTR_disable_autoreload),  MP_ROM_PTR(&samd_disable_autoreload_obj)},
+    { MP_OBJ_NEW_QSTR(MP_QSTR_enable_dim_neopixel),  MP_ROM_PTR(&samd_enable_dim_neopixel_obj)},
+    { MP_OBJ_NEW_QSTR(MP_QSTR_disable_dim_neopixel),  MP_ROM_PTR(&samd_disable_dim_neopixel_obj)},
+    { MP_OBJ_NEW_QSTR(MP_QSTR_set_dim_level),  MP_ROM_PTR(&samd_set_dim_level_obj)},
 };
 
 STATIC MP_DEFINE_CONST_DICT(samd_module_globals, samd_module_globals_table);
