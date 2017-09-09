@@ -11,9 +11,10 @@
 #include "shared-module/bitbangio/types.h"
 #include "rgb_led_status.h"
 #include "samd21_pins.h"
-#include "dim_neopixel.h"
 
 #ifdef MICROPY_HW_NEOPIXEL
+//imo defalut should be full brightness. ask scott about this before commit
+int rgb_status_brightness = 255;
 static uint8_t status_neopixel_color[3];
 static digitalio_digitalinout_obj_t status_neopixel;
 #endif
@@ -92,13 +93,11 @@ void reset_status_led() {
 
 void new_status_color(uint32_t rgb) {
     #if defined(MICROPY_HW_NEOPIXEL) || (defined(MICROPY_HW_APA102_MOSI) && defined(MICROPY_HW_APA102_SCK))
-    uint32_t rgb_adjusted = rgb;
+    /*uint32_t rgb_adjusted = rgb;*/
     if (current_status_color == rgb) {
         return;
     }
-    if(dim_neopixel_is_enabled()){
-        rgb_adjusted = color_brightness(rgb, get_dim_level());
-    }
+    uint32_t rgb_adjusted = color_brightness(rgb, rgb_status_brightness);
     current_status_color = rgb_adjusted;
     #endif
 
@@ -128,18 +127,19 @@ void new_status_color(uint32_t rgb) {
 }
 
 void temp_status_color(uint32_t rgb) {
+    uint32_t rgb_adjusted = color_brightness(rgb, rgb_status_brightness);
     #ifdef MICROPY_HW_NEOPIXEL
         if (neopixel_in_use) {
             return;
         }
-        uint8_t colors[3] = {(rgb >> 8) & 0xff, (rgb >> 16) & 0xff, rgb & 0xff};
+        uint8_t colors[3] = {(rgb_adjusted >> 8) & 0xff, (rgb_adjusted >> 16) & 0xff, rgb_adjusted & 0xff};
         common_hal_neopixel_write(&status_neopixel, colors, 3);
     #endif
     #if defined(MICROPY_HW_APA102_MOSI) && defined(MICROPY_HW_APA102_SCK)
         if (apa102_mosi_in_use || apa102_sck_in_use) {
             return;
         }
-        uint8_t colors[12] = {0, 0, 0, 0, 0xff, rgb & 0xff, (rgb >> 8) & 0xff, (rgb >> 16) & 0xff, 0x0, 0x0, 0x0, 0x0};
+        uint8_t colors[12] = {0, 0, 0, 0, 0xff, rgb_adjusted & 0xff, (rgb_adjusted >> 8) & 0xff, (rgb_adjusted >> 16) & 0xff, 0x0, 0x0, 0x0, 0x0};
         #ifdef CIRCUITPY_BITBANG_APA102
         shared_module_bitbangio_spi_write(&status_apa102, colors, 12);
         #else
@@ -170,4 +170,8 @@ uint32_t color_brightness(uint32_t color, uint8_t brightness) {
     #else
     return color;
     #endif
+}
+
+void set_rgb_status_brightness(int level){
+      rgb_status_brightness = level;
 }
