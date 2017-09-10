@@ -12,9 +12,8 @@
 #include "rgb_led_status.h"
 #include "samd21_pins.h"
 
-#ifdef MICROPY_HW_NEOPIXEL
-//imo defalut should be full brightness. ask scott about this before commit
 int rgb_status_brightness = 255;
+#ifdef MICROPY_HW_NEOPIXEL
 static uint8_t status_neopixel_color[3];
 static digitalio_digitalinout_obj_t status_neopixel;
 #endif
@@ -93,7 +92,6 @@ void reset_status_led() {
 
 void new_status_color(uint32_t rgb) {
     #if defined(MICROPY_HW_NEOPIXEL) || (defined(MICROPY_HW_APA102_MOSI) && defined(MICROPY_HW_APA102_SCK))
-    /*uint32_t rgb_adjusted = rgb;*/
     if (current_status_color == rgb) {
         return;
     }
@@ -127,7 +125,10 @@ void new_status_color(uint32_t rgb) {
 }
 
 void temp_status_color(uint32_t rgb) {
-    uint32_t rgb_adjusted = color_brightness(rgb, rgb_status_brightness);
+    #if defined(MICROPY_HW_NEOPIXEL) || (defined(MICROPY_HW_APA102_MOSI) && defined(MICROPY_HW_APA102_SCK))
+      uint32_t rgb_adjusted = rgb;
+      rgb_adjusted = color_brightness(rgb, rgb_status_brightness);
+    #endif
     #ifdef MICROPY_HW_NEOPIXEL
         if (neopixel_in_use) {
             return;
