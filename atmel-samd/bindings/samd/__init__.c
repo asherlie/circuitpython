@@ -63,7 +63,12 @@ MP_DEFINE_CONST_FUN_OBJ_0(samd_disable_autoreload_obj, samd_disable_autoreload);
 //|   `set_rgb_status_brightness` is called.
 //|
 STATIC mp_obj_t samd_set_rgb_status_brightness(mp_obj_t lvl){
-      set_rgb_status_brightness((int)mp_obj_get_int(lvl));
+      // This must be int. If cast to uint8_t first, will never raise a ValueError.
+      int brightness_int = mp_obj_get_int(lvl);
+      if(brightness_int < 0 || brightness_int > 255){
+            mp_raise_ValueError("Brightness must be between 0 and 255");
+      }
+      set_rgb_status_brightness((uint8_t)brightness_int);
       return mp_const_none;
 }
 MP_DEFINE_CONST_FUN_OBJ_1(samd_set_rgb_status_brightness_obj, samd_set_rgb_status_brightness);

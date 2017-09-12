@@ -2,6 +2,7 @@
 #include "asf/sam0/drivers/port/port.h"
 
 #include "mphalport.h"
+#include "py/runtime.h"
 
 #include "common-hal/microcontroller/Pin.h"
 #include "shared-bindings/bitbangio/SPI.h"
@@ -12,7 +13,7 @@
 #include "rgb_led_status.h"
 #include "samd21_pins.h"
 
-int rgb_status_brightness = 255;
+uint8_t rgb_status_brightness = 255;
 #ifdef MICROPY_HW_NEOPIXEL
 static uint8_t status_neopixel_color[3];
 static digitalio_digitalinout_obj_t status_neopixel;
@@ -173,6 +174,6 @@ uint32_t color_brightness(uint32_t color, uint8_t brightness) {
     #endif
 }
 
-void set_rgb_status_brightness(int level){
+void set_rgb_status_brightness(uint8_t level){
       rgb_status_brightness = level;
 }
