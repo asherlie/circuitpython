@@ -2,7 +2,6 @@
 #include "asf/sam0/drivers/port/port.h"
 
 #include "mphalport.h"
-#include "py/runtime.h"
 
 #include "common-hal/microcontroller/Pin.h"
 #include "shared-bindings/bitbangio/SPI.h"
