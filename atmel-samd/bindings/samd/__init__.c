@@ -27,6 +27,7 @@
  #include "py/runtime.h"
  #include "autoreload.h"
  #include "rgb_led_status.h"
+ #include "reset.h"
 
 //| :mod:`samd` --- SAMD implementation settings
 //| =================================================
@@ -57,6 +58,16 @@ STATIC mp_obj_t samd_disable_autoreload(void) {
 }
 MP_DEFINE_CONST_FUN_OBJ_0(samd_disable_autoreload_obj, samd_disable_autoreload);
 
+//| .. method:: reset_to_bootloader()
+//|
+//|   Reset board into bootloader
+//|
+STATIC mp_obj_t samd_reset_to_bootloader(void){
+      reset_to_bootloader();
+      return mp_const_none;
+}
+MP_DEFINE_CONST_FUN_OBJ_0(samd_reset_to_bootloader_obj, samd_reset_to_bootloader);
+
 //| .. method:: set_rgb_status_brightness()
 //|
 //|   Set brightness of status neopixel from 0-255
@@ -77,6 +88,7 @@ STATIC const mp_rom_map_elem_t samd_module_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR_samd) },
     { MP_OBJ_NEW_QSTR(MP_QSTR_enable_autoreload),  MP_ROM_PTR(&samd_enable_autoreload_obj)},
     { MP_OBJ_NEW_QSTR(MP_QSTR_disable_autoreload),  MP_ROM_PTR(&samd_disable_autoreload_obj)},
+    { MP_OBJ_NEW_QSTR(MP_QSTR_reset_to_bootloader),  MP_ROM_PTR(&samd_reset_to_bootloader_obj)},
     { MP_OBJ_NEW_QSTR(MP_QSTR_set_rgb_status_brightness),  MP_ROM_PTR(&samd_set_rgb_status_brightness_obj)},
 };
 
